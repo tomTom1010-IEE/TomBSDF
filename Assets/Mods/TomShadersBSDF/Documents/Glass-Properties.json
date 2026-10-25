@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "shader": "tom/BSDFGlass",
+  "shared": [
+    "MainTex", "NormalMap", "NormalMapDetail", "RoughnessMap", "OcclusionMap", "EmissionMask", "AlphaMask",
+    "AnisotropyMap", "AnisotropyRotationMap", "BaseColor", "IOR", "Roughness",
+    "NormalMapScale", "NormalEncoding", "NormalFlipY", "NormalDataRestore", "DetailNormalMapScale",
+    "DetailNormalEncoding", "DetailNormalFlipY", "DetailNormalDataRestore", "Anisotropy", "AnisotropyRotation",
+    "SpecularAAStrength", "SpecularAAVariance", "SpecularAAThreshold", "Occlusion", "OcclusionStrength",
+    "ReflectionIntensity", "ProbeBoxProjection", "ProbeBlending", "SpecularOcclusionStrength", "SpecularHorizonStrength",
+    "SceneLighting", "AreaLightIntensity", "AreaLightQuality", "EmissionColor", "EmissionIntensity",
+    "Coverage", "Cutoff", "AlphaClip", "CullOption", "ColorTextureMode", "ColorValueMode", "DataTextureRestore",
+    "LightColorInput", "ReflectionColorMode", "DebugView"
+  ],
+  "overrides": {
+    "MainTex": { "label": "Absorption Reference Map", "tooltip": "RGB multiplies BaseColor and GlassAbsorptionColor to define transmission after GlassAbsorptionDistance in meters. White is no absorption. A independently multiplies geometric coverage; it does not control optical transmission or Fresnel." },
+    "BaseColor": { "label": "Absorption Reference Color", "tooltip": "Multiplies MainTex RGB and GlassAbsorptionColor as the Beer-Lambert reference color. White is clear. It never tints the dielectric interface reflection or creates diffuse paint." },
+    "IOR": { "tooltip": "Air/glass IOR for the locally parallel slab. Controls both GGX reflection energy and refracted path. 1 removes dielectric reflection and bending. No nested media, internal-camera medium tracking or dispersion." },
+    "Roughness": { "default": 0.1, "tooltip": "Perceptual roughness shared by compensated GGX reflection and the finite nine-tap elliptical screen-transmission filter. AA and anisotropy affect both. Transmission filtering is a bounded approximation, not an exact microfacet BTDF." },
+    "Coverage": { "tooltip": "Geometric area coverage only. Keep 1 for intact glass: optical transparency comes from Fresnel and absorption, not alpha fading. Lower values remove that fraction of reflection, emission, absorption and refraction together." },
+    "CullOption": { "tooltip": "Default Back draws one glass interface per visible closed surface. Off can draw a slab from both sides but does not solve multiple overlapping glass interfaces. This material does not track nested media or camera-inside-glass transitions." },
+    "DebugView": { "range": [0, 5], "tooltip": "0 beauty; 1 slab reflection budget; 2 RGB transmission budget; 3 valid screen-refraction weight; 4 shading normal; 5 native light attenuation. Debug outputs replace the background under coverage; Add is suppressed." }
+  },
+  "properties": [
+    { "name": "GlassThicknessMap", "type": "Texture", "label": "Thickness Map", "default": "white", "category": "Textures", "tooltip": "Linear red channel multiplies GlassThickness. Independent UV scale/offset; shares RoughnessMap filtering/wrapping. This is supplied thickness, not measured back-face depth." },
+    { "name": "GlassThickness", "type": "Float", "label": "Glass Thickness (m)", "default": 0.01, "range": [0, 1], "category": "Glass", "tooltip": "Local normal thickness in world meters, multiplied by Thickness Map R. The inside path is thickness/cos(refracted angle). Controls Beer absorption and parallel-slab lateral displacement, not vertex movement; object scale does not silently rescale it." },
+    { "name": "GlassAbsorptionColor", "type": "Color", "label": "Absorption Color At Distance", "default": [1, 1, 1, 1], "category": "Glass", "tooltip": "Transmission color at GlassAbsorptionDistance, multiplied by MainTex RGB and BaseColor. Beer-Lambert absorption is path-length dependent; RGB is bounded to 0..1, A is ignored. White causes no absorption. No colored shadow casting." },
+    { "name": "GlassAbsorptionDistance", "type": "Float", "label": "Absorption Reference Distance (m)", "default": 0.1, "range": [0.0001, 10], "category": "Glass", "tooltip": "World-meter distance at which the combined absorption reference color is reached. Larger distance means weaker absorption at the same thickness. This is independent of geometric coverage." },
+    { "name": "UseSceneRefraction", "type": "Float", "label": "Use Scene Refraction", "default": 1, "range": [0, 1], "category": "Refraction", "tooltip": "Request opaque scene color/depth from companion 0.5.0 for finite slab refraction. Off, missing companion, unsupported camera or invalid depth/UV keeps the current unshifted background with the same RGB absorption and GGX reflection. No GrabPass, SSR or shadow-map rendering." },
+    { "name": "GlassBufferResolution", "type": "Float", "label": "Refraction Buffer Resolution", "default": 1, "range": [1, 2], "category": "Refraction", "tooltip": "1 Full, 2 Half. Visible glass materials share one camera color/depth copy at the highest requested resolution. Only scene refraction uses these buffers; no visible consumer means no automatic lease." },
+    { "name": "GlassDepthBias", "type": "Float", "label": "Refraction Depth Guard (m)", "default": 0.002, "range": [0, 0.1], "category": "Refraction", "tooltip": "Positive world-meter separation required between the glass exit and sampled opaque depth. Rejects foreground leakage and unstable depth discontinuities; rejected pixels keep unshifted transmission, not stretched screen-edge colors." },
+    { "name": "GlassEdgeFade", "type": "Float", "label": "Refraction Screen Edge Fade", "default": 0.02, "range": [0, 0.2], "category": "Refraction", "tooltip": "Normalized UV margin that smoothly returns screen refraction to unshifted transmission near the screen boundary. Out-of-bounds candidates are rejected, never clamped across the screen edge." }
+  ]
+}

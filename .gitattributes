@@ -1,0 +1,11 @@
+# Preserve the exact audited source/native bytes; do not convert CRLF/LF.
+* -text
+*.shader diff
+*.cginc diff
+*.cs diff
+*.xml diff
+*.json diff
+*.meta diff
+# Necessary generated LUTs, not disposable build/test artifacts.
+Assets/Mods/TomShadersBSDF/ResourcesData/TomBSDFAnisotropyEnergyV1.asset filter=lfs diff=lfs merge=lfs -text
+Assets/Mods/TomShadersBSDF/ResourcesData/TomBSDFFilmEnergyV1.asset filter=lfs diff=lfs merge=lfs -text

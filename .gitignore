@@ -1,0 +1,40 @@
+# Source-overlay repository. Required native Unity assets and .meta ARE tracked.
+[Ll]ibrary/
+[Tt]emp/
+[Ll]ogs/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+**/bin/
+**/obj/
+**/__pycache__/
+.vs/
+.idea/
+*.user
+*.suo
+*.pdb
+*.mdb
+*.pyc
+*.log
+*.tmp
+*.dmp
+*.stackdump
+.DS_Store
+*.zipmod
+*.unitypackage
+*.unity3d
+CodexBridge/
+Reports/
+Captures/
+Artifacts/
+Assets/Mods/TomShadersBSDF/Tests/
+Assets/Mods/TomShadersBSDF/Tests.meta
+Assets/Mods/TomShadersBSDF/Shaders 1/
+Assets/Mods/TomShadersBSDF/Shaders 1.meta
+Assets/Mods/TomShadersBSDF/Shaders 2/
+Assets/Mods/TomShadersBSDF/Shaders 2.meta
+# Local planning translations are not part of this English publication.
+Assets/Mods/TomShadersBSDF/Documents/*.zh-CN.md
+Assets/Mods/TomShadersBSDF/Documents/*.zh-CN.md.meta
+# Do not add *.csproj, *.dll, *.asset, *.prefab, *.mat or *.meta blanket rules.
+# The authoring Runtime DLL, matching native resources and GUIDs are required.

@@ -1,0 +1,184 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: m_Preset_Metal_Screenshot
+  m_Shader: {fileID: 4800000, guid: 6bb7a22d7307286498107cb5c4f3df44, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AnisotropyMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AnisotropyRotationMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CoatMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CoatNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CoatRoughnessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CoatThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlintMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMapDetail:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThinFilmMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThinFilmThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TomBSDFAnisoEnergyLUT:
+        m_Texture: {fileID: 11700000, guid: 74720930483e9b24481e45a9929d1c97, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TomBSDFEnergyLUT:
+        m_Texture: {fileID: 2800000, guid: 877248770b5457a489c7c793a6dce1e9, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TomBSDFFilmEnergyLUT:
+        m_Texture: {fileID: 11700000, guid: 2bdbacae66ddaec408f19163a8c06cd3, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TomBSDFRectLTC:
+        m_Texture: {fileID: 2800000, guid: 9bc0ccb82259f1f4386ea982f1a80458, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Anisotropy: 0
+    - _AnisotropyRotation: 0
+    - _AreaLightIntensity: 1
+    - _AreaLightQuality: 1
+    - _CoatAbsorptionDistance: 1
+    - _CoatIOR: 1.5
+    - _CoatNormalBaseBlend: 0
+    - _CoatNormalDataRestore: 0
+    - _CoatNormalEncoding: 0
+    - _CoatNormalFlipY: 0
+    - _CoatNormalScale: 1
+    - _CoatRoughness: 0.1
+    - _CoatThickness: 0.05
+    - _CoatWeight: 0
+    - _ColorTextureMode: 0
+    - _ColorValueMode: 2
+    - _CullOption: 2
+    - _CustomSHColorMode: 0
+    - _CustomSHVolumeBlend: 1
+    - _DataTextureRestore: 0
+    - _DebugView: 0
+    - _DetailNormalDataRestore: 0
+    - _DetailNormalEncoding: 0
+    - _DetailNormalFlipY: 0
+    - _DetailNormalMapScale: 0
+    - _DiffuseRoughness: 0
+    - _EmissionIntensity: 1
+    - _GlintContrast: 0.5
+    - _GlintDensity: 6
+    - _GlintSeed: 0
+    - _GlintWeight: 0
+    - _HeightScale: 0
+    - _IOR: 1.5
+    - _IndirectDiffuseIntensity: 1
+    - _IsHeightReverse: 0
+    - _LightColorInput: 0
+    - _Metallic: 1
+    - _NormalDataRestore: 0
+    - _NormalEncoding: 0
+    - _NormalFlipY: 0
+    - _NormalMapScale: 1
+    - _Occlusion: 1
+    - _OcclusionStrength: 1
+    - _ParallaxFadeEnd: 25
+    - _ParallaxFadeStart: 15
+    - _ParallaxGrazingFade: 0.15
+    - _ParallaxMaxOffset: 0.25
+    - _ParallaxMode: 0
+    - _ParallaxQuality: 1
+    - _ParallaxSelfShadow: 0
+    - _ParallaxSelfShadowBias: 1
+    - _ParallaxSelfShadowStrength: 1
+    - _ProbeBlending: 1
+    - _ProbeBoxProjection: 1
+    - _ReflectionColorMode: 0
+    - _ReflectionIntensity: 1
+    - _Roughness: 0.24
+    - _SceneLighting: 1
+    - _SpecularAAStrength: 1
+    - _SpecularAAThreshold: 0.2
+    - _SpecularAAVariance: 0.15
+    - _SpecularHorizonStrength: 1
+    - _SpecularOcclusionStrength: 1
+    - _SpecularWeight: 1
+    - _ThinFilmIOR: 1.4
+    - _ThinFilmQuality: 0
+    - _ThinFilmThickness: 400
+    - _ThinFilmWeight: 0
+    - _UseORM: 0
+    m_Colors:
+    - _BaseColor: {r: 0.9, g: 0.55, b: 0.28, a: 1}
+    - _CoatAbsorptionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

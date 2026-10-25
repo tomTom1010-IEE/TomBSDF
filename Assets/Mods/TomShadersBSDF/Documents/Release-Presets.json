@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "target": "KKS / Unity 2019.4.9f1 runtime / Built-in Forward / D3D11 / KKSLinear-v1",
+  "materialFolder": "Assets/Mods/TomShadersBSDF/Material/Presets",
+  "colorContract": "Color constants below are LINEAR RGB; ColorValueMode=2. Color maps keep host Auto. No textures, keywords, carrier assets or shader defaults are changed.",
+  "modernEntries": ["BSDF", "BSDFCutout", "BSDFAlpha", "BSDFAlphaBackFront", "BSDFGlass", "BSDFTess", "BSDFCutoutTess"],
+  "frozenLegacyEntries": ["xukmi/TomBSDF", "xukmi/TomBSDFBase", "xukmi/TomBSDFAlpha"],
+  "commonFloats": [
+    {"name":"ColorValueMode", "value":2},
+    {"name":"ColorTextureMode", "value":0},
+    {"name":"DataTextureRestore", "value":0},
+    {"name":"LightColorInput", "value":0},
+    {"name":"ReflectionColorMode", "value":0},
+    {"name":"CustomSHColorMode", "value":0},
+    {"name":"IOR", "value":1.5},
+    {"name":"SpecularWeight", "value":1},
+    {"name":"UseORM", "value":0},
+    {"name":"NormalMapScale", "value":1},
+    {"name":"NormalEncoding", "value":0},
+    {"name":"NormalFlipY", "value":0},
+    {"name":"NormalDataRestore", "value":0},
+    {"name":"DetailNormalMapScale", "value":0},
+    {"name":"DetailNormalEncoding", "value":0},
+    {"name":"DetailNormalFlipY", "value":0},
+    {"name":"DetailNormalDataRestore", "value":0},
+    {"name":"Occlusion", "value":1},
+    {"name":"OcclusionStrength", "value":1},
+    {"name":"ReflectionIntensity", "value":1},
+    {"name":"IndirectDiffuseIntensity", "value":1},
+    {"name":"ProbeBoxProjection", "value":1},
+    {"name":"ProbeBlending", "value":1},
+    {"name":"CustomSHVolumeBlend", "value":1},
+    {"name":"SpecularOcclusionStrength", "value":1},
+    {"name":"SpecularHorizonStrength", "value":1},
+    {"name":"SpecularAAStrength", "value":1},
+    {"name":"SpecularAAVariance", "value":0.15},
+    {"name":"SpecularAAThreshold", "value":0.2},
+    {"name":"SceneLighting", "value":1},
+    {"name":"AreaLightIntensity", "value":1},
+    {"name":"EmissionIntensity", "value":1},
+    {"name":"CullOption", "value":2},
+    {"name":"DebugView", "value":0},
+    {"name":"Anisotropy", "value":0},
+    {"name":"AnisotropyRotation", "value":0},
+    {"name":"CoatWeight", "value":0},
+    {"name":"ThinFilmWeight", "value":0},
+    {"name":"GlintWeight", "value":0},
+    {"name":"HeightScale", "value":0},
+    {"name":"ParallaxMode", "value":0},
+    {"name":"ParallaxSelfShadow", "value":0},
+    {"name":"Coverage", "value":1},
+    {"name":"Cutoff", "value":0.5},
+    {"name":"AlphaClip", "value":0}
+  ],
+  "commonColors": [
+    {"name":"SpecularColor", "value":[1,1,1,1]},
+    {"name":"EmissionColor", "value":[0,0,0,1]},
+    {"name":"CoatAbsorptionColor", "value":[1,1,1,1]}
+  ],
+  "profiles": [
+    {
+      "id":"Realtime",
+      "description":"Recommended live configuration. No automatic POM, glints, tessellation, film or coat activation. Half-resolution glass request; another visible Full requester can raise the shared allocation.",
+      "floats":[
+        {"name":"AreaLightQuality", "value":0},
+        {"name":"ThinFilmQuality", "value":0},
+        {"name":"ParallaxQuality", "value":0},
+        {"name":"GlassBufferResolution", "value":2}
+      ]
+    },
+    {
+      "id":"Screenshot",
+      "description":"Explicit manual material copy, not an automatic global quality switch. Area Reference and Full glass; film stays Realtime. POM Reference is dormant until an author enables POM. Restore the live material after capture.",
+      "floats":[
+        {"name":"AreaLightQuality", "value":1},
+        {"name":"ThinFilmQuality", "value":0},
+        {"name":"ParallaxQuality", "value":1},
+        {"name":"GlassBufferResolution", "value":1}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "id":"Plastic", "shader":"tom/BSDF", "cost":"Low relative to this family; native-light count and fill still matter.",
+      "floats":[{"name":"Metallic","value":0},{"name":"Roughness","value":0.32},{"name":"DiffuseRoughness","value":0.15}],
+      "colors":[{"name":"BaseColor","value":[0.04,0.22,0.36,1]}],
+      "notes":"Opaque pigmented plastic, IOR 1.5. Neutral missing maps use these constants. No coat, film, glints or relief."
+    },
+    {
+      "id":"Metal", "shader":"tom/BSDF", "cost":"Low to medium; needs actual environment radiance to show environment reflections.",
+      "floats":[{"name":"Metallic","value":1},{"name":"Roughness","value":0.24},{"name":"DiffuseRoughness","value":0}],
+      "colors":[{"name":"BaseColor","value":[0.90,0.55,0.28,1]}],
+      "notes":"Warm copper-like fitted RGB F0, not measured spectral copper. Metallic=1 removes painted diffuse. No environment means no invented reflection."
+    },
+    {
+      "id":"BrushedMetal", "shader":"tom/BSDF", "cost":"Medium; anisotropic direct BRDF and approximate IBL, more expensive with rectangles.",
+      "floats":[{"name":"Metallic","value":1},{"name":"Roughness","value":0.32},{"name":"DiffuseRoughness","value":0},{"name":"Anisotropy","value":0.8},{"name":"AnisotropyRotation","value":0}],
+      "colors":[{"name":"BaseColor","value":[0.65,0.68,0.72,1]}],
+      "notes":"UV-tangent brushing. Rotation is degrees, strength map defaults white, rotation map black. Requires usable UV/tangent data; not a procedural scratch texture."
+    },
+    {
+      "id":"CarPaint", "shader":"tom/BSDF", "cost":"Medium to high; complete coat transport per native light, and layered rectangle MIS when active.",
+      "floats":[{"name":"Metallic","value":0},{"name":"Roughness","value":0.3},{"name":"DiffuseRoughness","value":0},{"name":"CoatWeight","value":1},{"name":"CoatIOR","value":1.5},{"name":"CoatRoughness","value":0.12},{"name":"CoatThickness","value":0.05},{"name":"CoatAbsorptionDistance","value":1},{"name":"CoatNormalBaseBlend","value":0}],
+      "colors":[{"name":"BaseColor","value":[0.32,0.015,0.008,1]}],
+      "notes":"Red pigmented substrate plus clear coat, not a complete automotive paint BSDF. Statistical substrate glints are available as an explicit opt-in, but default off; no separate measured metallic-flake layer is claimed."
+    },
+    {
+      "id":"ThinFilm", "shader":"tom/BSDF", "cost":"High even in Realtime; very high with multiple native lights, mixed metals or rectangle Reference.",
+      "floats":[{"name":"Metallic","value":0},{"name":"Roughness","value":0.25},{"name":"DiffuseRoughness","value":0},{"name":"CoatWeight","value":1},{"name":"CoatIOR","value":1.5},{"name":"CoatRoughness","value":0.12},{"name":"CoatThickness","value":0.05},{"name":"CoatAbsorptionDistance","value":1},{"name":"ThinFilmWeight","value":1},{"name":"ThinFilmIOR","value":2.2},{"name":"ThinFilmThickness","value":420}],
+      "colors":[{"name":"BaseColor","value":[0.12549019607843137,0.12549019607843137,0.12549019607843137,1]}],
+      "notes":"Dark dielectric substrate demonstrates interference color more clearly than high-F0 white metal. Interfering interface UNDER coat. Film nm and coat mm are different distances. Both profile copies keep optimized ThinFilmQuality=0; select 1 manually only for bounded reference comparisons."
+    },
+    {
+      "id":"Glass", "shader":"tom/BSDFGlass", "cost":"Medium to high: transmission plus reflection passes, overdraw and optional shared color/depth copies; nine-tap finite rough transmission.",
+      "floats":[{"name":"IOR","value":1.5},{"name":"Roughness","value":0.08},{"name":"GlassThickness","value":0.006},{"name":"GlassAbsorptionDistance","value":0.05},{"name":"UseSceneRefraction","value":1},{"name":"GlassDepthBias","value":0.002},{"name":"GlassEdgeFade","value":0.02},{"name":"Coverage","value":1}],
+      "colors":[{"name":"BaseColor","value":[1,1,1,1]},{"name":"GlassAbsorptionColor","value":[0.35,0.8,0.6,1]}],
+      "notes":"6 mm local parallel slab, green-tinted Beer absorption defined at 5 cm. Full coverage, not alpha-faded glass. Scene refraction requires Companion >=0.5; without it, unshifted RGB transmission and surface reflection remain. No colored shadow caster or exact GGX BTDF."
+    }
+  ],
+  "geometryGuidance": [
+    {"profile":"Realtime", "TessellationMode":1, "TessEdgeLength":0.05, "TessMaxFactor":8, "DisplacementMip":0},
+    {"profile":"Screenshot", "TessellationMode":1, "TessEdgeLength":0.025, "TessMaxFactor":16, "DisplacementMip":0}
+  ],
+  "geometryPolicy":"Guidance only, not applied to these plain BSDF/Glass presets or switched automatically. Author a mesh-specific HeightScale, matching mip and seam mask; use Tess entries instead of same-layer POM. Zero height removes relief but not the fixed hull/domain pipeline."
+}

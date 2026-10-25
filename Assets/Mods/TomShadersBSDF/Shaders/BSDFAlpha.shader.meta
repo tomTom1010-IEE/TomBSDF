@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cc0709fda2c6eeb4da8262fa5fd707ea
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures:
+  - _TomBSDFEnergyLUT: {fileID: 2800000, guid: 877248770b5457a489c7c793a6dce1e9, type: 2}
+  - _TomBSDFAnisoEnergyLUT: {fileID: 11700000, guid: 74720930483e9b24481e45a9929d1c97,
+      type: 2}
+  - _TomBSDFFilmEnergyLUT: {fileID: 11700000, guid: 2bdbacae66ddaec408f19163a8c06cd3,
+      type: 2}
+  - _TomBSDFRectLTC: {fileID: 2800000, guid: 9bc0ccb82259f1f4386ea982f1a80458, type: 2}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

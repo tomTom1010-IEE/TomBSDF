@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1407860297, guid: 7cb6354202869d24ab810344a376ca8b, type: 3}
+  m_Name: TomBSDFNativeShadowsV1
+  m_EditorClassIdentifier: 
+  version: 1
+  copyNativeShadow: {fileID: 4800000, guid: e07a6be99215ace45a4a6622ca45d77a, type: 3}

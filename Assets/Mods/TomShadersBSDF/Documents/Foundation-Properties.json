@@ -1,0 +1,858 @@
+{
+  "version": 11,
+  "shaders": [
+    "tom/BSDF",
+    "tom/BSDFCutout",
+    "tom/BSDFAlpha",
+    "tom/BSDFAlphaBackFront",
+    "tom/BSDFTess",
+    "tom/BSDFCutoutTess"
+  ],
+  "properties": [
+    {
+      "name": "DisplacementMask", "type": "Texture", "label": "Displacement Mask (Linear R)", "default": "white",
+      "category": "Height / Tessellation", "scope": "tessellation",
+      "tooltip": "Linear R multiplies inward displacement, not coverage. White preserves height, black pins the original mesh. Paint black at incompatible UV/normal seams with a smooth transition to prevent cracks. Has its own ST and sampler."
+    },
+    {
+      "name": "TessellationMode", "type": "Float", "label": "Tessellation Mode", "default": 1,
+      "category": "Height / Tessellation", "range": [0, 1], "scope": "tessellation",
+      "tooltip": "0 fixed factor; 1 shared world-space edge length. Fractional-odd subdivision uses the same endpoint-only rule in ForwardBase, ForwardAdd, native shadows and camera depth. No screen-distance LOD or silhouette smoothing. Zero HeightScale bypasses sampling and returns factor 1."
+    },
+    {
+      "name": "TessFactor", "type": "Float", "label": "Fixed Tessellation Factor", "default": 4,
+      "category": "Height / Tessellation", "range": [1, 63], "scope": "tessellation",
+      "tooltip": "Edge subdivision factor in fixed mode, capped by TessMaxFactor. Fractional-odd hardware tessellation changes segment lengths continuously; factor 1 preserves the original triangles. Triangle cost grows approximately quadratically."
+    },
+    {
+      "name": "TessEdgeLength", "type": "Float", "label": "Tessellation Edge Length (Meters)", "default": 0.05,
+      "category": "Height / Tessellation", "range": [0.001, 1], "scope": "tessellation",
+      "tooltip": "Target world-space edge length in world-edge mode before displacement. Smaller lengths increase tessellation. Uses transformed endpoints, so nonuniform/negative scale and skinned input are respected. Identical in all cameras and lights; no view-dependent cracks or shadow LOD mismatch."
+    },
+    {
+      "name": "TessMaxFactor", "type": "Float", "label": "Maximum Tessellation Factor", "default": 16,
+      "category": "Height / Tessellation", "range": [1, 63], "scope": "tessellation",
+      "tooltip": "Upper bound for both tessellation modes. D3D11 fractional-odd limit is 63. This limits GPU amplification, not displacement depth; excessive factors still cost every native light and shadow pass."
+    },
+    {
+      "name": "DisplacementMip", "type": "Float", "label": "Displacement Height Mip", "default": 0,
+      "category": "Height / Tessellation", "range": [0, 12], "scope": "tessellation",
+      "tooltip": "Explicit height/mask mip, shared across all passes and cameras. 0 uses the finest level; higher values filter geometry. Fractional values use the texture sampler's mip filter. Use a linear texture with mipmaps and match geometry density; sub-triangle detail cannot appear in the silhouette. No camera-dependent automatic mip."
+    },
+    {
+      "name": "DisplacementEdgeFade", "type": "Float", "label": "Displacement Triangle Edge Pinning", "default": 0,
+      "category": "Height / Tessellation", "range": [0, 0.25], "scope": "tessellation",
+      "tooltip": "Optional crack-safe fallback: fade displacement to zero within this barycentric distance of EVERY source triangle edge. 0 preserves continuous relief. Positive values also pin UV/normal seams but can expose triangle-shaped grooves; a seam-authored displacement mask is preferable. Does not clip alpha."
+    },
+    {
+      "name": "GlintMask", "type": "Texture", "label": "Glint Weight Map (Linear R)", "default": "white",
+      "category": "Textures", "scope": "glints",
+      "cutoutTooltip": "Linear red channel multiplies GlintWeight. Its ST affects the mask only. Coverage and ShadowCaster continue using the original alpha UV; glints use POM hit UV and bounded gradients.",
+      "tooltip": "Linear red channel multiplies GlintWeight. White or no map preserves the scalar; black restores smooth direct specular. Independent ST affects only the mask, not the stable UV microstructure. Does not clip coverage."
+    },
+    {
+      "name": "GlintWeight", "type": "Float", "label": "Glint Weight", "default": 0,
+      "category": "Glints", "range": [0, 1], "scope": "glints",
+      "cutoutTooltip": "Native direct-light statistical substrate glints. Default 0 restores the accepted smooth model; black GlintMask also disables them. Existing alpha cutoff and shadow casting are unchanged. Probe and rectangle lights keep smooth reflection.",
+      "tooltip": "0 preserves the previous material. 1 replaces native direct-light substrate single scattering with footprint-filtered statistical glints. Coat, multiple scattering, diffuse, emission, SH, Probe and rectangles retain their existing response. No plugin or keyword required."
+    },
+    {
+      "name": "GlintDensity", "type": "Float", "label": "Glint Density (Log10 per UV Area)", "default": 6,
+      "category": "Glints", "range": [0, 8], "scope": "glints",
+      "cutoutTooltip": "Log10 facets per original UV unit area; 6 means one million. Higher density averages toward smooth GGX. Uses the shared POM hit and footprint where enabled, independent of MainTex tiling.",
+      "tooltip": "Log10 statistical facets per original UV unit area: 6 means one million. Higher density or larger pixel footprints converge toward smooth GGX. Not world-meter density; UV islands with different texel density need authoring adjustment."
+    },
+    {
+      "name": "GlintContrast", "type": "Float", "label": "Glint Contrast", "default": 0.5,
+      "category": "Glints", "range": [0, 1], "scope": "glints",
+      "cutoutTooltip": "Higher values make glints sparser and brighter with the same expected GGX response. R=10^(-3*value); not an overall specular gain. Numerical rare-event fallback preserves the mean.",
+      "tooltip": "Statistical sparsity: R=10^(-3*value). Higher values give fewer, brighter events at the same expected reflection, not an energy multiplier or another roughness. Extremely rare unresolved events continuously retain the smooth mean."
+    },
+    {
+      "name": "GlintSeed", "type": "Float", "label": "Glint Seed", "default": 0,
+      "category": "Glints", "range": [0, 65535], "scope": "glints",
+      "cutoutTooltip": "Rounded 0..65535 stable material seed. Changes the pattern without per-frame randomness. Mirrored and overlapping UVs share the corresponding mirrored or repeated field.",
+      "tooltip": "Rounded integer material seed, saved by ME. Changes the stable UV and angular statistical field. Time, frame number and light index never reseed it. Mirrored or repeated UV charts repeat the pattern."
+    },
+    {
+      "name": "HeightMap", "type": "Texture", "label": "Height Map (Linear R)", "default": "white",
+      "category": "Height / POM", "scope": "height",
+      "tessellationTooltip": "Height-v1 linear R: white is the original mesh envelope, black is HeightScale meters inward. Shared by actual Forward, caster and camera-depth geometry. Own ST and sampler; linear import recommended. No POM trace in Tess entries.",
+      "tooltip": "Height-v1 linear red channel, with its own tiling, offset, filter and wrap. White is the mesh envelope; black is HeightScale meters below it. Reverse is applied after data restoration. POM moves surface samples only, never coverage, shadow geometry, glass thickness or coat thickness. Use a matching normal map for lighting detail."
+    },
+    {
+      "name": "ParallaxMode", "type": "Float", "label": "Parallax Mode", "default": 0,
+      "category": "Height / POM", "range": [0, 1], "scope": "parallax",
+      "tooltip": "0 Off preserves the accepted pre-POM sampling. 1 POM traces the view ray through HeightMap, shifting material, normal/detail and coat/film maps together before each map's own ST. No plugin or saved keyword is required. UV-only: real depth, silhouette, light position and native shadows stay on the mesh."
+    },
+    {
+      "name": "HeightScale", "type": "Float", "label": "Height Depth (Meters)", "default": 0,
+      "category": "Height / POM", "range": [0, 0.2], "scope": "height",
+      "tessellationTooltip": "Maximum actual inward displacement in world meters, independent of object scale. Zero returns original triangles and frame with no height samples. White stays at the original mesh. CPU culling requires expanded mesh/skinned bounds: companion support or manual authoring; shader-only displacement cannot expand them.",
+      "tooltip": "Maximum inward relief in world meters, corrected for UV density and nonuniform object scale. Zero bypasses height sampling and preserves pre-POM appearance regardless of the other height controls. White height remains at the mesh. This does not displace vertices or write pixel depth."
+    },
+    {
+      "name": "IsHeightReverse", "type": "Float", "label": "Is Height Reverse", "default": 0,
+      "category": "Height / POM", "range": [0, 1], "scope": "height",
+      "tessellationTooltip": "Reverse decoded height h=1-h before displacement and derivative reconstruction. Reversed black is the original envelope; reversed white is recessed. Does not reverse coverage or the displacement mask.",
+      "tooltip": "Reverse decoded height with h=1-h before tracing. Normally white is high and black is recessed; reversed black is high. This does not invert alpha, coverage or any mask."
+    },
+    {
+      "name": "ParallaxQuality", "type": "Float", "label": "Parallax Quality", "default": 0,
+      "category": "Height / POM", "range": [0, 1], "scope": "parallax",
+      "tooltip": "0 Realtime: 12-32 angle-adaptive steps and 2 intersection refinements. 1 Reference: 32-96 steps and 5 refinements. Both preserve the same height/UV model and bounded gradients. Reference is a higher sampling budget, not an exact ray-traced ground truth. Each native ForwardAdd repeats the camera-ray search."
+    },
+    {
+      "name": "ParallaxFadeStart", "type": "Float", "label": "Parallax Fade Start (Meters)", "default": 15,
+      "category": "Height / POM", "range": [0, 100], "scope": "parallax",
+      "tooltip": "Eye distance where relief starts smoothly fading to the mesh. Far/end and mip/grazing guards only affect relief; they do not fade coverage or material brightness."
+    },
+    {
+      "name": "ParallaxFadeEnd", "type": "Float", "label": "Parallax Fade End (Meters)", "default": 25,
+      "category": "Height / POM", "range": [0, 100], "scope": "parallax",
+      "tooltip": "Eye distance where relief becomes flat. Values not above Fade Start are safely treated as a short positive interval. Very coarse height mips also fade relief automatically."
+    },
+    {
+      "name": "ParallaxGrazingFade", "type": "Float", "label": "Parallax Grazing Fade", "default": 0.15,
+      "category": "Height / POM", "range": [0.01, 0.5], "scope": "parallax",
+      "tooltip": "View-normal cosine below which relief smoothly weakens. Limits instability at nearly tangent views; zero silhouette expansion and exact depth remain outside UV-only POM."
+    },
+    {
+      "name": "ParallaxMaxOffset", "type": "Float", "label": "Parallax Maximum UV Excursion", "default": 0.25,
+      "category": "Height / POM", "range": [0.01, 2], "scope": "parallax",
+      "tooltip": "Maximum full-ray excursion measured in HeightMap UV units after height tiling. Limits extreme offsets continuously by reducing effective relief, not by clipping the final UV. Texture wrap remains the HeightMap sampler's own setting. Atlas islands still require sufficient padding."
+    },
+    {
+      "name": "ParallaxSelfShadow", "type": "Float", "label": "POM Local Self Shadow", "default": 0,
+      "category": "Height / POM", "range": [0, 1], "scope": "parallax",
+      "tooltip": "Optional local height-field visibility per native directional, point, spot and four-array fallback light. Default Off preserves the accepted POM appearance. Shadows the entire direct layered response once, not coverage, emission, SH, Probe or rectangle lights. No plugin or replacement shadow map is required."
+    },
+    {
+      "name": "ParallaxSelfShadowStrength", "type": "Float", "label": "POM Self Shadow Strength", "default": 1,
+      "category": "Height / POM", "range": [0, 1], "scope": "parallax",
+      "tooltip": "Blend local height visibility into each native direct light. One applies the full estimated occlusion; zero bypasses the light-ray trace. Coat and thin film share one conformal relief surface and one visibility. Does not provide environmental occlusion or simulate a coat filling grooves."
+    },
+    {
+      "name": "ParallaxSelfShadowBias", "type": "Float", "label": "POM Self Shadow Bias Scale", "default": 1,
+      "category": "Height / POM", "range": [0, 4], "scope": "parallax",
+      "tooltip": "Dimensionless multiplier for the automatic effective-height and texture-footprint self-intersection bias. Larger values suppress acne but can leak light across fine relief. Quality follows ParallaxQuality: Realtime 8-16, Reference 24-48 light-ray steps. Grazing or excessive UV excursions fade to unshadowed local visibility; native shadows are retained."
+    },
+    {
+      "name": "SceneLighting", "type": "Float", "label": "Tom Scene Lighting", "default": 1,
+      "category": "Scene Lighting", "range": [0, 1], "scope": "all",
+      "tooltip": "Accept the optional KKS companion v1 rectangle lights. Off, missing companion, or an incompatible protocol contributes exactly zero. Does not replace native lights, Probe or SH."
+    },
+    {
+      "name": "AreaLightIntensity", "type": "Float", "label": "Area Light Intensity", "default": 1,
+      "category": "Scene Lighting", "range": [0, 4], "scope": "all",
+      "tooltip": "Multiplier for rectangle direct lighting only. Scene emitter colors are linear radiance; solid angle supplies geometric falloff. Prototype has no occlusion or area-light shadows."
+    },
+    {
+      "name": "AreaLightQuality", "type": "Float", "label": "Area Light Quality", "default": 0,
+      "category": "Scene Lighting", "range": [0, 1], "scope": "all",
+      "tooltip": "0: unchanged Realtime (LTC plus 16 residual samples for bare isotropic; 32 per MIS proposal for layered/anisotropic). 1: preserved 128-sample Reference. The optional companion synchronizes these ME floats to camera-scoped local variants; no saved keyword edits. Screenshot Reference can temporarily promote render/depth/video captures without changing this value or thin-film quality. Off/missing companion keeps native lights, probes and SH unchanged."
+    },
+    {
+          "name": "CoatMask",
+          "type": "Texture",
+          "label": "Coat Coverage Map",
+          "default": "white",
+          "category": "Coat",
+          "range": null,
+          "tooltip": "Red channel multiplies CoatWeight. Coverage blends complete bare and coated materials, not only the top highlight.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatRoughnessMap",
+          "type": "Texture",
+          "label": "Coat Roughness Map",
+          "default": "white",
+          "category": "Coat",
+          "range": null,
+          "tooltip": "Red channel multiplies coat perceptual roughness. Shares the RoughnessMap sampler filter and wrap settings.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalMap",
+          "type": "Texture",
+          "label": "Coat Normal Map",
+          "default": "bump",
+          "category": "Coat Normal",
+          "range": null,
+          "tooltip": "Independent coat normal, using the selected normal encoding. Shares the RoughnessMap sampler.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatThicknessMap",
+          "type": "Texture",
+          "label": "Coat Thickness Map",
+          "default": "white",
+          "category": "Coat Absorption",
+          "range": null,
+          "tooltip": "Red channel multiplies coat thickness in millimeters. This absorption distance is not nanometer thin-film thickness.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmMask",
+          "type": "Texture",
+          "label": "Thin Film Coverage Map",
+          "default": "white",
+          "category": "Thin Film",
+          "range": null,
+          "tooltip": "Red channel multiplies ThinFilmWeight within the coat-covered region only.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmThicknessMap",
+          "type": "Texture",
+          "label": "Thin Film Thickness Map",
+          "default": "white",
+          "category": "Thin Film",
+          "range": null,
+          "tooltip": "Red channel multiplies ThinFilmThickness in nanometers. Data, not color; shared material-data sampler.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatWeight",
+          "type": "Float",
+          "label": "Coat Weight",
+          "default": 0,
+          "category": "Coat",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Coating coverage. Zero uses the energy-corrected bare material and ignores every coat/film control. The stage-3 audit intentionally updates the old dielectric/mixed-metal baseline.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatIOR",
+          "type": "Float",
+          "label": "Coat IOR",
+          "default": 1.5,
+          "category": "Coat",
+          "range": [
+                1,
+                2.5
+          ],
+          "tooltip": "Coat refractive index. Controls top Fresnel, substrate relative IOR, refraction path length and internal trapping.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatRoughness",
+          "type": "Float",
+          "label": "Coat Roughness",
+          "default": 0.1,
+          "category": "Coat",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Perceptual GGX roughness of the isotropic top interface. Also broadens both substrate anisotropic axes through rough transmission.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalScale",
+          "type": "Float",
+          "label": "Coat Normal Scale",
+          "default": 1,
+          "category": "Coat Normal",
+          "range": [
+                0,
+                4
+          ],
+          "tooltip": "Coat normal strength. Zero is neutral for every encoding; base normals remain independent.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalBaseBlend",
+          "type": "Float",
+          "label": "Coat Base Normal Inheritance",
+          "default": 0,
+          "category": "Coat Normal",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Zero starts from smooth mesh normal; one inherits the base/detail normal before RNM coat normal composition.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalEncoding",
+          "type": "Float",
+          "label": "Coat Normal Encoding",
+          "default": 0,
+          "category": "Coat Normal",
+          "range": [
+                0,
+                2
+          ],
+          "tooltip": "0=Unity packed; 1=RGB normal; 2=alpha/green packed. Select based on actual texture storage.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalFlipY",
+          "type": "Float",
+          "label": "Coat Normal Flip Y",
+          "default": 0,
+          "category": "Coat Normal",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Invert tangent-space Y only on the coat normal.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatNormalDataRestore",
+          "type": "Float",
+          "label": "Coat Normal Data Restore",
+          "default": 0,
+          "category": "Coat Normal",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Restore RGB data accidentally imported as sRGB in Linear mode. UnityPacked is unaffected.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatAbsorptionColor",
+          "type": "Color",
+          "label": "Coat Transmission Color",
+          "default": [
+                1,
+                1,
+                1,
+                1
+          ],
+          "category": "Coat Absorption",
+          "range": null,
+          "tooltip": "Linear single-pass transmission at CoatAbsorptionDistance. White means no absorption; not a tint added to reflections.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatAbsorptionDistance",
+          "type": "Float",
+          "label": "Coat Reference Distance (mm)",
+          "default": 1,
+          "category": "Coat Absorption",
+          "range": [
+                0.001,
+                10
+          ],
+          "tooltip": "Distance in millimeters at which the transmission equals CoatAbsorptionColor.",
+          "scope": "all"
+    },
+    {
+          "name": "CoatThickness",
+          "type": "Float",
+          "label": "Coat Thickness (mm)",
+          "default": 0.05,
+          "category": "Coat Absorption",
+          "range": [
+                0,
+                2
+          ],
+          "tooltip": "Medium thickness in millimeters. Reflections traverse down and up; emission traverses only the escape path.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmWeight",
+          "type": "Float",
+          "label": "Thin Film Weight",
+          "default": 0,
+          "category": "Thin Film",
+          "range": [
+                0,
+                1
+          ],
+          "tooltip": "Optional interfering substrate interface beneath coat. Zero keeps plain coat; CoatWeight zero disables film too.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmIOR",
+          "type": "Float",
+          "label": "Thin Film IOR",
+          "default": 1.4,
+          "category": "Thin Film",
+          "range": [
+                1,
+                3
+          ],
+          "tooltip": "Film refractive index, independent of coat and base IOR. RGB metal optical constants are an effective fit, not measured spectral data.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmQuality",
+          "type": "Float",
+          "label": "Thin Film Quality",
+          "default": 0,
+          "category": "Thin Film",
+          "range": [0, 1],
+          "tooltip": "0: Realtime, using a shader-owned positive GGX energy projection table. Direct film interference is unchanged. High-contrast or thick low-index films smoothly return to the reference path. 1: Reference, the preserved 256-512 sample integral; much more expensive. Both modes are neutral when film or coat weight is zero.",
+          "scope": "all"
+    },
+    {
+          "name": "ThinFilmThickness",
+          "type": "Float",
+          "label": "Thin Film Thickness (nm)",
+          "default": 400,
+          "category": "Thin Film",
+          "range": [
+                0,
+                2000
+          ],
+          "tooltip": "Optical interference thickness in nanometers. Below 30 nm the film smoothly fades into the plain substrate; this is not a calibrated ultrathin oxide model. Spatial phase filtering reduces distant flicker.",
+          "scope": "all"
+    },
+    {
+      "name": "MainTex",
+      "type": "Texture",
+      "label": "Base Color Map",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "RGB base color; white multiplies BaseColor unchanged. Alpha is used only by BSDFCutout.",
+      "scope": "all"
+    },
+    {
+      "name": "NormalMap",
+      "type": "Texture",
+      "label": "Normal Map",
+      "default": "bump",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Normal data. Encoding is explicit; use UnityPacked for Unity-imported normals, RGB for blue normals, AG for exported alpha/green normals.",
+      "scope": "all"
+    },
+    {
+      "name": "MetallicMap",
+      "type": "Texture",
+      "label": "Metallic Map",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Red channel multiplies Metallic. White or no map keeps the scalar.",
+      "scope": "all"
+    },
+    {
+      "name": "RoughnessMap",
+      "type": "Texture",
+      "label": "Roughness Map",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Red channel multiplies perceptual Roughness. White or no map keeps the scalar; black is smooth.",
+      "scope": "all"
+    },
+    {
+      "name": "OcclusionMap",
+      "type": "Texture",
+      "label": "Occlusion Map",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Red channel multiplies Occlusion. Affects indirect diffuse and optionally probe specular through SpecularOcclusionStrength; never direct lights or emission.",
+      "scope": "all"
+    },
+    {
+      "name": "ORMMap",
+      "type": "Texture",
+      "label": "Packed ORM Map",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Optional packed data: R=occlusion, G=roughness, B=metallic. Enabled by UseORM; multiplies the corresponding scalar values.",
+      "scope": "all"
+    },
+    {
+      "name": "EmissionMask",
+      "type": "Texture",
+      "label": "Emission Map",
+      "default": "black",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "RGB emission multiplied by EmissionColor and EmissionIntensity. Black or no texture produces no emission.",
+      "scope": "all"
+    },
+    {
+      "name": "AlphaMask",
+      "type": "Texture",
+      "label": "Coverage Mask",
+      "default": "white",
+      "category": "Textures",
+      "range": null,
+      "tooltip": "Red channel multiplies MainTex alpha and Coverage. This is independent of the old skin alpha_a/alpha_b compatibility processing.",
+      "scope": "coverage"
+    },
+    {
+      "name": "BaseColor",
+      "type": "Color",
+      "label": "Base Color",
+      "default": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "category": "Base Material",
+      "range": null,
+      "tooltip": "Base reflectance color. For dielectrics this is diffuse color; for metals it is normal-incidence specular reflectance.",
+      "scope": "all"
+    },
+    {
+      "name": "Metallic",
+      "type": "Float",
+      "label": "Metallic",
+      "default": 0,
+      "category": "Base Material",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "0 is dielectric, 1 is conductor. Fractional values mix the two; metals have no diffuse lobe.",
+      "scope": "all"
+    },
+    {
+      "name": "Roughness",
+      "type": "Float",
+      "label": "Perceptual Roughness",
+      "default": 0.5,
+      "category": "Base Material",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "GGX perceptual roughness; microfacet alpha=r*r with only a numerical alpha floor of 0.001.",
+      "scope": "all"
+    },
+    {
+      "name": "DiffuseRoughness",
+      "type": "Float",
+      "label": "Diffuse Roughness",
+      "default": 0,
+      "category": "Base Material",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "EON diffuse roughness; 0 is Lambert. Does not change the GGX specular roughness.",
+      "scope": "all"
+    },
+    {
+      "name": "IOR",
+      "type": "Float",
+      "label": "Dielectric IOR",
+      "default": 1.5,
+      "category": "Base Material",
+      "range": [
+        1,
+        3
+      ],
+      "tooltip": "Dielectric interface IOR relative to air. F0=((IOR-1)/(IOR+1))^2; IOR=1 disables dielectric interface reflection.",
+      "scope": "all"
+    },
+    {
+      "name": "SpecularWeight",
+      "type": "Float",
+      "label": "Dielectric Specular Weight",
+      "default": 1,
+      "category": "Base Material",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Weights the dielectric reflection lobe, including grazing reflection. Metals are unaffected. 1 is the physical interface reference.",
+      "scope": "all"
+    },
+    {
+      "name": "SpecularColor",
+      "type": "Color",
+      "label": "Dielectric Specular Color",
+      "default": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "category": "Base Material",
+      "range": null,
+      "tooltip": "Tint of dielectric normal-incidence reflection. White is the physically neutral dielectric reference.",
+      "scope": "all"
+    },
+    {
+      "name": "UseORM",
+      "type": "Float",
+      "label": "Use Packed ORM",
+      "default": 0,
+      "category": "Base Material",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "0 uses separate metallic/roughness/AO maps; 1 reads ORM. This is a float branch and works with MaterialEditor without keywords.",
+      "scope": "all"
+    },
+    {
+      "name": "NormalMapScale",
+      "type": "Float",
+      "label": "Normal Strength",
+      "default": 1,
+      "category": "Normal",
+      "range": [
+        0,
+        2
+      ],
+      "tooltip": "Scales decoded tangent-space XY then normalizes. 0 is a flat normal in every encoding.",
+      "scope": "all"
+    },
+    {
+      "name": "NormalEncoding",
+      "type": "Float",
+      "label": "Normal Encoding",
+      "default": 0,
+      "category": "Normal",
+      "range": [
+        0,
+        2
+      ],
+      "tooltip": "0=Unity native packed normal, 1=raw RGB XYZ, 2=raw AG XY with positive Z reconstructed. No automatic color-based guessing.",
+      "scope": "all"
+    },
+    {
+      "name": "NormalFlipY",
+      "type": "Float",
+      "label": "Flip Normal Y",
+      "default": 0,
+      "category": "Normal",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Flips the decoded tangent-space Y component, for the opposite normal-map convention.",
+      "scope": "all"
+    },
+    {
+      "name": "NormalDataRestore",
+      "type": "Float",
+      "label": "Restore SRGB Normal Data",
+      "default": 0,
+      "category": "Normal",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "For raw RGB/AG only: in Linear projects, undo automatic sRGB texture decoding when the data was imported as color. Leave 0 for correctly imported linear data.",
+      "scope": "all"
+    },
+    {
+      "name": "Occlusion",
+      "type": "Float",
+      "label": "Occlusion",
+      "default": 1,
+      "category": "Environment",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Scalar ambient visibility; white mask or no map leaves this value unchanged. Also feeds the separately controlled specular-occlusion approximation.",
+      "scope": "all"
+    },
+    {
+      "name": "OcclusionStrength",
+      "type": "Float",
+      "label": "Occlusion Strength",
+      "default": 1,
+      "category": "Environment",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Blends ambient visibility from 1 to Occlusion times its map. Does not change direct-light shadows.",
+      "scope": "all"
+    },
+    {
+      "name": "IndirectDiffuseIntensity",
+      "type": "Float",
+      "label": "Indirect Diffuse Intensity",
+      "default": 1,
+      "category": "Environment",
+      "range": [
+        0,
+        4
+      ],
+      "tooltip": "Scales the blended Unity SH and Tom SH Volume diffuse illumination. Does not create bounced light when no environment data exists.",
+      "scope": "all"
+    },
+    {
+      "name": "ReflectionIntensity",
+      "type": "Float",
+      "label": "Probe Reflection Intensity",
+      "default": 1,
+      "category": "Environment",
+      "range": [
+        0,
+        4
+      ],
+      "tooltip": "Scales decoded native reflection-probe radiance. Supports two probes, box projection and Unity sky fallback. Does not scale direct-light specular.",
+      "scope": "all"
+    },
+    {
+      "name": "EmissionColor",
+      "type": "Color",
+      "label": "Emission Color",
+      "default": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "category": "Emission",
+      "range": null,
+      "tooltip": "Emission color multiplied by the RGB emission map. Emission is added once in ForwardBase and is unaffected by AO.",
+      "scope": "all"
+    },
+    {
+      "name": "EmissionIntensity",
+      "type": "Float",
+      "label": "Emission Intensity",
+      "default": 1,
+      "category": "Emission",
+      "range": [
+        0,
+        20
+      ],
+      "tooltip": "Linear emission gain applied after decoding color; no per-material tone mapping.",
+      "scope": "all"
+    },
+    {
+      "name": "Coverage",
+      "type": "Float",
+      "label": "Coverage",
+      "default": 1,
+      "category": "Coverage",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Final coverage = MainTex.a * AlphaMask.r * Coverage. Cutout tests a threshold; Alpha fades the complete reflected/emitted surface. This is geometric coverage, not glass transmission.",
+      "scope": "coverage"
+    },
+    {
+      "name": "Cutoff",
+      "type": "Float",
+      "label": "Coverage Cutoff",
+      "default": 0.5,
+      "category": "Coverage",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "Shared threshold for visible Base/Add passes and ShadowCaster. Zero coverage is always discarded.",
+      "scope": "coverage"
+    },
+    {
+      "name": "CullOption",
+      "type": "Float",
+      "label": "Cull Mode",
+      "default": 2,
+      "category": "Render Options",
+      "range": [
+        0,
+        2
+      ],
+      "tooltip": "0=two-sided, 1=cull front, 2=cull back. The caster uses the same mode; two-sided shading flips the normal frame.",
+      "scope": "all"
+    },
+    {
+      "name": "ColorTextureMode",
+      "type": "Float",
+      "label": "Color Texture Input",
+      "default": 0,
+      "category": "Input Contract",
+      "range": [
+        0,
+        2
+      ],
+      "tooltip": "0=KKS Linear sampling convention, 1=sampled RGB is explicitly sRGB encoded, 2=sampled RGB is already linear. Auto does not decode values a second time, even in a Gamma-built bundle. Controls MainTex and EmissionMask; alpha is never gamma decoded.",
+      "scope": "all"
+    },
+    {
+      "name": "ColorValueMode",
+      "type": "Float",
+      "label": "Color Value Input",
+      "default": 0,
+      "category": "Input Contract",
+      "range": [
+        0,
+        2
+      ],
+      "tooltip": "0=KKS Linear color-uniform convention, 1=explicit sRGB values, 2=explicit linear values. Applies to color controls, not numeric gains. Gamma authoring previews are not the KKS display pipeline.",
+      "scope": "all"
+    },
+    {
+      "name": "DataTextureRestore",
+      "type": "Float",
+      "label": "Restore SRGB Material Data",
+      "default": 0,
+      "category": "Input Contract",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "0=preserve sampled scalar data; 1=undo unwanted sRGB decoding of data in the KKS Linear player, independent of the bundle build color space. Covers roughness, metallic, AO, ORM, anisotropy strength/rotation and AlphaMask red. Leave off for correctly imported data maps.",
+      "scope": "all"
+    },
+    {
+      "name": "LightColorInput",
+      "type": "Float",
+      "label": "Unity Light Color Input",
+      "default": 0,
+      "category": "Input Contract",
+      "range": [
+        0,
+        1
+      ],
+      "tooltip": "0=treat Unity combined RGB/intensity as linear numeric light units, preserving intensity ratios. 1=decode the combined value as sRGB; this cannot separately recover light color and intensity in Gamma hosts.",
+      "scope": "all"
+    },
+    {
+      "name": "DebugView",
+      "type": "Float",
+      "label": "Debug View",
+      "default": 0,
+      "category": "Diagnostics",
+      "range": [
+        0,
+        14
+      ],
+      "tooltip": "0=shaded, 1=linear albedo, 2=world normal, 3=AO/effective roughness/metallic, 4=coverage, 5=main attenuation, 6=fallback lights, 7=blended SH, 8=probe radiance, 9=specular visibility, 10=AA roughness, 11=custom SH blend, 12=world anisotropy tangent, 13=alphaT/alphaB/effective anisotropy, 14=DFG A/B/missing average. Add passes output zero in debug views.",
+      "scope": "all"
+    },
+    {"name":"AnisotropyMap","type":"Texture","label":"Anisotropy Strength Map","default":"white","category":"Textures","range":null,"tooltip":"Linear red-channel data multiplies Anisotropy. White or no texture retains the slider; black is isotropic. Independent ST; shares RoughnessMap filtering/wrap sampler.","scope":"all"},
+    {"name":"AnisotropyRotationMap","type":"Texture","label":"Anisotropy Rotation Map","default":"black","category":"Textures","range":null,"tooltip":"Linear red-channel angle adds 0..360 degrees to AnisotropyRotation in the mesh UV tangent frame. Black or no texture adds zero. Independent ST; shares RoughnessMap sampler. Avoid filtered discontinuities between 0 and 1; opposite directions describe the same unoriented lobe.","scope":"all"},
+    {"name":"Anisotropy","type":"Float","label":"Anisotropy Strength","default":0,"category":"Anisotropy","range":[0,1],"tooltip":"OpenPBR-style GGX axis stretch; multiplied by AnisotropyMap red. 0 uses the original isotropic BRDF/LUT/probe path. 1 is numerically regularized per axis. Direct light uses anisotropic GGX/Smith and directional energy compensation; native Probe IBL uses an approximate bent reflection vector, not exact elliptical convolution.","scope":"all"},
+    {"name":"AnisotropyRotation","type":"Float","label":"Anisotropy Rotation (Degrees)","default":0,"category":"Anisotropy","range":[0,360],"tooltip":"Rotates the broad-slope tangent axis about the final shading normal in the UV frame; rotation-map red adds a full turn. 180 degrees is visually equivalent; 90 degrees swaps highlight axes. Mirrored UV and negative transforms preserve frame handedness.","scope":"all"},
+    {"name":"NormalMapDetail","type":"Texture","label":"Detail Normal Map","default":"bump","category":"Textures","range":null,"tooltip":"Independent detail normal, reoriented onto the base normal using RNM. Its UV scale and offset are independent of MainTex and NormalMap.","scope":"all"},
+    {"name":"DetailNormalMapScale","type":"Float","label":"Detail Normal Strength","default":0,"category":"Normal","range":[0,2],"tooltip":"0 disables detail normal sampling and preserves the base normal. Increase after assigning a detail texture and its encoding.","scope":"all"},
+    {"name":"DetailNormalEncoding","type":"Float","label":"Detail Normal Encoding","default":0,"category":"Normal","range":[0,2],"tooltip":"0=UnityPacked, 1=raw RGB, 2=raw AG. Independent from the main normal encoding; AG reconstructs positive Z.","scope":"all"},
+    {"name":"DetailNormalFlipY","type":"Float","label":"Flip Detail Normal Y","default":0,"category":"Normal","range":[0,1],"tooltip":"Flips only the detail map tangent-space Y component before RNM blending.","scope":"all"},
+    {"name":"DetailNormalDataRestore","type":"Float","label":"Restore SRGB Detail Normal Data","default":0,"category":"Normal","range":[0,1],"tooltip":"For raw RGB/AG detail data incorrectly imported as color in a Linear project. Leave off for correctly imported normal data and in Gamma hosts.","scope":"all"},
+    {"name":"ProbeBoxProjection","type":"Float","label":"Probe Box Projection","default":1,"category":"Environment","range":[0,1],"tooltip":"Enables each native probe's parallax box projection when the probe and Unity renderer provide it. Does not turn a sky cubemap into a local probe.","scope":"all"},
+    {"name":"ProbeBlending","type":"Float","label":"Blend Reflection Probes","default":1,"category":"Environment","range":[0,1],"tooltip":"Blends two native probes using Unity's receiver weights, in decoded linear radiance. Renderer must allow BlendProbes or BlendProbesAndSkybox. Off uses probe 0 only.","scope":"all"},
+    {"name":"CustomSHVolumeBlend","type":"Float","label":"Tom SH Volume Blend","default":1,"category":"Environment","range":[0,1],"tooltip":"Receives the existing Tom Lighting Probes SH volume MPB contract. Blends over native SH with per-pixel edge fading; falls back when missing, disabled or outside. Current runtime plugin targets CharaStudio.","scope":"all"},
+    {"name":"SpecularOcclusionStrength","type":"Float","label":"Specular Occlusion Strength","default":1,"category":"Environment","range":[0,1],"tooltip":"Approximate view/roughness-aware visibility from ambient occlusion, for probe specular only. 0 preserves unoccluded reflections; white AO is neutral. Not ray-traced occlusion.","scope":"all"},
+    {"name":"SpecularHorizonStrength","type":"Float","label":"Specular Horizon Strength","default":1,"category":"Environment","range":[0,1],"tooltip":"Fades probe reflections directed below the geometric surface by a perturbed normal. Does not multiply direct lights or emission; 0 disables this fade.","scope":"all"},
+    {"name":"SpecularAAStrength","type":"Float","label":"Specular AA Strength","default":1,"category":"Specular Filtering","range":[0,1],"tooltip":"Filters GGX from final-normal derivatives. Anisotropy broadens both squared slope axes and filters direction variation; direct light, DFG and IBL share the effective parameters. 0 restores unfiltered parameters. Cannot recover subpixel variance lost by compression/mips.","scope":"all"},
+    {"name":"SpecularAAVariance","type":"Float","label":"Specular AA Variance","default":0.15,"category":"Specular Filtering","range":[0,1],"tooltip":"Weight of normal and anisotropic-direction derivatives. Larger values reduce tiny sharp highlights and isotropize rapidly varying directions. Neutral for a spatially constant normal and direction frame.","scope":"all"},
+    {"name":"SpecularAAThreshold","type":"Float","label":"Specular AA Threshold","default":0.2,"category":"Specular Filtering","range":[0,1],"tooltip":"Bounds the filtering kernel in microfacet-alpha space: added alpha-squared is at most threshold-squared times AA strength. 0 disables broadening.","scope":"all"},
+    {"name":"ReflectionColorMode","type":"Float","label":"Probe Radiance Input","default":0,"category":"Input Contract","range":[0,2],"tooltip":"After KKS Linear HDR decoding: 0=linear KKS radiance, 1=explicit sRGB radiance, 2=already linear radiance. RGBM exponent decoding is independent of the Gamma authoring project. No companion plugin is required for native probes.","scope":"all"},
+    {"name":"CustomSHColorMode","type":"Float","label":"Tom SH Radiance Input","default":0,"category":"Input Contract","range":[0,2],"tooltip":"0=KKS linear SH, 1=decode evaluated SH as sRGB, 2=linear SH. Use 1 only for a known legacy Gamma capture; post-evaluation decoding is approximate, not exact linear GI. Native Unity SH remains linear and works without the companion.","scope":"all"},
+    {"name":"AlphaClip","type":"Float","label":"Enable Coverage Cutoff","default":0,"category":"Coverage","range":[0,1],"tooltip":"Optional binary cutoff before smooth premultiplied blending. Uses Cutoff consistently in color, optional depth and shadows. Off keeps the mask gradient. Zero coverage is always absent.","scope":"alpha"},
+    {"name":"AlphaDepthMode","type":"Float","label":"Alpha Depth Strategy","default":0,"category":"Coverage","range":[0,2],"tooltip":"0=Off: color never writes depth. 1=Nearest surface: depth-only prepass limits self-overlap but hides deeper transparent layers. 2=Back shell: nearest back-facing shell blocks deeper layers; useful with BackFront on closed meshes. Both use AlphaDepthCutoff, not color clipping. Not OIT; can occlude later transparent objects and does not automatically enter camera depth textures.","scope":"alpha"},
+    {"name":"AlphaDepthCutoff","type":"Float","label":"Depth Coverage Cutoff","default":0.95,"category":"Coverage","range":[0,1],"tooltip":"Minimum coverage allowed to write optional prepass depth. Does not remove lower-coverage color. Default only treats near-opaque pixels as occluders. Set below the sheet coverage only when nearest-layer/back-shell occlusion is intended.","scope":"alpha"},
+    {"name":"AlphaShadowMode","type":"Float","label":"Alpha Shadow Casting","default":2,"category":"Coverage","range":[0,2],"tooltip":"Shadow CASTING only: 0=Off. 1=Binary cutoff using AlphaShadowCutoff. 2=Fixed 4x4 ordered coverage in shadow-map raster space: approximate fractional visibility, filtered by Unity shadows. No colored transmission, refraction or temporal noise. Receiving is independent: companion 0.4.0 can reuse available native shadow maps; disabled or missing resources retain the native transparent fallback.","scope":"alpha"},
+    {"name":"AlphaShadowCutoff","type":"Float","label":"Shadow Coverage Cutoff","default":0.5,"category":"Coverage","range":[0,1],"tooltip":"Binary coverage threshold for AlphaShadowMode=1 only. Independent from depth cutoff and optional visible cutoff. Zero coverage never casts a shadow.","scope":"alpha"}
+  ]
+}

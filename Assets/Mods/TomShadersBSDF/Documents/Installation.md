@@ -1,0 +1,90 @@
+# Installation
+
+## Supported Host
+
+TomBSDF 0.2.0 RC1 targets **KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
+D3D11**. The player is Linear; the authoring template may remain Gamma.
+KKSLinear-v1 handles that boundary without a color-grading cube or the companion.
+Do not change the game's color space. KK / Unity 5.6 is not supported by this release.
+
+Keep a working BepInEx, KKS API, Sideloader, Extended Save and MaterialEditor
+installation. ME tooltip-catalog support is optional, not a rendering dependency.
+
+## Game Files
+
+Close Studio / KKS before replacing DLLs. Back up previous BSDF files outside
+the `mods` and `BepInEx/plugins` trees. Keep only one mod GUID
+`tom.Shaders.BSDF` and one copy of each runtime assembly.
+Paths below are relative to the game root, for example `D:/Program Files/KoikatuSunshine`.
+
+| File | Install location | Required for |
+| --- | --- | --- |
+| `[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod` | `mods/` | Shaders, carriers, LUTs, tooltip catalog and rectangle item lists |
+| `KKS_TomBSDF.dll` 0.6.0 | `BepInEx/plugins/TomBSDF/` | Optional scene companion |
+| Matching `TomBSDF.Runtime.dll` | `BepInEx/plugins/TomBSDF/` | Matching scene services and resource types |
+
+Install both DLLs together. A source build produces the pair in
+`Tools/TomBSDFRuntime/KKS_TomBSDF/bin/Release`. Do not copy game, UnityEngine
+or BepInEx reference DLLs. Windows FileVersion is not the feature version;
+check startup plugin version and release hashes.
+
+Do not unpack zipmods over game `abdata` or install LUT / prefab / material /
+`.meta` files separately. A repository clone is source, not an installable
+zipmod; see [Build Guide](Build-Guide.md).
+
+## Configuration
+
+The plugin creates `BepInEx/config/com.tomtom1010.tombsdf.scene.cfg`:
+
+```ini
+[Scene Lighting]
+Enabled = true
+
+[Scene Buffers]
+Enabled = true
+
+[Area Light Quality]
+Screenshot Reference = true
+
+[Alpha Shadows]
+Receive Native Shadows = true
+Copy Memory Budget MB = 128
+
+[Validation]
+File Bridge = false
+```
+
+The master switch disables rectangles, screen buffers and additional transparent
+native-shadow reuse. It leaves native lights, Probe / SH, physical shading and
+the separate tessellation bounds service available. The shadow budget is a
+per-camera limit, not reserved memory. Keep File Bridge off during normal use;
+there are no automatic startup rendering tests.
+
+The companion can load in Studio and the KKS game process. The reported RC1
+acceptance does not assert individual coverage of every Maker, gameplay or
+third-party exporter combination.
+
+## Optional Probe And Capture Tools
+
+Tom Lighting Probes **0.2.1** uses its own zipmod in `mods/` and both
+`KKS_TomProbe.dll` / `TomProbe.Runtime.dll` in `BepInEx/plugins/TomProbe/`.
+Items appear under **Tom Lighting / Probes**. It is an independent Studio-only
+tool; installing the full TomShadersX pack is unnecessary. Native environment
+lighting remains available without it. Reflection capture requires the game's
+Realtime Reflection Probes quality setting and a completed capture.
+
+Existing Screenshot Manager / Screencap integration is optional. A compatible
+lifecycle API and matching camera target allow temporary rectangle Reference
+quality. Unsupported APIs keep material-selected quality. Thin-film, POM and
+tessellation do not automatically promote. No replacement capture plugin is bundled.
+
+## First Launch
+
+1. Check `BepInEx/LogOutput.log` for Companion 0.6.0 and missing / duplicate assembly errors.
+2. Select all seven modern `tom/BSDF*` entries on independent test materials.
+3. For area lighting, add **Tom BSDF / Lighting / Tom Rectangle Area Light Prototype**. It is intentionally invisible and emits along local +Z.
+4. Complete [Manual Acceptance](KKS-ME-Acceptance.md), including scene save / reload / import.
+
+The three legacy `xukmi/TomBSDF*` entries remain for existing scenes. A modern
+shader switch is not a semantic migration: duplicate the old material first
+and explicitly initialize new coverage / optical inputs.

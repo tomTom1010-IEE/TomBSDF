@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest schema-ver="1">
+  <guid>tom.Shaders.BSDF</guid>
+  <name>Tom Shaders BSDF</name>
+  <version>0.2.0</version>
+  <author>tomTom</author>
+  <description>KKS modern Built-in Forward PBR: opaque, cutout, premultiplied Alpha, Back/Front, finite glass and Tess displacement. Anisotropy, coat, thin film, POM and Glints; optional scene companion. RC1 candidate, pending user KKS acceptance. Legacy xukmi identities retained.</description>
+  <MaterialEditor>
+    <Shader Name="tom/RectAreaLight" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_RectAreaLight">
+      <Property Name="AreaLightEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Emitter" />
+      <Property Name="AreaLightColor" Type="Color" Category="Emitter" />
+      <Property Name="AreaLightRadiance" Type="Float" Range="0, 100" DefaultValue="1" Category="Emitter" />
+      <Property Name="AreaLightWidth" Type="Float" Range="0.001, 10" DefaultValue="1" Category="Shape" />
+      <Property Name="AreaLightHeight" Type="Float" Range="0.001, 10" DefaultValue="1" Category="Shape" />
+      <Property Name="AreaLightTwoSided" Type="Float" Range="0, 1" DefaultValue="0" Category="Shape" />
+      <Property Name="AreaLightPriority" Type="Float" Range="-10, 10" DefaultValue="0" Category="Selection" />
+      <Property Name="AreaLightColorInput" Type="Float" Range="0, 1" DefaultValue="0" Category="Input Contract" />
+    </Shader>
+    <TooltipCatalog AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="tom_bsdf_tooltips" />
+    <Shader Name="xukmi/TomBSDFBase" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_TomBSDFBase">
+      <Property Name="PBRBaseColor" Type="Color" />
+      <Property Name="MainTex" Type="Texture" />
+      <Property Name="NormalMap" Type="Texture" />
+      <Property Name="NormalMapScale" Type="Float" Range="0, 2" />
+      <Property Name="PBRMetallic" Type="Float" Range="0, 1" />
+      <Property Name="PBRMetallicMap" Type="Texture" />
+      <Property Name="PBRRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRRoughnessMap" Type="Texture" />
+      <Property Name="PBRRoughnessBias" Type="Float" Range="-1, 1" />
+      <Property Name="PBROcclusion" Type="Float" Range="0, 1" />
+      <Property Name="PBROcclusionMap" Type="Texture" />
+      <Property Name="PBROcclusionStrength" Type="Float" Range="0, 1" />
+      <Property Name="PBRIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRSpecular" Type="Float" Range="0, 1" />
+      <Property Name="PBRFresnelStrength" Type="Float" Range="0, 2" />
+      <Property Name="PBRDirectIntensity" Type="Float" Range="0, 4" />
+      <Property Name="PBREnvIntensity" Type="Float" Range="0, 4" />
+      <Property Name="DisablePointLights" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatWeight" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatMask" Type="Texture" />
+      <Property Name="PBRCoatRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatRoughnessMap" Type="Texture" />
+      <Property Name="PBRCoatIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRCoatNormalMap" Type="Texture" />
+      <Property Name="PBRCoatNormalScale" Type="Float" Range="0, 2" />
+      <Property Name="EmissionMask" Type="Texture" />
+      <Property Name="EmissionColor" Type="Color" />
+      <Property Name="EmissionIntensity" Type="Float" />
+    </Shader>
+    <Shader Name="xukmi/TomBSDF" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_TomBSDF">
+      <Property Name="PBRBaseColor" Type="Color" />
+      <Property Name="MainTex" Type="Texture" />
+      <Property Name="AlphaMask" Type="Texture" />
+      <Property Name="Cutoff" Type="Float" Range="0, 1" />
+      <Property Name="AlphaOptionCutoff" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="CullOption" Type="Float" Range="0, 2" />
+      <Property Name="alpha_a" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="alpha_b" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="NormalMap" Type="Texture" />
+      <Property Name="NormalMapScale" Type="Float" Range="0, 2" />
+      <Property Name="PBRMetallic" Type="Float" Range="0, 1" />
+      <Property Name="PBRMetallicMap" Type="Texture" />
+      <Property Name="PBRRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRRoughnessMap" Type="Texture" />
+      <Property Name="PBRRoughnessBias" Type="Float" Range="-1, 1" />
+      <Property Name="PBROcclusion" Type="Float" Range="0, 1" />
+      <Property Name="PBROcclusionMap" Type="Texture" />
+      <Property Name="PBROcclusionStrength" Type="Float" Range="0, 1" />
+      <Property Name="PBRIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRSpecular" Type="Float" Range="0, 1" />
+      <Property Name="PBRFresnelStrength" Type="Float" Range="0, 2" />
+      <Property Name="PBRDirectIntensity" Type="Float" Range="0, 4" />
+      <Property Name="PBREnvIntensity" Type="Float" Range="0, 4" />
+      <Property Name="DisablePointLights" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatWeight" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatMask" Type="Texture" />
+      <Property Name="PBRCoatRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatRoughnessMap" Type="Texture" />
+      <Property Name="PBRCoatIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRCoatNormalMap" Type="Texture" />
+      <Property Name="PBRCoatNormalScale" Type="Float" Range="0, 2" />
+      <Property Name="EmissionMask" Type="Texture" />
+      <Property Name="EmissionColor" Type="Color" />
+      <Property Name="EmissionIntensity" Type="Float" />
+    </Shader>
+    <Shader Name="xukmi/TomBSDFAlpha" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_TomBSDFAlpha">
+      <Property Name="PBRBaseColor" Type="Color" />
+      <Property Name="MainTex" Type="Texture" />
+      <Property Name="AlphaMask" Type="Texture" />
+      <Property Name="Cutoff" Type="Float" Range="0, 1" />
+      <Property Name="Alpha" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="AlphaOptionCutoff" Type="Float" Range="0, 2" DefaultValue="1" />
+      <Property Name="AlphaOptionZWrite" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="CullOption" Type="Float" Range="0, 2" DefaultValue="2" />
+      <Property Name="alpha_a" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="alpha_b" Type="Float" Range="0, 1" DefaultValue="1" />
+      <Property Name="NormalMap" Type="Texture" />
+      <Property Name="NormalMapScale" Type="Float" Range="0, 2" />
+      <Property Name="PBRMetallic" Type="Float" Range="0, 1" />
+      <Property Name="PBRMetallicMap" Type="Texture" />
+      <Property Name="PBRRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRRoughnessMap" Type="Texture" />
+      <Property Name="PBRRoughnessBias" Type="Float" Range="-1, 1" />
+      <Property Name="PBROcclusion" Type="Float" Range="0, 1" />
+      <Property Name="PBROcclusionMap" Type="Texture" />
+      <Property Name="PBROcclusionStrength" Type="Float" Range="0, 1" />
+      <Property Name="PBRIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRSpecular" Type="Float" Range="0, 1" />
+      <Property Name="PBRFresnelStrength" Type="Float" Range="0, 2" />
+      <Property Name="PBRDirectIntensity" Type="Float" Range="0, 4" />
+      <Property Name="PBREnvIntensity" Type="Float" Range="0, 4" />
+      <Property Name="DisablePointLights" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatWeight" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatMask" Type="Texture" />
+      <Property Name="PBRCoatRoughness" Type="Float" Range="0, 1" />
+      <Property Name="PBRCoatRoughnessMap" Type="Texture" />
+      <Property Name="PBRCoatIOR" Type="Float" Range="1, 2.5" />
+      <Property Name="PBRCoatNormalMap" Type="Texture" />
+      <Property Name="PBRCoatNormalScale" Type="Float" Range="0, 2" />
+      <Property Name="EmissionMask" Type="Texture" />
+      <Property Name="EmissionColor" Type="Color" />
+      <Property Name="EmissionIntensity" Type="Float" />
+    </Shader>
+    <Shader Name="tom/BSDF" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDF">
+      <Property Name="GlintMask" Type="Texture" Category="Textures" />
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightMap" Type="Texture" Category="Height / POM" />
+      <Property Name="ParallaxMode" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightScale" Type="Float" Category="Height / POM" Range="0, 0.2" DefaultValue="0" />
+      <Property Name="IsHeightReverse" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxQuality" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxFadeStart" Type="Float" Category="Height / POM" Range="0, 100" DefaultValue="15" />
+      <Property Name="ParallaxFadeEnd" Type="Float" Category="Height / POM" Range="0, 100" DefaultValue="25" />
+      <Property Name="ParallaxGrazingFade" Type="Float" Category="Height / POM" Range="0.01, 0.5" DefaultValue="0.15" />
+      <Property Name="ParallaxMaxOffset" Type="Float" Category="Height / POM" Range="0.01, 2" DefaultValue="0.25" />
+      <Property Name="ParallaxSelfShadow" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxSelfShadowStrength" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="1" />
+      <Property Name="ParallaxSelfShadowBias" Type="Float" Category="Height / POM" Range="0, 4" DefaultValue="1" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="GlintWeight" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0" />
+      <Property Name="GlintDensity" Type="Float" Category="Glints" Range="0, 8" DefaultValue="6" />
+      <Property Name="GlintContrast" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="GlintSeed" Type="Float" Category="Glints" Range="0, 65535" DefaultValue="0" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFCutout" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFCutout">
+      <Property Name="GlintMask" Type="Texture" Category="Textures" />
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AlphaMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightMap" Type="Texture" Category="Height / POM" />
+      <Property Name="ParallaxMode" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightScale" Type="Float" Category="Height / POM" Range="0, 0.2" DefaultValue="0" />
+      <Property Name="IsHeightReverse" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxQuality" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxFadeStart" Type="Float" Category="Height / POM" Range="0, 100" DefaultValue="15" />
+      <Property Name="ParallaxFadeEnd" Type="Float" Category="Height / POM" Range="0, 100" DefaultValue="25" />
+      <Property Name="ParallaxGrazingFade" Type="Float" Category="Height / POM" Range="0.01, 0.5" DefaultValue="0.15" />
+      <Property Name="ParallaxMaxOffset" Type="Float" Category="Height / POM" Range="0.01, 2" DefaultValue="0.25" />
+      <Property Name="ParallaxSelfShadow" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="0" />
+      <Property Name="ParallaxSelfShadowStrength" Type="Float" Category="Height / POM" Range="0, 1" DefaultValue="1" />
+      <Property Name="ParallaxSelfShadowBias" Type="Float" Category="Height / POM" Range="0, 4" DefaultValue="1" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="GlintWeight" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0" />
+      <Property Name="GlintDensity" Type="Float" Category="Glints" Range="0, 8" DefaultValue="6" />
+      <Property Name="GlintContrast" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="GlintSeed" Type="Float" Category="Glints" Range="0, 65535" DefaultValue="0" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="Coverage" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="1" />
+      <Property Name="Cutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFAlpha" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFAlpha">
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AlphaMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="Coverage" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="1" />
+      <Property Name="Cutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="AlphaClip" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0" />
+      <Property Name="AlphaDepthMode" Type="Float" Category="Coverage" Range="0, 2" DefaultValue="0" />
+      <Property Name="AlphaDepthCutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.95" />
+      <Property Name="AlphaShadowMode" Type="Float" Category="Coverage" Range="0, 2" DefaultValue="2" />
+      <Property Name="AlphaShadowCutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFAlphaBackFront" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFAlphaBackFront">
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AlphaMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="Coverage" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="1" />
+      <Property Name="Cutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="AlphaClip" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0" />
+      <Property Name="AlphaDepthMode" Type="Float" Category="Coverage" Range="0, 2" DefaultValue="0" />
+      <Property Name="AlphaDepthCutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.95" />
+      <Property Name="AlphaShadowMode" Type="Float" Category="Coverage" Range="0, 2" DefaultValue="2" />
+      <Property Name="AlphaShadowCutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFGlass" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFGlass">
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AlphaMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="GlassThicknessMap" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="GlassThickness" Type="Float" Category="Glass" Range="0, 1" DefaultValue="0.01" />
+      <Property Name="GlassAbsorptionColor" Type="Color" Category="Glass" />
+      <Property Name="GlassAbsorptionDistance" Type="Float" Category="Glass" Range="0.0001, 10" DefaultValue="0.1" />
+      <Property Name="UseSceneRefraction" Type="Float" Category="Refraction" Range="0, 1" DefaultValue="1" />
+      <Property Name="GlassBufferResolution" Type="Float" Category="Refraction" Range="1, 2" DefaultValue="1" />
+      <Property Name="GlassDepthBias" Type="Float" Category="Refraction" Range="0, 0.1" DefaultValue="0.002" />
+      <Property Name="GlassEdgeFade" Type="Float" Category="Refraction" Range="0, 0.2" DefaultValue="0.02" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="Coverage" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="1" />
+      <Property Name="Cutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="AlphaClip" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 5" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFTess" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFTess">
+      <Property Name="GlintMask" Type="Texture" Category="Textures" />
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightMap" Type="Texture" Category="Height / Tessellation" />
+      <Property Name="HeightScale" Type="Float" Category="Height / Tessellation" Range="0, 0.2" DefaultValue="0" />
+      <Property Name="IsHeightReverse" Type="Float" Category="Height / Tessellation" Range="0, 1" DefaultValue="0" />
+      <Property Name="DisplacementMask" Type="Texture" Category="Height / Tessellation" />
+      <Property Name="TessellationMode" Type="Float" Category="Height / Tessellation" Range="0, 1" DefaultValue="1" />
+      <Property Name="TessFactor" Type="Float" Category="Height / Tessellation" Range="1, 63" DefaultValue="4" />
+      <Property Name="TessEdgeLength" Type="Float" Category="Height / Tessellation" Range="0.001, 1" DefaultValue="0.05" />
+      <Property Name="TessMaxFactor" Type="Float" Category="Height / Tessellation" Range="1, 63" DefaultValue="16" />
+      <Property Name="DisplacementMip" Type="Float" Category="Height / Tessellation" Range="0, 12" DefaultValue="0" />
+      <Property Name="DisplacementEdgeFade" Type="Float" Category="Height / Tessellation" Range="0, 0.25" DefaultValue="0" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="GlintWeight" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0" />
+      <Property Name="GlintDensity" Type="Float" Category="Glints" Range="0, 8" DefaultValue="6" />
+      <Property Name="GlintContrast" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="GlintSeed" Type="Float" Category="Glints" Range="0, 65535" DefaultValue="0" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+    <Shader Name="tom/BSDFCutoutTess" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFCutoutTess">
+      <Property Name="GlintMask" Type="Texture" Category="Textures" />
+      <Property Name="MainTex" Type="Texture" Category="Textures" />
+      <Property Name="NormalMap" Type="Texture" Category="Textures" />
+      <Property Name="MetallicMap" Type="Texture" Category="Textures" />
+      <Property Name="RoughnessMap" Type="Texture" Category="Textures" />
+      <Property Name="OcclusionMap" Type="Texture" Category="Textures" />
+      <Property Name="ORMMap" Type="Texture" Category="Textures" />
+      <Property Name="EmissionMask" Type="Texture" Category="Textures" />
+      <Property Name="AlphaMask" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyMap" Type="Texture" Category="Textures" />
+      <Property Name="AnisotropyRotationMap" Type="Texture" Category="Textures" />
+      <Property Name="NormalMapDetail" Type="Texture" Category="Textures" />
+      <Property Name="BaseColor" Type="Color" Category="Base Material" />
+      <Property Name="Metallic" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="Roughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="DiffuseRoughness" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="IOR" Type="Float" Category="Base Material" Range="1, 3" DefaultValue="1.5" />
+      <Property Name="SpecularWeight" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularColor" Type="Color" Category="Base Material" />
+      <Property Name="UseORM" Type="Float" Category="Base Material" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="1" />
+      <Property Name="NormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="NormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="NormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalMapScale" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalEncoding" Type="Float" Category="Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="DetailNormalFlipY" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="DetailNormalDataRestore" Type="Float" Category="Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="HeightMap" Type="Texture" Category="Height / Tessellation" />
+      <Property Name="HeightScale" Type="Float" Category="Height / Tessellation" Range="0, 0.2" DefaultValue="0" />
+      <Property Name="IsHeightReverse" Type="Float" Category="Height / Tessellation" Range="0, 1" DefaultValue="0" />
+      <Property Name="DisplacementMask" Type="Texture" Category="Height / Tessellation" />
+      <Property Name="TessellationMode" Type="Float" Category="Height / Tessellation" Range="0, 1" DefaultValue="1" />
+      <Property Name="TessFactor" Type="Float" Category="Height / Tessellation" Range="1, 63" DefaultValue="4" />
+      <Property Name="TessEdgeLength" Type="Float" Category="Height / Tessellation" Range="0.001, 1" DefaultValue="0.05" />
+      <Property Name="TessMaxFactor" Type="Float" Category="Height / Tessellation" Range="1, 63" DefaultValue="16" />
+      <Property Name="DisplacementMip" Type="Float" Category="Height / Tessellation" Range="0, 12" DefaultValue="0" />
+      <Property Name="DisplacementEdgeFade" Type="Float" Category="Height / Tessellation" Range="0, 0.25" DefaultValue="0" />
+      <Property Name="Anisotropy" Type="Float" Category="Anisotropy" Range="0, 1" DefaultValue="0" />
+      <Property Name="AnisotropyRotation" Type="Float" Category="Anisotropy" Range="0, 360" DefaultValue="0" />
+      <Property Name="SpecularAAStrength" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularAAVariance" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.15" />
+      <Property Name="SpecularAAThreshold" Type="Float" Category="Specular Filtering" Range="0, 1" DefaultValue="0.2" />
+      <Property Name="GlintWeight" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0" />
+      <Property Name="GlintDensity" Type="Float" Category="Glints" Range="0, 8" DefaultValue="6" />
+      <Property Name="GlintContrast" Type="Float" Category="Glints" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="GlintSeed" Type="Float" Category="Glints" Range="0, 65535" DefaultValue="0" />
+      <Property Name="CoatMask" Type="Texture" Category="Coat" />
+      <Property Name="CoatRoughnessMap" Type="Texture" Category="Coat" />
+      <Property Name="CoatWeight" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatIOR" Type="Float" Category="Coat" Range="1, 2.5" DefaultValue="1.5" />
+      <Property Name="CoatRoughness" Type="Float" Category="Coat" Range="0, 1" DefaultValue="0.1" />
+      <Property Name="CoatNormalMap" Type="Texture" Category="Coat Normal" />
+      <Property Name="CoatNormalScale" Type="Float" Category="Coat Normal" Range="0, 4" DefaultValue="1" />
+      <Property Name="CoatNormalBaseBlend" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalEncoding" Type="Float" Category="Coat Normal" Range="0, 2" DefaultValue="0" />
+      <Property Name="CoatNormalFlipY" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatNormalDataRestore" Type="Float" Category="Coat Normal" Range="0, 1" DefaultValue="0" />
+      <Property Name="CoatThicknessMap" Type="Texture" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionColor" Type="Color" Category="Coat Absorption" />
+      <Property Name="CoatAbsorptionDistance" Type="Float" Category="Coat Absorption" Range="0.001, 10" DefaultValue="1" />
+      <Property Name="CoatThickness" Type="Float" Category="Coat Absorption" Range="0, 2" DefaultValue="0.05" />
+      <Property Name="ThinFilmMask" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmThicknessMap" Type="Texture" Category="Thin Film" />
+      <Property Name="ThinFilmWeight" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmIOR" Type="Float" Category="Thin Film" Range="1, 3" DefaultValue="1.4" />
+      <Property Name="ThinFilmQuality" Type="Float" Category="Thin Film" Range="0, 1" DefaultValue="0" />
+      <Property Name="ThinFilmThickness" Type="Float" Category="Thin Film" Range="0, 2000" DefaultValue="400" />
+      <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
+      <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
+      <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
+      <Property Name="EmissionColor" Type="Color" Category="Emission" />
+      <Property Name="EmissionIntensity" Type="Float" Category="Emission" Range="0, 20" DefaultValue="1" />
+      <Property Name="Coverage" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="1" />
+      <Property Name="Cutoff" Type="Float" Category="Coverage" Range="0, 1" DefaultValue="0.5" />
+      <Property Name="CullOption" Type="Float" Category="Render Options" Range="0, 2" DefaultValue="2" />
+      <Property Name="ColorTextureMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
+    </Shader>
+  </MaterialEditor>
+  <game>Koikatsu Sunshine</game>
+</manifest>

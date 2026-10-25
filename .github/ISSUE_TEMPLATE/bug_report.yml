@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible TomBSDF rendering, integration or build problem.
+body:
+  - type: markdown
+    attributes:
+      value: Read SUPPORT.md first. Do not attach game files, credentials or private scenes.
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: KKS host, BSDF and companion versions, graphics API and relevant plugins.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Shader, parameters, texture encoding, steps and behavior after reload or scene import.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: Expected and actual behavior
+      description: Include comparison images and whether the required scene resources are available.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs and measurements
+      description: Relevant redacted log interval; for performance include resolution, lights, postprocess and measurement method.
