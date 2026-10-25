@@ -1,4 +1,5 @@
 # Source-overlay repository. Required native Unity assets and .meta ARE tracked.
+# Curated docs/ renders are intentional public documentation assets.
 [Ll]ibrary/
 [Tt]emp/
 [Ll]ogs/
@@ -8,6 +9,8 @@
 **/bin/
 **/obj/
 **/__pycache__/
+**/node_modules/
+**/.cache/
 .vs/
 .idea/
 *.user

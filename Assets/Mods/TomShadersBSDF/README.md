@@ -1,5 +1,9 @@
 # TomBSDF
 
+**[Interactive showcase](https://tomtom1010-iee.github.io/TomBSDF/)** ·
+[User manual](https://tomtom1010-iee.github.io/TomBSDF/UserManual.html) ·
+[Parameter reference](https://tomtom1010-iee.github.io/TomBSDF/Reference.html)
+
 Modern physically based materials for **Koikatsu Sunshine**, targeting the
 Unity 2019.4.9f1 runtime, Built-in Forward and D3D11.
 

@@ -1,0 +1,10 @@
+{
+  "name": "tombsdf-showcase-tools",
+  "private": true,
+  "type": "module",
+  "description": "Build the static TomBSDF GitHub Pages showcase from verified Unity captures.",
+  "devDependencies": {
+    "marked": "17.0.5",
+    "sharp": "0.35.5"
+  }
+}

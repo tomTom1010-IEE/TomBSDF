@@ -1,91 +1,80 @@
-# TomBSDF
+# Tom BSDF
 
-Physically based hard-surface shaders for **Koikatsu Sunshine**, Built-in Forward
-and D3D11, targeting the **Unity 2019.4.9f1 runtime**.
+Physically based hard-surface shaders for Koikatsu Sunshine and Unity 2019.4 Built-in Forward.
 
-**0.2.0 RC1 passed packaged Editor validation and maintainer-reported KKS / ME
-manual acceptance on 2026-10-25.** This is a source overlay for a compatible KKS
-modding template, not a complete Unity project or an installable game package.
-Cold-build/compiler-root-cause research remains open.
+**[Interactive showcase](https://tomtom1010-iee.github.io/TomBSDF/)** · [User manual](https://tomtom1010-iee.github.io/TomBSDF/UserManual.html) · [Parameter reference](https://tomtom1010-iee.github.io/TomBSDF/Reference.html) · [Source and build guide](Assets/Mods/TomShadersBSDF/Documents/Build-Guide.md)
 
-## Shader Entries
+52 actual Unity GPU renders in 13 comparisons. Every subject uses the same standard UV sphere and fixed exposure. No per-image brightening or generated illustrations. Full-size images and recorded material settings are available in the showcase.
 
-| Entry | Purpose |
-| --- | --- |
-| `tom/BSDF` | Opaque PBR, optional POM / local shadow / Glints |
-| `tom/BSDFCutout` | The same physical core with coverage clipping |
-| `tom/BSDFAlpha` | Premultiplied coverage transparency |
-| `tom/BSDFAlphaBackFront` | Ordered back / front coverage for suitable shells |
-| `tom/BSDFGlass` | Finite glass with reflection, absorption and optional screen refraction |
-| `tom/BSDFTess` | Tessellation and real inward displacement |
-| `tom/BSDFCutoutTess` | Displacement plus raw-UV coverage clipping |
+Seven modern entries cover opaque / cutout surfaces, premultiplied Alpha, Back/Front transparency, independent finite glass and two separate Tess displacement variants. Shared features include compensated GGX / Smith, EON diffuse, anisotropy, Probe / SH, AO, detail normals, specular AA, layered coat / absorption, thin film, POM local shadows and statistical Glints on supported entries.
 
-Shared features include compensated GGX / Smith, EON diffuse, anisotropy,
-Probe IBL / SH / AO, detail normals, specular AA, independent coat normals and
-absorption, Realtime / Reference thin film and native multi-light shadows.
+## Use and Scope
 
-Three active `xukmi/TomBSDF*` compatibility entries are retained.
-There is no V+ / TomShadersX dependency and **no modern KK / Unity 5.6 port**.
+- Current package: **0.2.0 RC1**. Packaged Editor auditing passed; the maintainer reported KKS / ME acceptance passed. [Release status](Assets/Mods/TomShadersBSDF/Documents/Release-Status.md).
+- This repository is a rebuildable KKS source overlay, not a complete Unity project or an installable zipmod. [Installation and DLL paths](Assets/Mods/TomShadersBSDF/Documents/Installation.md). Compiled game packages are separate artifacts, not Git source.
+- Core colors / physical shading do not need extra plugins. Rectangles, screen refraction, transparent native-map reuse and automatic displacement bounds use optional Companion **0.6.0 + matching Runtime**.
+- Coverage is not optical transmission. Glass is a finite screen / parallel-slab approximation, not full GGX BTDF, nested media or a solid lens. Rectangles are unshadowed.
+- Native Probe / SH needs scene data. The optional Studio Probe tool is independent; no V+ / TomShadersX pack is required. No modern KK / Unity 5.6 port is included.
+- Screenshot promotion affects area integration only, not film / POM / Tess. The showcase is a visual reference, not forced character presets or an in-game performance claim.
 
-## Documentation
+Coverage uses an opaque checker, glass uses the matching scene-buffer service, and shadow tests use a shadow-only blocker. The grazing-light POM group is identified explicitly. [Capture notes](https://tomtom1010-iee.github.io/TomBSDF/CaptureNotes.html) explain the common display transform and image provenance.
 
-- [Installation / DLL configuration](Assets/Mods/TomShadersBSDF/Documents/Installation.md)
-- [Material and texture guide](Assets/Mods/TomShadersBSDF/Documents/Material-Guide.md)
-- [Presets / quality / dependency / cost matrix](Assets/Mods/TomShadersBSDF/Documents/HardSurface-Release.md)
-- [KKS / ME acceptance checklist](Assets/Mods/TomShadersBSDF/Documents/KKS-ME-Acceptance.md)
-- [Troubleshooting and bug reports](Assets/Mods/TomShadersBSDF/Documents/Troubleshooting.md)
-- [Build and native-program audit](Assets/Mods/TomShadersBSDF/Documents/Build-Guide.md)
-- [RC1 release status](Assets/Mods/TomShadersBSDF/Documents/Release-Status.md)
-- [Documentation index](Assets/Mods/TomShadersBSDF/Documents/README.md)
+## Hard-Surface Materials
 
-## Source Setup
+[![Hard-Surface Materials](docs/01-material-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#01-material)
 
-```powershell
-git lfs install
-git clone https://github.com/tomTom1010-IEE/TomBSDF.git
-cd TomBSDF
-git lfs pull
-```
+## Metallic and Roughness
 
-Before local edits, verify the exported files and publication rules with
-`pwsh -File Tools/Validate-SourcePublication.ps1`.
+[![Metallic and Roughness](docs/02-roughness-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#02-roughness)
 
-Merge `Assets/Mods/TomShadersBSDF` into a compatible KKS modding template.
-Keep required **prefabs, materials, native LUTs, authoring Runtime DLL and all
-matching .meta files**. Do not replace native assets with LFS pointer text or
-regenerate their GUIDs. The host provides its game SDK, ItemComponent and packer;
-proprietary game / Unity / BepInEx reference assemblies are not redistributed.
+## Anisotropy and Tangent Direction
 
-The Gamma authoring template can stay Gamma. KKSLinear-v1 preserves linear
-BRDF math for the KKS host; no isolated Linear build or grading cube is needed.
+[![Anisotropy and Tangent Direction](docs/03-anisotropy-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#03-anisotropy)
 
-Build the optional companion with installed .NET Framework 4.6.2 targeting
-support and a working game SDK:
+## Independent Clearcoat Layer
 
-```powershell
-dotnet build Tools/TomBSDFRuntime/KKS_TomBSDF/KKS_TomBSDF.csproj -c Release -p:GameRoot="D:/Your/KKS"
-```
+[![Independent Clearcoat Layer](docs/04-coat-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#04-coat)
 
-Use `KKS_TomBSDF.dll` **0.6.0** and its matching `TomBSDF.Runtime.dll` as a pair.
-The companion is optional for core physical shading, but required for rectangle
-lights, screen-refraction buffers, transparent native-shadow reuse and automatic
-Tess bounds. Rebuilt authoring / player runtimes must match before rebuilding
-dependent native assets. See the build guide before distributing a new bundle.
+## Thin-Film Interference
 
-## Scope And Publication Rules
+[![Thin-Film Interference](docs/05-thin-film-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#05-thin-film)
 
-Coverage Alpha is not glass. Glass uses a bounded screen / parallel-slab model,
-not exact GGX BTDF, nested media, caustics or colored shadows. Rectangle lights
-are unshadowed and limited to four. Probe anisotropy is approximate. SSR,
-BSSRDF and extra shadow generation are not implemented.
+## Base, Detail and Coat Normals
 
-Required native authoring assets and metadata are tracked. Large required LUTs
-use Git LFS. Build outputs, zipmods, caches, test captures / fixtures, duplicate
-shader backups, obsolete Linear-build experiments and local Chinese planning
-notes are excluded. Active legacy compatibility code is intentionally included.
-`SOURCE-INVENTORY.json` records the verbatim Unity-exported source / asset hashes.
+[![Base, Detail and Coat Normals](docs/06-normals-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#06-normals)
 
-The existing repository root [LICENSE](LICENSE) is preserved. Inherited MIT
-notices are retained in [the module license](Assets/Mods/TomShadersBSDF/LICENSE),
-and [the LTC notice](Assets/Mods/TomShadersBSDF/ThirdParty/LTC-LICENSE.txt) remains
-with its data. This publication does not remove upstream license notices.
+## Cutout, Coverage Alpha and Back/Front
+
+[![Cutout, Coverage Alpha and Back/Front](docs/07-coverage-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#07-coverage)
+
+## Statistical Glints
+
+[![Statistical Glints](docs/08-glints-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#08-glints)
+
+## POM and Local Height Shadows
+
+[![POM and Local Height Shadows](docs/09-pom-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#09-pom)
+
+## Real Tessellation and Displacement
+
+[![Real Tessellation and Displacement](docs/10-tess-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#10-tess)
+
+## Finite Glass and Screen Refraction
+
+[![Finite Glass and Screen Refraction](docs/11-glass-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#11-glass)
+
+## Native, Environment and Area Lighting
+
+[![Native, Environment and Area Lighting](docs/12-lighting-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#12-lighting)
+
+## Native Real-Time Shadows
+
+[![Native Real-Time Shadows](docs/13-shadows-board.png)](https://tomtom1010-iee.github.io/TomBSDF/#13-shadows)
+
+## Development and License
+
+Install Git LFS before cloning and run `git lfs pull`. Required prefabs, materials, Runtime, native LUTs and matching metadata are tracked; two large LUTs use LFS. Build outputs, cache, test intermediates, duplicate shader backups and obsolete tools remain excluded. Active legacy xukmi compatibility paths are retained.
+
+Read the [build guide](Assets/Mods/TomShadersBSDF/Documents/Build-Guide.md), [documentation index](Assets/Mods/TomShadersBSDF/Documents/README.md), [contribution notes](CONTRIBUTING.md) and [support guide](SUPPORT.md). Before local edits, run `pwsh -File Tools/Validate-SourcePublication.ps1`. The old Unity compiler's cold-build issue is not declared fixed.
+
+The repository [LICENSE](LICENSE), inherited [module MIT notice](Assets/Mods/TomShadersBSDF/LICENSE) and [LTC notice](Assets/Mods/TomShadersBSDF/ThirdParty/LTC-LICENSE.txt) are preserved.

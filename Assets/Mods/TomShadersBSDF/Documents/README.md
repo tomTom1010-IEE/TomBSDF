@@ -4,6 +4,13 @@ These English documents describe **TomBSDF 0.2.0 RC1 for KKS**. The maintainer
 reported KKS / ME manual acceptance passed on 2026-10-25. See
 [Release Status](Release-Status.md) for evidence and boundaries.
 
+The [sphere showcase](https://tomtom1010-iee.github.io/TomBSDF/) follows the
+sibling TomShadersX presentation: real GPU comparisons and expandable settings.
+The [web manual](https://tomtom1010-iee.github.io/TomBSDF/UserManual.html)
+combines the user chapters, and the searchable
+[parameter reference](https://tomtom1010-iee.github.io/TomBSDF/Reference.html)
+uses all 592 current modern/control manifest and tooltip entries.
+
 ## Start Here
 
 | Document | Content |
