@@ -10,6 +10,7 @@ Seven modern entries cover opaque / cutout surfaces, premultiplied Alpha, Back/F
 
 ## Use and Scope
 
+- **[Download the complete KKS package](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)**. Includes both zipmods, matching Companion / Runtime and optional Probe tools. [Release notes and upgrade instructions](RELEASE-NOTES-0.2.0-RC1.md).
 - Current package: **0.2.0 RC1**. Packaged Editor auditing passed; the maintainer reported KKS / ME acceptance passed. [Release status](Assets/Mods/TomShadersBSDF/Documents/Release-Status.md).
 - This repository is a rebuildable KKS source overlay, not a complete Unity project or an installable zipmod. [Installation and DLL paths](Assets/Mods/TomShadersBSDF/Documents/Installation.md). Compiled game packages are separate artifacts, not Git source.
 - Core colors / physical shading do not need extra plugins. Rectangles, screen refraction, transparent native-map reuse and automatic displacement bounds use optional Companion **0.6.0 + matching Runtime**.

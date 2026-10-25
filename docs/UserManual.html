@@ -3,6 +3,11 @@
 <p>For <strong>0.2.0 RC1</strong>, KKS, Unity 2019.4.9f1 runtime, Built-in Forward / D3D11. Companion <strong>0.6.0 + matching Runtime</strong> is optional for core shading. Property names follow ME without a leading underscore.</p>
 <p>The maintainer reported KKS / ME acceptance passed on 2026-10-25. Showcase illustrations are separate Editor renders, not player frame-time measurements.</p>
 <h2 id="installation">Installation</h2>
+<p><strong><a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1">Download the complete KKS release</a></strong>.
+The Complete zip contains both zipmods and matching optional providers; copy its
+<code>mods</code> and <code>BepInEx</code> directories into the game root. The standalone zipmod is
+also available for existing matched installations. Do not use GitHub&#39;s automatic
+source-code archives as a game installer.</p>
 <h3 id="supported-host">Supported Host</h3>
 <p>TomBSDF 0.2.0 RC1 targets <strong>KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
 D3D11</strong>. The player is Linear; the authoring template may remain Gamma.
@@ -24,7 +29,7 @@ Paths below are relative to the game root, for example <code>D:/Program Files/Ko
 </tr>
 </thead>
 <tbody><tr>
-<td><code>[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod</code></td>
+<td><code>TomBSDF-KKS-0.2.0-RC1.zipmod</code></td>
 <td><code>mods/</code></td>
 <td>Shaders, carriers, LUTs, tooltip catalog and rectangle item lists</td>
 </tr>
@@ -43,6 +48,9 @@ Paths below are relative to the game root, for example <code>D:/Program Files/Ko
 <code>Tools/TomBSDFRuntime/KKS_TomBSDF/bin/Release</code>. Do not copy game, UnityEngine
 or BepInEx reference DLLs. Windows FileVersion is not the feature version;
 check startup plugin version and release hashes.</p>
+<p>The published zipmod is byte-identical to the accepted authoring output named
+<code>[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod</code>. Its filename does not change
+the internal mod GUID or version. Keep only one of these same-GUID copies.</p>
 <p>Do not unpack zipmods over game <code>abdata</code> or install LUT / prefab / material /
 <code>.meta</code> files separately. A repository clone is source, not an installable
 zipmod; see <a href="UserManual.html#rebuilding-the-source-overlay">Build Guide</a>.</p>
@@ -705,6 +713,9 @@ Chinese planning notes. Do not add blanket <code>*.dll</code>, <code>*.asset</co
 documents and root tooling are reviewed separately from the frozen render payload.
 Developer Bridge tests cited by historical summaries are intentionally not shipped.</p>
 <h2 id="tombsdf-020-rc1-status">TomBSDF 0.2.0 RC1 Status</h2>
+<p>The accepted artifact is distributed as the
+<a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1">complete KKS RC1 pre-release</a>
+on 2026-10-26. Packaging does not recompile or alter the accepted shader payload.</p>
 <p>Updated 2026-10-25. <strong>Packaged Editor acceptance passed. The maintainer reported
 KKS / ME manual acceptance passed.</strong> The game was operated by the maintainer,
 not by the publishing agent. No new player frame-time measurements or individual

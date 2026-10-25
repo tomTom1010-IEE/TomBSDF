@@ -1,5 +1,11 @@
 # Changelog
 
+## KKS Binary Distribution - 2026-10-26
+
+- Published the accepted 0.2.0 RC1 as a complete KKS pre-release, with the main
+  zipmod, matching Companion 0.6.0 / Runtime, optional shared Probe 0.2.1 and English instructions.
+- Added standalone zipmod and SHA256 downloads. No new shader build or rendering feature change.
+
 ## 0.2.0 RC1 - 2026-10-25
 
 - Seven modern KKS entries: Opaque, Cutout, premultiplied Alpha, Back/Front,

@@ -1,5 +1,11 @@
 # Installation
 
+**[Download the complete KKS release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)**.
+The Complete zip contains both zipmods and matching optional providers; copy its
+`mods` and `BepInEx` directories into the game root. The standalone zipmod is
+also available for existing matched installations. Do not use GitHub's automatic
+source-code archives as a game installer.
+
 ## Supported Host
 
 TomBSDF 0.2.0 RC1 targets **KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
@@ -19,7 +25,7 @@ Paths below are relative to the game root, for example `D:/Program Files/Koikatu
 
 | File | Install location | Required for |
 | --- | --- | --- |
-| `[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod` | `mods/` | Shaders, carriers, LUTs, tooltip catalog and rectangle item lists |
+| `TomBSDF-KKS-0.2.0-RC1.zipmod` | `mods/` | Shaders, carriers, LUTs, tooltip catalog and rectangle item lists |
 | `KKS_TomBSDF.dll` 0.6.0 | `BepInEx/plugins/TomBSDF/` | Optional scene companion |
 | Matching `TomBSDF.Runtime.dll` | `BepInEx/plugins/TomBSDF/` | Matching scene services and resource types |
 
@@ -27,6 +33,10 @@ Install both DLLs together. A source build produces the pair in
 `Tools/TomBSDFRuntime/KKS_TomBSDF/bin/Release`. Do not copy game, UnityEngine
 or BepInEx reference DLLs. Windows FileVersion is not the feature version;
 check startup plugin version and release hashes.
+
+The published zipmod is byte-identical to the accepted authoring output named
+`[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod`. Its filename does not change
+the internal mod GUID or version. Keep only one of these same-GUID copies.
 
 Do not unpack zipmods over game `abdata` or install LUT / prefab / material /
 `.meta` files separately. A repository clone is source, not an installable

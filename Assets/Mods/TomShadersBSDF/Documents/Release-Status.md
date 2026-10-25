@@ -1,5 +1,9 @@
 # TomBSDF 0.2.0 RC1 Status
 
+The accepted artifact is distributed as the
+[complete KKS RC1 pre-release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)
+on 2026-10-26. Packaging does not recompile or alter the accepted shader payload.
+
 Updated 2026-10-25. **Packaged Editor acceptance passed. The maintainer reported
 KKS / ME manual acceptance passed.** The game was operated by the maintainer,
 not by the publishing agent. No new player frame-time measurements or individual
