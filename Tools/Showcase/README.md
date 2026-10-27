@@ -6,7 +6,7 @@ match the sibling TomShadersX gallery. Hosting needs no Node / npm / Unity build
 `Export-Parameters.ps1` uses the platform XML parser to export exact manifest
 categories / ranges / defaults and per-shader tooltip text. `build.mjs` checks
 three explicitly accepted source runs, copies their 52 PNGs byte-for-byte, makes
-uniformly resized labeled comparison sheets, and generates the README, manual,
+uniformly resized labeled comparison sheets, preserves the curated README, and generates the manual,
 reference and capture notes. It does not generate or enhance shader imagery.
 
 ```powershell
@@ -14,6 +14,13 @@ pwsh -File Tools/Showcase/Export-Parameters.ps1
 npm --prefix Tools/Showcase install
 node Tools/Showcase/build.mjs . PATH_TO_FOUNDATION_REPORT PATH_TO_SURFACE_REPORT PATH_TO_SCENE_REPORT
 ```
+
+For installation/docs-only updates, do not rerender or recreate comparison PNGs.
+Update source Markdown, then run the shared
+`TomRenderInfrastructure/packaging/refresh_consumer_docs.py` with the TomX and
+BSDF checkout paths. It refreshes manual HTML and the base-first installation
+notice. Run it after a future full site export as well, so the dependency split
+remains visible without changing accepted image pixels.
 
 Source GPU reports are developer-local and deliberately excluded. Public
 `docs/showcase-data.json` retains their run IDs, image hashes, recorded settings

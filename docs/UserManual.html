@@ -1,18 +1,19 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TomBSDF User Manual</title><meta name="description" content="TomBSDF physically based materials for Koikatsu Sunshine."><meta name="color-scheme" content="dark light"><meta property="og:title" content="TomBSDF User Manual"><meta property="og:description" content="TomBSDF physically based materials for Koikatsu Sunshine."><meta property="og:image" content="https://tomtom1010-iee.github.io/TomBSDF/Overview.png"><meta property="og:type" content="website"><link rel="canonical" href="https://tomtom1010-iee.github.io/TomBSDF/UserManual.html"><link rel="stylesheet" href="style.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header><nav aria-label="Main"><a href="index.html">Sphere showcase</a><a href="UserManual.html">User manual</a><a href="Reference.html">Parameter reference</a><a href="Overview.png">Overview</a><a href="https://github.com/tomTom1010-IEE/TomBSDF">GitHub</a></nav></header><main id="content"><article><nav aria-label="Manual chapters"><ul class="toc"><li><a href="#installation">Installation</a></li><li><a href="#material-guide">Material Guide</a></li><li><a href="#release-profiles-dependencies-and-cost">Release Profiles, Dependencies And Cost</a></li><li><a href="#kks-materialeditor-acceptance">KKS / MaterialEditor Acceptance</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#rebuilding-the-source-overlay">Rebuilding The Source Overlay</a></li><li><a href="#tombsdf-020-rc1-status">TomBSDF 0.2.0 RC1 Status</a></li></ul></nav><h1 id="tombsdf-user-manual">TomBSDF User Manual</h1>
-<p>For <strong>0.2.0 RC1</strong>, KKS, Unity 2019.4.9f1 runtime, Built-in Forward / D3D11. Companion <strong>0.6.0 + matching Runtime</strong> is optional for core shading. Property names follow ME without a leading underscore.</p>
-<p>The maintainer reported KKS / ME acceptance passed on 2026-10-25. Showcase illustrations are separate Editor renders, not player frame-time measurements.</p>
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>TomBSDF User Manual</title><meta content="TomBSDF physically based materials for Koikatsu Sunshine." name="description"/><meta content="dark light" name="color-scheme"/><meta content="TomBSDF User Manual" property="og:title"/><meta content="TomBSDF physically based materials for Koikatsu Sunshine." property="og:description"/><meta content="https://tomtom1010-iee.github.io/TomBSDF/Overview.png" property="og:image"/><meta content="website" property="og:type"/><link href="https://tomtom1010-iee.github.io/TomBSDF/UserManual.html" rel="canonical"/><link href="style.css" rel="stylesheet"/></head><body><a class="skip-link" href="#content">Skip to content</a><header><nav aria-label="Main"><a href="index.html">Sphere showcase</a><a href="UserManual.html">User manual</a><a href="Reference.html">Parameter reference</a><a href="Overview.png">Overview</a><a href="https://github.com/tomTom1010-IEE/TomBSDF">GitHub</a></nav></header><main id="content"><section id="infrastructure-install" style="max-width:1200px;margin:20px auto;padding:12px 20px;border-left:3px solid #548574"><strong>Install first:</strong> <a href="https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0">TomRenderInfrastructure KKS 0.1.0</a>. Runtime DLLs and Probe/Feather resources are supplied by the shared base, not this shader archive. <a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1">Download the Infra1 shader pack</a>.</section><article><h1 id="tombsdf-user-manual">TomBSDF User Manual</h1>
+<p>For <strong>0.2.0 RC1 / Infra1</strong>, KKS / Built-in Forward / D3D11. Install <a href="https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0">TomRenderInfrastructure 0.1.0</a> first; shader releases no longer bundle helper DLLs.</p>
 <h2 id="installation">Installation</h2>
-<p><strong><a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1">Download the complete KKS release</a></strong>.
-The Complete zip contains both zipmods and matching optional providers; copy its
-<code>mods</code> and <code>BepInEx</code> directories into the game root. The standalone zipmod is
-also available for existing matched installations. Do not use GitHub&#39;s automatic
-source-code archives as a game installer.</p>
+<p><strong>Install <a href="https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0">TomRenderInfrastructure KKS 0.1.0</a>
+first</strong>, then the <a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1">TomBSDF Infra1 shader pack</a>.
+The shader release no longer embeds companion/Probe DLLs. Its <code>mods</code> folder
+contains the unchanged accepted BSDF zipmod; shared DLLs and Probe resources
+come from the base, installed once even when using both BSDF and TomX.
+GitHub's automatic source-code archives are not game installers.</p>
 <h3 id="supported-host">Supported Host</h3>
 <p>TomBSDF 0.2.0 RC1 targets <strong>KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
 D3D11</strong>. The player is Linear; the authoring template may remain Gamma.
 KKSLinear-v1 handles that boundary without a color-grading cube or the companion.
-Do not change the game&#39;s color space. KK / Unity 5.6 is not supported by this release.</p>
+Do not change the game's color space. KK / Unity 5.6 is not supported by this release.</p>
 <p>Keep a working BepInEx, KKS API, Sideloader, Extended Save and MaterialEditor
 installation. ME tooltip-catalog support is optional, not a rendering dependency.</p>
 <h3 id="game-files">Game Files</h3>
@@ -28,7 +29,8 @@ Paths below are relative to the game root, for example <code>D:/Program Files/Ko
 <th>Required for</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>TomBSDF-KKS-0.2.0-RC1.zipmod</code></td>
 <td><code>mods/</code></td>
 <td>Shaders, carriers, LUTs, tooltip catalog and rectangle item lists</td>
@@ -43,17 +45,19 @@ Paths below are relative to the game root, for example <code>D:/Program Files/Ko
 <td><code>BepInEx/plugins/TomBSDF/</code></td>
 <td>Matching scene services and resource types</td>
 </tr>
-</tbody></table>
-<p>Install both DLLs together. A source build produces the pair in
-<code>Tools/TomBSDFRuntime/KKS_TomBSDF/bin/Release</code>. Do not copy game, UnityEngine
-or BepInEx reference DLLs. Windows FileVersion is not the feature version;
-check startup plugin version and release hashes.</p>
+</tbody>
+</table>
+<p>The two DLL rows above are supplied by TomRenderInfrastructure, not this shader
+archive. Install its matching <code>TomRender.Core.dll</code> and complete DLL pairs; remove
+old standalone duplicates. Runtime source/build ownership is in that repository's
+<code>src/BSDF</code>, not the retired standalone Tools build. Do not copy SDK references.
+Windows FileVersion alone cannot distinguish cohorts; check release hashes.</p>
 <p>The published zipmod is byte-identical to the accepted authoring output named
 <code>[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod</code>. Its filename does not change
 the internal mod GUID or version. Keep only one of these same-GUID copies.</p>
 <p>Do not unpack zipmods over game <code>abdata</code> or install LUT / prefab / material /
 <code>.meta</code> files separately. A repository clone is source, not an installable
-zipmod; see <a href="UserManual.html#rebuilding-the-source-overlay">Build Guide</a>.</p>
+zipmod; see <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/Build-Guide.md">Build Guide</a>.</p>
 <h3 id="configuration">Configuration</h3>
 <p>The plugin creates <code>BepInEx/config/com.tomtom1010.tombsdf.scene.cfg</code>:</p>
 <pre><code class="language-ini">[Scene Lighting]
@@ -81,11 +85,12 @@ there are no automatic startup rendering tests.</p>
 acceptance does not assert individual coverage of every Maker, gameplay or
 third-party exporter combination.</p>
 <h3 id="optional-probe-and-capture-tools">Optional Probe And Capture Tools</h3>
-<p>Tom Lighting Probes <strong>0.2.1</strong> uses its own zipmod in <code>mods/</code> and both
+<p>Tom Lighting Probes <strong>0.2.2</strong> is supplied by the base, with its zipmod in <code>mods/</code> and both
 <code>KKS_TomProbe.dll</code> / <code>TomProbe.Runtime.dll</code> in <code>BepInEx/plugins/TomProbe/</code>.
 Items appear under <strong>Tom Lighting / Probes</strong>. It is an independent Studio-only
-tool; installing the full TomShadersX pack is unnecessary. Native environment
-lighting remains available without it. Reflection capture requires the game&#39;s
+tool; installing the full TomShadersX pack is unnecessary. Replace old 0.2.1
+resources and DLLs together; do not mix cohorts. Native environment
+lighting remains available without it. Reflection capture requires the game's
 Realtime Reflection Probes quality setting and a completed capture.</p>
 <p>Existing Screenshot Manager / Screencap integration is optional. A compatible
 lifecycle API and matching camera target allow temporary rectangle Reference
@@ -93,16 +98,16 @@ quality. Unsupported APIs keep material-selected quality. Thin-film, POM and
 tessellation do not automatically promote. No replacement capture plugin is bundled.</p>
 <h3 id="first-launch">First Launch</h3>
 <ol>
-<li>Check <code>BepInEx/LogOutput.log</code> for Companion 0.6.0 and missing / duplicate assembly errors.</li>
+<li>Install the base first and check <code>BepInEx/LogOutput.log</code> for Companion 0.6.0 and missing / duplicate assembly errors.</li>
 <li>Select all seven modern <code>tom/BSDF*</code> entries on independent test materials.</li>
 <li>For area lighting, add <strong>Tom BSDF / Lighting / Tom Rectangle Area Light Prototype</strong>. It is intentionally invisible and emits along local +Z.</li>
-<li>Complete <a href="UserManual.html#kks-materialeditor-acceptance">Manual Acceptance</a>, including scene save / reload / import.</li>
+<li>Complete <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/KKS-ME-Acceptance.md">Manual Acceptance</a>, including scene save / reload / import.</li>
 </ol>
 <p>The three legacy <code>xukmi/TomBSDF*</code> entries remain for existing scenes. A modern
 shader switch is not a semantic migration: duplicate the old material first
 and explicitly initialize new coverage / optical inputs.</p>
 <h2 id="material-guide">Material Guide</h2>
-<p>Names below are ME properties without the shader&#39;s leading <code>_</code>. Use exact
+<p>Names below are ME properties without the shader's leading <code>_</code>. Use exact
 integer enum values. Each entry exposes only its supported controls.</p>
 <table>
 <thead>
@@ -111,7 +116,8 @@ integer enum values. Each entry exposes only its supported controls.</p>
 <th>Entry</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Solid hard surface</td>
 <td><code>tom/BSDF</code></td>
 </tr>
@@ -135,7 +141,8 @@ integer enum values. Each entry exposes only its supported controls.</p>
 <td>Subdivided real inward displacement</td>
 <td><code>tom/BSDFTess</code> / <code>tom/BSDFCutoutTess</code></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>Back/Front is not OIT. Glass is not Alpha with reduced opacity. Tess is not POM.</p>
 <h3 id="textures-and-color">Textures And Color</h3>
 <table>
@@ -145,7 +152,8 @@ integer enum values. Each entry exposes only its supported controls.</p>
 <th>Meaning / neutral value</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>MainTex + BaseColor</td>
 <td>Base color; white permits color-only authoring. Texture alpha is separate coverage where supported</td>
 </tr>
@@ -181,14 +189,19 @@ integer enum values. Each entry exposes only its supported controls.</p>
 <td>HeightMap</td>
 <td>Linear R Height-v1 data, not a normal map</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>Keep Input Contract modes on Auto unless the actual encoding is known.
 DataTextureRestore and separate normal restoration switches correct a specific
 sRGB sampling mismatch; they are not general quality boosts or artistic grading.</p>
 <p>NormalEncoding / DetailNormalEncoding are <strong>0 UnityPacked, 1 RGB, 2 AG</strong>.
-Choose RGB for known ordinary blue-purple maps, AG for known A/G packed data.
-A red-looking preview alone does not establish packing. FlipY changes tangent
-convention, not light direction. Base, detail and coat have independent encoding.</p>
+Choose by the actual sampled representation after import: RGB for unchanged RGB
+vectors, AG for known A/G data, UnityPacked for Unity-packed resources. A blue
+source PNG can be converted to packed data by ME's NormalMap/NormalMapDetail
+import route, so its original color is not enough to select RGB. Independent
+coat slots can use a different import path and need separate verification.
+FlipY changes tangent convention, not light direction. Base, detail and coat
+have independent encoding. See <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/RenderDocs/MaterialContracts.md">input diagnostics</a>.</p>
 <h3 id="layers-and-units">Layers And Units</h3>
 <p>Anisotropy changes the GGX directional lobe; rotation follows the UV tangent
 frame, including mirrored handedness. Zero strength restores isotropy. It does
@@ -204,7 +217,8 @@ is the retained expensive Reference path.</p>
 <th>Unit</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>HeightScale, TessEdgeLength, GlassThickness / GlassAbsorptionDistance</td>
 <td>World meters</td>
 </tr>
@@ -224,7 +238,8 @@ is the retained expensive Reference path.</p>
 <td>GlintDensity</td>
 <td>Log10 expected microstructures per original UV area</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>White high-F0 metal can legitimately show little film color. Layer / conductor
 optics are calibrated real-time approximations, not exact spectral OpenPBR parity.</p>
 <h3 id="coverage-versus-glass">Coverage Versus Glass</h3>
@@ -267,7 +282,7 @@ a probe; AO and IndirectDiffuseIntensity do not create indirect light. Specular
 AA reduces unresolved normal-lobe aliasing without randomizing Glints per frame.</p>
 <h2 id="release-profiles-dependencies-and-cost">Release Profiles, Dependencies And Cost</h2>
 <p>Release: <strong>0.2.0 RC1</strong>, KKS / Unity 2019.4.9f1 runtime / Built-in / D3D11.
-Use <a href="UserManual.html#tombsdf-020-rc1-status">Release Status</a>, not historical reports, for release gates.</p>
+Use <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/Release-Status.md">Release Status</a>, not historical reports, for release gates.</p>
 <h3 id="starting-materials">Starting Materials</h3>
 <p><a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/Release-Presets.json">Release-Presets.json</a> is the numerical source. Twelve
 independent Unity materials in <code>Material/Presets</code> provide six families and two
@@ -283,7 +298,8 @@ use ColorValueMode=2, not ordinary sRGB color-picker numbers.</p>
 <th>Key settings</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Plastic</td>
 <td>0.04, 0.22, 0.36</td>
 <td>0 / 0.32</td>
@@ -319,7 +335,8 @@ use ColorValueMode=2, not ordinary sRGB color-picker numbers.</p>
 <td>Dielectric / 0.08</td>
 <td>IOR 1.5, thickness 0.006 m, absorption (0.35,0.8,0.6) at 0.05 m</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>POM, local self-shadow, Glints and displacement are off initially. These starting
 materials do not invent textures, scratches or independent measured flake layers.</p>
 <h3 id="explicit-quality-profiles">Explicit Quality Profiles</h3>
@@ -331,7 +348,8 @@ materials do not invent textures, scratches or independent measured flake layers
 <th>Screenshot copy / opt-in</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>AreaLightQuality</td>
 <td>0 Realtime</td>
 <td>1 Reference</td>
@@ -361,7 +379,8 @@ materials do not invent textures, scratches or independent measured flake layers
 <td>Edge 0.05 m, maximum 8</td>
 <td>Edge 0.025 m, maximum 16</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>These are manual material choices, not automatic global quality. Supported
 capture integration temporarily promotes <strong>rectangle integration only</strong>, then
 restores its owned keywords without overwriting saved ME floats. Film / POM /
@@ -377,7 +396,8 @@ means material-selected quality, not an error.</p>
 <th>Disabled / missing behavior</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Core color, GGX, anisotropy, coat, film, normals / AA</td>
 <td>Shader-owned matching LUTs</td>
 <td>No Companion / V+ / X dependency. Missing core energy data is an error</td>
@@ -394,7 +414,7 @@ means material-selected quality, not an error.</p>
 </tr>
 <tr>
 <td>Tom Probe / SH</td>
-<td>Independent 0.2.1 tool / DLL pair, Studio only</td>
+<td>Base-supplied 0.2.2 resource / DLL pair, Studio only</td>
 <td>Native environment remains usable</td>
 </tr>
 <tr>
@@ -432,7 +452,8 @@ means material-selected quality, not an error.</p>
 <td>Compatible ME catalog support</td>
 <td>Help text absent, shading unaffected</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>Scene Lighting master Off does not disable the bounds service; removing the
 service does. Precombined static batches need manual handling.</p>
 <h3 id="expensive-combinations">Expensive Combinations</h3>
@@ -444,7 +465,8 @@ service does. Precombined static batches need manual handling.</p>
 <th>Advice</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Many native lights</td>
 <td>Repeated Base / Add and caster work</td>
 <td>Do not use lights to replace missing GI</td>
@@ -489,40 +511,41 @@ service does. Precombined static batches need manual handling.</p>
 <td>Multiple camera faces and scheduling</td>
 <td>Prefer manual / static refresh</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>Historical Camera.Render-plus-readback timings are not GPU-only time or KKS FPS
 predictions. Report resolution, visible area, lights, postprocess and measurement
 method. No universal frame-rate guarantee is made.</p>
 <h2 id="kks-materialeditor-acceptance">KKS / MaterialEditor Acceptance</h2>
-<p>The maintainer reported this release&#39;s manual game acceptance passed on
+<p>The maintainer reported this release's manual game acceptance passed on
 2026-10-25. This is also the repeatable checklist for future builds, not an
 automatic test or a claim that the publishing agent operated the game.</p>
 <p>Use a separate saved scene, fixed camera / exposure / postprocess, a UV sphere,
 plane, floor, opaque checker background and blocker. Install the matching files
-from <a href="UserManual.html#installation">Installation</a>; back up previous scenes / packages first.
+from <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/Installation.md">Installation</a>; back up previous scenes / packages first.
 Record Pass / Fail / Resource unavailable / Not tested separately.</p>
 <h3 id="loading-and-materials">Loading And Materials</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Startup log shows Companion 0.6.0, without duplicate / missing assemblies.</li>
-<li><input disabled="" type="checkbox"> All seven modern entries can be selected on independent materials; no magenta / missing passes.</li>
-<li><input disabled="" type="checkbox"> Empty maps allow BaseColor / Metallic / Roughness scalar authoring; texture maps and ORM channels work.</li>
-<li><input disabled="" type="checkbox"> Known RGB / AG normals decode with the selected encoding; detail normal strength zero / nonzero behaves independently.</li>
-<li><input disabled="" type="checkbox"> Plastic, metal, brushed metal, coat paint, thin film and Glass work in <a href="UserManual.html#release-profiles-dependencies-and-cost">the profile table</a>.</li>
-<li><input disabled="" type="checkbox"> Anisotropy rotation changes lobe direction; zero restores isotropy; mirrored UVs stay finite.</li>
-<li><input disabled="" type="checkbox"> Coat normal / absorption operate independently. CoatWeight=0 ignores coat and film controls.</li>
-<li><input disabled="" type="checkbox"> Film thickness changes interference; Realtime / Reference remain plausible without requiring pixel equality.</li>
-<li><input disabled="" type="checkbox"> Specular AA reduces unresolved normal sparkle during slow motion; no frame-random pattern is introduced.</li>
+<li>[ ] Startup log shows Companion 0.6.0, without duplicate / missing assemblies.</li>
+<li>[ ] All seven modern entries can be selected on independent materials; no magenta / missing passes.</li>
+<li>[ ] Empty maps allow BaseColor / Metallic / Roughness scalar authoring; texture maps and ORM channels work.</li>
+<li>[ ] Known RGB / AG normals decode with the selected encoding; detail normal strength zero / nonzero behaves independently.</li>
+<li>[ ] Plastic, metal, brushed metal, coat paint, thin film and Glass work in <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/HardSurface-Release.md">the profile table</a>.</li>
+<li>[ ] Anisotropy rotation changes lobe direction; zero restores isotropy; mirrored UVs stay finite.</li>
+<li>[ ] Coat normal / absorption operate independently. CoatWeight=0 ignores coat and film controls.</li>
+<li>[ ] Film thickness changes interference; Realtime / Reference remain plausible without requiring pixel equality.</li>
+<li>[ ] Specular AA reduces unresolved normal sparkle during slow motion; no frame-random pattern is introduced.</li>
 </ul>
 <h3 id="native-lighting-and-coverage">Native Lighting And Coverage</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Directional, point and spot lights respond to movement, direction / range and native shadow blockers.</li>
-<li><input disabled="" type="checkbox"> Mixed native lights do not repeatedly add Probe / emission; test vertex fallback if the host exposes light importance.</li>
-<li><input disabled="" type="checkbox"> Valid Probe / SH data controls environment response. AO affects indirect response, not all direct light / emission.</li>
-<li><input disabled="" type="checkbox"> Alpha and BackFront Coverage=1 / 0.5 / 0 fade smoothly with AlphaClip=0; zero leaves no reflection film.</li>
-<li><input disabled="" type="checkbox"> Soft AlphaMask and MainTex alpha multiply coverage; BaseColor alpha is not the opacity control.</li>
-<li><input disabled="" type="checkbox"> AlphaClip / Cutoff and separate casting Off / Cutout / Dither modes work.</li>
-<li><input disabled="" type="checkbox"> Depth Off / NearestSurface / BackShell switch and save correctly; record their intentional layer-visibility tradeoffs.</li>
-<li><input disabled="" type="checkbox"> On both Alpha entries, compare transparent native shadow receiving On / Off for directional, spot and point.</li>
+<li>[ ] Directional, point and spot lights respond to movement, direction / range and native shadow blockers.</li>
+<li>[ ] Mixed native lights do not repeatedly add Probe / emission; test vertex fallback if the host exposes light importance.</li>
+<li>[ ] Valid Probe / SH data controls environment response. AO affects indirect response, not all direct light / emission.</li>
+<li>[ ] Alpha and BackFront Coverage=1 / 0.5 / 0 fade smoothly with AlphaClip=0; zero leaves no reflection film.</li>
+<li>[ ] Soft AlphaMask and MainTex alpha multiply coverage; BaseColor alpha is not the opacity control.</li>
+<li>[ ] AlphaClip / Cutoff and separate casting Off / Cutout / Dither modes work.</li>
+<li>[ ] Depth Off / NearestSurface / BackShell switch and save correctly; record their intentional layer-visibility tradeoffs.</li>
+<li>[ ] On both Alpha entries, compare transparent native shadow receiving On / Off for directional, spot and point.</li>
 </ul>
 <p>For receiving, the same light must first shadow an opaque positive control.
 Unavailable native maps are a resource limitation, not proof of a passed shadow
@@ -530,36 +553,36 @@ feature. No queue spoofing, forced ZWrite or extra shadow generation is expected
 Coverage, emission, Probe and SH must not be multiplied by the direct-light shadow.</p>
 <h3 id="height-and-glints">Height And Glints</h3>
 <ul>
-<li><input disabled="" type="checkbox"> POM: supported BSDF / Cutout, ParallaxMode=1, HeightScale=0.01; grazing view shows relief without real silhouette movement.</li>
-<li><input disabled="" type="checkbox"> POM Off / HeightScale=0 restores neutral shading. Cutout keeps original-UV holes and casting.</li>
-<li><input disabled="" type="checkbox"> POM local self-shadow follows each native light; coat / film direct terms participate without darkening emission / Probe / SH.</li>
-<li><input disabled="" type="checkbox"> Glints: Weight=1, Density=5.5, Contrast=0.6, Seed=17 under direct light; static view does not animate randomly.</li>
-<li><input disabled="" type="checkbox"> Glint Weight=0 / black mask restores smooth reflection; denser / smaller-footprint behavior is plausible. Probe / area remain smooth.</li>
-<li><input disabled="" type="checkbox"> Tess: HeightScale=0.01, Fixed factor8, then WorldEdge 0.05 m / maximum8; silhouette / caster follow inward displacement.</li>
-<li><input disabled="" type="checkbox"> White envelope / inward black / height reverse / displacement mask work. Zero height restores original geometry and factor1.</li>
-<li><input disabled="" type="checkbox"> Check movement, negative scale, skinned motion, seams and view-edge culling. POM is not present on the same Tess height layer.</li>
+<li>[ ] POM: supported BSDF / Cutout, ParallaxMode=1, HeightScale=0.01; grazing view shows relief without real silhouette movement.</li>
+<li>[ ] POM Off / HeightScale=0 restores neutral shading. Cutout keeps original-UV holes and casting.</li>
+<li>[ ] POM local self-shadow follows each native light; coat / film direct terms participate without darkening emission / Probe / SH.</li>
+<li>[ ] Glints: Weight=1, Density=5.5, Contrast=0.6, Seed=17 under direct light; static view does not animate randomly.</li>
+<li>[ ] Glint Weight=0 / black mask restores smooth reflection; denser / smaller-footprint behavior is plausible. Probe / area remain smooth.</li>
+<li>[ ] Tess: HeightScale=0.01, Fixed factor8, then WorldEdge 0.05 m / maximum8; silhouette / caster follow inward displacement.</li>
+<li>[ ] White envelope / inward black / height reverse / displacement mask work. Zero height restores original geometry and factor1.</li>
+<li>[ ] Check movement, negative scale, skinned motion, seams and view-edge culling. POM is not present on the same Tess height layer.</li>
 </ul>
 <h3 id="companion-and-capture">Companion And Capture</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Rectangle control under Tom BSDF / Lighting emits along local +Z, responds to transform / ME and disappears when hidden / disabled.</li>
-<li><input disabled="" type="checkbox"> Realtime / Reference area quality works; at most four emitters are selected. No rectangle shadow is expected.</li>
-<li><input disabled="" type="checkbox"> Glass Coverage=1, IOR=1.5, thickness0.006 m retains reflection and optical transmission; absorption follows thickness.</li>
-<li><input disabled="" type="checkbox"> Refraction On / Off differs with an angled surface / opaque checker background; roughness gives bounded blur.</li>
-<li><input disabled="" type="checkbox"> Screen edges, foreground occlusion and camera switches do not smear / leak old camera content.</li>
-<li><input disabled="" type="checkbox"> Scene Buffers Off / missing companion retains unshifted RGB transmission and reflection, not magenta or disappearance.</li>
-<li><input disabled="" type="checkbox"> Half / Full buffers work; repeated scene / camera / visibility changes do not cause ongoing memory growth.</li>
-<li><input disabled="" type="checkbox"> Supported Screenshot Manager promotes area integration only and restores live state after normal / repeated / cancelled captures.</li>
-<li><input disabled="" type="checkbox"> Saved ME area quality stays unchanged; film / POM / Tess do not auto-promote. API absence retains ordinary selected quality.</li>
-<li><input disabled="" type="checkbox"> Optional Tom Probe / SH 0.2.1 refresh, bounds and native fallback work if installed; otherwise record not tested.</li>
+<li>[ ] Rectangle control under Tom BSDF / Lighting emits along local +Z, responds to transform / ME and disappears when hidden / disabled.</li>
+<li>[ ] Realtime / Reference area quality works; at most four emitters are selected. No rectangle shadow is expected.</li>
+<li>[ ] Glass Coverage=1, IOR=1.5, thickness0.006 m retains reflection and optical transmission; absorption follows thickness.</li>
+<li>[ ] Refraction On / Off differs with an angled surface / opaque checker background; roughness gives bounded blur.</li>
+<li>[ ] Screen edges, foreground occlusion and camera switches do not smear / leak old camera content.</li>
+<li>[ ] Scene Buffers Off / missing companion retains unshifted RGB transmission and reflection, not magenta or disappearance.</li>
+<li>[ ] Half / Full buffers work; repeated scene / camera / visibility changes do not cause ongoing memory growth.</li>
+<li>[ ] Supported Screenshot Manager promotes area integration only and restores live state after normal / repeated / cancelled captures.</li>
+<li>[ ] Saved ME area quality stays unchanged; film / POM / Tess do not auto-promote. API absence retains ordinary selected quality.</li>
+<li>[ ] Base-supplied Tom Probe / SH 0.2.2 refresh, bounds and native fallback work if installed; otherwise record not tested.</li>
 </ul>
 <h3 id="persistence-fallback-and-performance">Persistence, Fallback And Performance</h3>
 <ul>
-<li><input disabled="" type="checkbox"> On all seven entries, edit float / color / texture / tiling / offset, duplicate material and switch shaders on copies.</li>
-<li><input disabled="" type="checkbox"> Save scene, exit, restart, reload and import into another scene; shader, maps, enum / seed / geometry settings and appearance persist.</li>
-<li><input disabled="" type="checkbox"> Legacy xukmi identities still load existing materials and are not automatically migrated.</li>
-<li><input disabled="" type="checkbox"> Master Scene Lighting Off preserves core / native / environment shading; scene extensions fall back. Bounds service remains independent.</li>
-<li><input disabled="" type="checkbox"> After closing the game, temporarily move both companion DLLs outside plugins; core works with documented fallbacks. Restore the pair and restart.</li>
-<li><input disabled="" type="checkbox"> Measure fixed-view warmed frame times for isolated costly features; record resolution / lights / postprocess, not just FPS.</li>
+<li>[ ] On all seven entries, edit float / color / texture / tiling / offset, duplicate material and switch shaders on copies.</li>
+<li>[ ] Save scene, exit, restart, reload and import into another scene; shader, maps, enum / seed / geometry settings and appearance persist.</li>
+<li>[ ] Legacy xukmi identities still load existing materials and are not automatically migrated.</li>
+<li>[ ] Master Scene Lighting Off preserves core / native / environment shading; scene extensions fall back. Bounds service remains independent.</li>
+<li>[ ] After closing the game, temporarily move both companion DLLs outside plugins; core works with documented fallbacks. Restore the pair and restart.</li>
+<li>[ ] Measure fixed-view warmed frame times for isolated costly features; record resolution / lights / postprocess, not just FPS.</li>
 </ul>
 <p>Primary scope is Studio. Maker / gameplay and third-party export combinations
 need their own host checks if advertised. Optional Tom Probe is Studio-only.</p>
@@ -641,13 +664,13 @@ measurement method. Attach the relevant log interval, not the entire game or
 Library. Remove tokens, personal paths and private user content before sharing.</p>
 <h2 id="rebuilding-the-source-overlay">Rebuilding The Source Overlay</h2>
 <p>This repository overlays a compatible <strong>KKS Unity 2019.4 modding template</strong>.
-It does not redistribute the game, Unity Editor, BepInEx SDK or the template&#39;s
+It does not redistribute the game, Unity Editor, BepInEx SDK or the template's
 ItemComponent. RC1 targets the original 2019.4.9f1 runtime / Built-in / D3D11.</p>
 <h3 id="checkout-and-import">Checkout And Import</h3>
 <ol>
 <li>Install Git LFS, clone the repository and run <code>git lfs pull</code>.</li>
 <li>Confirm the two large ResourcesData LUTs are full native assets, not small files beginning with <code>version https://git-lfs.github.com/spec/v1</code>.</li>
-<li>Import <code>Assets/Mods/TomShadersBSDF</code> into the host template with its <code>.meta</code> files, native resources, materials, prefabs and Runtime DLL intact.</li>
+<li>Import <code>Assets/Mods/TomShadersBSDF</code> and <code>Assets/TomRenderInfrastructure</code> into the host template with their <code>.meta</code> files, native resources, materials, prefabs and matching authoring Runtime/Core DLLs intact.</li>
 <li>Preserve Gamma authoring settings. KKSLinear-v1 adapts input / output for the Linear KKS host; do not switch to an obsolete separate Linear build.</li>
 <li>In Unity run <strong>Tools / TomBSDF / Validate Source Overlay</strong>. Resolve missing scripts / shader-owned LUTs before building. This command does not render or build automatically.</li>
 </ol>
@@ -655,11 +678,15 @@ ItemComponent. RC1 targets the original 2019.4.9f1 runtime / Built-in / D3D11.</
 serialized assets are not templates to rewrite using string substitution.
 Preserve GUIDs and non-modifiable shader texture bindings, not only filenames.</p>
 <h3 id="companion">Companion</h3>
-<p>Build with a .NET SDK, .NET Framework 4.6.2 targeting support and the game SDK:</p>
-<pre><code class="language-powershell">dotnet build Tools/TomBSDFRuntime/KKS_TomBSDF/KKS_TomBSDF.csproj -c Release -p:GameRoot=&quot;D:/Your/KKS&quot;
+<p>Build runtime helpers only in the separate
+<a href="https://github.com/tomTom1010-IEE/TomRenderInfrastructure">TomRenderInfrastructure</a>
+repository with its .NET Framework 4.6.2 / local KKS SDK workflow:</p>
+<pre><code class="language-powershell">pwsh -File build/Build.ps1 -GameRoot "D:/Your/KKS"
 </code></pre>
-<p>The project resolves BepInEx and Unity assemblies from GameRoot. Its output
-contains the plugin and matching runtime. Do not redistribute SDK reference DLLs.
+<p>Run that command from the infrastructure repository, not this overlay. The
+shader repository no longer maintains a second copy of helper runtime sources.
+Its source overlay still includes the required Unity authoring Runtime/Core and
+metadata; these are not game-release DLL bundles. Do not redistribute SDK references.
 The authoring copy at <code>Assets/Mods/TomShadersBSDF/Runtime/TomBSDF.Runtime.dll</code>
 must match the player copy. If rebuilt runtime bytes change, update the authoring
 DLL through Unity, validate serialized resources and rebuild dependent bundles.</p>
@@ -678,20 +705,20 @@ python Tools/BSDFBuildAudit/audit.py Build/abdata/chara/tom/shaders/tombsdf.unit
 </code></pre>
 <p>Require valid actual DXBC and matching stage / tier / keyword identities, not
 just a written bundle or a familiar count. Tess includes VS / HS / DS / PS.
-RC1 has 1642 modern and 1790 total programs; these are <strong>this candidate&#39;s
+RC1 has 1642 modern and 1790 total programs; these are <strong>this candidate's
 baseline</strong>, not fixed future limits. Unity-owned Standard programs are separately
 accounted for, not falsely called BSDF-owned submission matches.</p>
-<p>Use the host&#39;s KKS postprocess / normal zipmod packer, retaining mod metadata,
+<p>Use the host's KKS postprocess / normal zipmod packer, retaining mod metadata,
 ME entries, tooltip catalog, Bundle and Studio item lists. Do not ship a newer
 manifest with an older cached bundle. Audit the final archive:</p>
-<pre><code class="language-powershell">python Tools/BSDFBuildAudit/audit.py Build/abdata/chara/tom/shaders/tombsdf.unity3d --submitted Build/TomBSDF-native-variants.jsonl --output Build/TomBSDF-zip-audit.json --zipmod &quot;Build/abdata/[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod&quot; --manifest Assets/Mods/TomShadersBSDF/manifest.xml
+<pre><code class="language-powershell">python Tools/BSDFBuildAudit/audit.py Build/abdata/chara/tom/shaders/tombsdf.unity3d --submitted Build/TomBSDF-native-variants.jsonl --output Build/TomBSDF-zip-audit.json --zipmod "Build/abdata/[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod" --manifest Assets/Mods/TomShadersBSDF/manifest.xml
 </code></pre>
 <p>Then load and render the <strong>packaged</strong> materials in the Editor, verify shader-owned
 LUT payloads / bindings, and perform the manual KKS / ME save / import checks.
 An Editor source material rendering correctly is not packaged-runtime acceptance.</p>
 <h3 id="incremental-compilation-policy">Incremental Compilation Policy</h3>
 <p>Freeze source, native dependencies, toolchain, settings and submissions before
-the first build. Preserve the same project&#39;s successful cache. After an initial
+the first build. Preserve the same project's successful cache. After an initial
 failure allow at most three explicit repair attempts, with strict progress and
 bytecode-preservation checks. Stop on no progress or changed provenance.
 One clean complete confirmation may reuse cache. Never splice binaries, reduce
@@ -713,6 +740,14 @@ Chinese planning notes. Do not add blanket <code>*.dll</code>, <code>*.asset</co
 documents and root tooling are reviewed separately from the frozen render payload.
 Developer Bridge tests cited by historical summaries are intentionally not shipped.</p>
 <h2 id="tombsdf-020-rc1-status">TomBSDF 0.2.0 RC1 Status</h2>
+<h3 id="infra1-distribution---2026-10-28">Infra1 Distribution - 2026-10-28</h3>
+<p>Current split release: <a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1">v0.2.0-rc1-infra.1</a>.
+Install TomRenderInfrastructure KKS 0.1.0 first. Shader archives no longer embed
+runtime DLLs or Probe resources. The existing RC1 Bundle and all shader/native
+program hashes are preserved; this is not a shader-feature update or a non-RC
+promotion. The base's controlled KKS regression adds native Studio DOF/glass,
+Probe/SH, synthetic Feather and saved-scene checks, not GPU timing certification.</p>
+<h3 id="original-rc1-distribution">Original RC1 Distribution</h3>
 <p>The accepted artifact is distributed as the
 <a href="https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1">complete KKS RC1 pre-release</a>
 on 2026-10-26. Packaging does not recompile or alter the accepted shader payload.</p>
@@ -728,7 +763,8 @@ per-case game captures were supplied with that confirmation.</p>
 <th>Result</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Modern entries</td>
 <td>Seven, including BSDFTess and BSDFCutoutTess</td>
 </tr>
@@ -768,7 +804,8 @@ per-case game captures were supplied with that confirmation.</p>
 <td>Active companion / ME game acceptance</td>
 <td>Maintainer-reported checklist passed after Editor acceptance</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>Editor renders used native lighting / Probe with extensions disabled. They did
 not by themselves prove active game refraction / rectangle / shadow services.
 The later manual game acceptance is separate evidence; do not relabel Editor
@@ -811,5 +848,5 @@ No compiler replacement, sample reduction, effective-variant removal or bytecode
 splicing is a release solution. Counts describe RC1, not a fixed future target.</p>
 <p>No KK port, exact OpenPBR / spectral transport, full GGX BTDF, SSR, BSSRDF, caustics,
 nested media, colored shadows, automatic missing shadow maps or OIT is claimed.
-Read <a href="UserManual.html#release-profiles-dependencies-and-cost">profiles and costs</a> before enabling costly combinations.</p>
+Read <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/HardSurface-Release.md">profiles and costs</a> before enabling costly combinations.</p>
 </article></main><footer><p>TomBSDF 0.2.0 RC1 · Unity 2019.4.9f1 · Built-in Forward · D3D11</p><p>Actual packaged-shader Editor renders; fixed display transform. Not an in-game GPU benchmark. <a href="https://github.com/tomTom1010-IEE/TomBSDF">Source</a> · <a href="CaptureNotes.html">Capture notes</a> · <a href="https://github.com/tomTom1010-IEE/TomBSDF/blob/main/LICENSE">License</a></p></footer></body></html>

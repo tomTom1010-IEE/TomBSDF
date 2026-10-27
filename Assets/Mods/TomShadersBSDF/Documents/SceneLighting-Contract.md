@@ -115,7 +115,8 @@ do not claim actual KKS/ME player or interactive save/import acceptance.
 
 ## Runtime and validation
 
-Source is in `Tools/TomBSDFRuntime`, matching the existing probe runtime layout.
+Maintained source is in `TomRenderInfrastructure/src/BSDF`; shared Probe/Core
+helpers and game DLL distribution are owned by that separate base repository.
 The same runtime DLL is imported for authoring and deployed beside
 `KKS_TomBSDF.dll`. The plugin has no hard dependency on TomShadersX or TomProbe.
 Native reflection probes and Tom SH remain compatible, with no texture/property

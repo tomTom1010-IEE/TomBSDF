@@ -49,7 +49,7 @@ Use Companion **0.6.0 + matching Runtime** for the complete extension set.
 | Core color, GGX, anisotropy, coat, film, normals / AA | Shader-owned matching LUTs | No Companion / V+ / X dependency. Missing core energy data is an error |
 | Native lights / opaque shadows | Unity lights, maps, quality | No generated map means no corresponding shadow |
 | Probe / SH / AO | Actual Unity environment | No data means no corresponding indirect light; AO cannot create it |
-| Tom Probe / SH | Independent 0.2.1 tool / DLL pair, Studio only | Native environment remains usable |
+| Tom Probe / SH | Base-supplied 0.2.2 resource / DLL pair, Studio only | Native environment remains usable |
 | Rectangles | Companion, protocol resources, LTC and control items | Zero rectangle contribution; maximum four, unshadowed |
 | Capture Reference | Supported lifecycle API and camera target | Keep material quality; no film / POM / Tess changes |
 | Transparent native shadows | Companion, maps / matrices / cascades, budget | Previous transparent path; no extra map generation or coverage changes |

@@ -1,5 +1,13 @@
 # TomBSDF 0.2.0 RC1 - KKS Complete Package
 
+> Historical 2026-10-26 Complete-package notes. Current **Infra1** installation
+> requires [TomRenderInfrastructure 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0)
+> first; new shader packs do not embed DLLs or Probe resources. See the current
+> [installation guide](Assets/Mods/TomShadersBSDF/Documents/Installation.md) and
+> [Infra1 release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+> The older archive and instructions below remain preserved for historical use,
+> not as a recommendation to mix pre-Core providers into the new cohort.
+
 Binary release: **2026-10-26**. KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
 D3D11. This is the accepted **RC1 pre-release**, not a KK / Unity 5.6 package.
 No new shader compilation or material-feature change was made for distribution.

@@ -33,9 +33,13 @@ DataTextureRestore and separate normal restoration switches correct a specific
 sRGB sampling mismatch; they are not general quality boosts or artistic grading.
 
 NormalEncoding / DetailNormalEncoding are **0 UnityPacked, 1 RGB, 2 AG**.
-Choose RGB for known ordinary blue-purple maps, AG for known A/G packed data.
-A red-looking preview alone does not establish packing. FlipY changes tangent
-convention, not light direction. Base, detail and coat have independent encoding.
+Choose by the actual sampled representation after import: RGB for unchanged RGB
+vectors, AG for known A/G data, UnityPacked for Unity-packed resources. A blue
+source PNG can be converted to packed data by ME's NormalMap/NormalMapDetail
+import route, so its original color is not enough to select RGB. Independent
+coat slots can use a different import path and need separate verification.
+FlipY changes tangent convention, not light direction. Base, detail and coat
+have independent encoding. See [input diagnostics](RenderDocs/MaterialContracts.md).
 
 ## Layers And Units
 

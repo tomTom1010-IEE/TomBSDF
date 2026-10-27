@@ -12,7 +12,7 @@ The actively referenced legacy entries keep their separate local compatibility c
 | `Shaders/Platform/Unity2019` | KKS color, Unity lights / Probe, native-map reuse, scene buffers and tessellation |
 | `Shaders/Passes` | Base / Add / caster, Alpha policies, Glass composition and Tess wrappers |
 | `Runtime` / `ResourcesData` | Matching native resources, authoring DLL and shader-owned LUTs |
-| `Tools/TomBSDFRuntime` | Optional discovery, camera scopes, captures, buffer / shadow copies and bounds |
+| External `TomRenderInfrastructure/src/BSDF` | Maintained companion, shared camera scopes, captures, buffer / shadow copies and bounds; distributed by the base, not shader packs |
 | `manifest.xml` / `Tooltips` | ME controls and descriptions |
 | `Material` / `Prefab` | Required native authoring assets with original GUIDs |
 

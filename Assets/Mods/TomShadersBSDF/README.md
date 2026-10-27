@@ -7,6 +7,11 @@
 Modern physically based materials for **Koikatsu Sunshine**, targeting the
 Unity 2019.4.9f1 runtime, Built-in Forward and D3D11.
 
+**Installation change (Infra1, 28 October 2026):** install
+[TomRenderInfrastructure KKS 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0)
+first. The BSDF shader release no longer embeds helper DLLs or Probe resources;
+they are supplied once by the shared base. Shader/Bundle bytes remain unchanged.
+
 **0.2.0 RC1:** the packaged Editor regression and native-program audit passed;
 the maintainer reported KKS / MaterialEditor manual acceptance passed on
 2026-10-25. This does not claim Unity's historical FXC failure is fixed or
@@ -29,6 +34,8 @@ remain for existing scenes. They are active compatibility paths, not dead code.
 
 ## Documentation
 
+- [Context-free rendering reference for users and agents](Documents/RenderDocs/README.md)
+
 - [Installation and companion configuration](Documents/Installation.md)
 - [Material / texture guide](Documents/Material-Guide.md)
 - [Presets, quality, dependencies and cost](Documents/HardSurface-Release.md)
@@ -46,7 +53,7 @@ packages are distributed separately; a source clone is not a game installation.
 Companion **0.6.0 + matching TomBSDF.Runtime.dll** enables rectangles, scene
 buffers, transparent native-shadow reuse, capture quality and automatic
 displacement bounds. Base colors / physical shading do not depend on it.
-Tom Lighting Probes 0.2.1 is optional; neither V+ nor TomShadersX is required.
+The base supplies optional Tom Lighting Probes 0.2.2; neither V+ nor TomShadersX is required.
 
 Coverage Alpha is not optical glass. Glass is a finite parallel-slab / screen
 approximation, not complete GGX BTDF, nested media or a lens solver. Anisotropic

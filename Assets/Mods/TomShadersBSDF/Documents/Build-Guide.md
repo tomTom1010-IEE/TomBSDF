@@ -8,7 +8,7 @@ ItemComponent. RC1 targets the original 2019.4.9f1 runtime / Built-in / D3D11.
 
 1. Install Git LFS, clone the repository and run `git lfs pull`.
 2. Confirm the two large ResourcesData LUTs are full native assets, not small files beginning with `version https://git-lfs.github.com/spec/v1`.
-3. Import `Assets/Mods/TomShadersBSDF` into the host template with its `.meta` files, native resources, materials, prefabs and Runtime DLL intact.
+3. Import `Assets/Mods/TomShadersBSDF` and `Assets/TomRenderInfrastructure` into the host template with their `.meta` files, native resources, materials, prefabs and matching authoring Runtime/Core DLLs intact.
 4. Preserve Gamma authoring settings. KKSLinear-v1 adapts input / output for the Linear KKS host; do not switch to an obsolete separate Linear build.
 5. In Unity run **Tools / TomBSDF / Validate Source Overlay**. Resolve missing scripts / shader-owned LUTs before building. This command does not render or build automatically.
 
@@ -18,14 +18,18 @@ Preserve GUIDs and non-modifiable shader texture bindings, not only filenames.
 
 ## Companion
 
-Build with a .NET SDK, .NET Framework 4.6.2 targeting support and the game SDK:
+Build runtime helpers only in the separate
+[TomRenderInfrastructure](https://github.com/tomTom1010-IEE/TomRenderInfrastructure)
+repository with its .NET Framework 4.6.2 / local KKS SDK workflow:
 
 ```powershell
-dotnet build Tools/TomBSDFRuntime/KKS_TomBSDF/KKS_TomBSDF.csproj -c Release -p:GameRoot="D:/Your/KKS"
+pwsh -File build/Build.ps1 -GameRoot "D:/Your/KKS"
 ```
 
-The project resolves BepInEx and Unity assemblies from GameRoot. Its output
-contains the plugin and matching runtime. Do not redistribute SDK reference DLLs.
+Run that command from the infrastructure repository, not this overlay. The
+shader repository no longer maintains a second copy of helper runtime sources.
+Its source overlay still includes the required Unity authoring Runtime/Core and
+metadata; these are not game-release DLL bundles. Do not redistribute SDK references.
 The authoring copy at `Assets/Mods/TomShadersBSDF/Runtime/TomBSDF.Runtime.dll`
 must match the player copy. If rebuilt runtime bytes change, update the authoring
 DLL through Unity, validate serialized resources and rebuild dependent bundles.

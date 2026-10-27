@@ -13,6 +13,10 @@ uses all 592 current modern/control manifest and tooltip entries.
 
 ## Start Here
 
+For an agent without prior project context, start with the portable
+[Rendering documentation](RenderDocs/README.md). It has its own shared reference, pipeline,
+material contracts and a static source/manifest/carrier inventory; local evidence is not required.
+
 | Document | Content |
 | --- | --- |
 | [Installation](Installation.md) | zipmod / DLL paths, dependencies and companion configuration |
@@ -40,3 +44,9 @@ current release status. Developer Bridge fixtures, image directories and raw
 reports cited there are not shipped in the source overlay. Older pending-work
 statements apply to their own dates and do not override Release Status. No
 private scene, screenshot collection, crash dump or test cache is needed to rebuild.
+
+## Agent Maintenance Reference
+
+Use the public [RenderDocs](RenderDocs/README.md) for reusable KKS/ME import,
+pipeline and material contracts. Machine-local authoring notes, scene-specific
+settings and raw evidence are not source-publication inputs or rebuild dependencies.

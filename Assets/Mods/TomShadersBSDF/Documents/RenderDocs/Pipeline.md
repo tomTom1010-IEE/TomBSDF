@@ -6,8 +6,10 @@ See [Architecture](../Architecture.md) and [Release Status](../Release-Status.md
 
 ## Source Ownership
 
-Paths are relative to the shader package; optional companion source lives at the repository's
-`Tools/TomBSDFRuntime` in the full source-overlay layout.
+Paths are relative to the shader package. Companion source/build ownership is
+`src/BSDF` in [TomRenderInfrastructure](https://github.com/tomTom1010-IEE/TomRenderInfrastructure).
+Install its KKS base before the Infra1 shader pack; helper DLLs are not embedded
+in shader releases. The overlay retains only required authoring DLLs/metadata.
 
 | Module | Owns |
 | --- | --- |

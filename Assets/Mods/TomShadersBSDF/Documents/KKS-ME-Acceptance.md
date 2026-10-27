@@ -59,7 +59,7 @@ Coverage, emission, Probe and SH must not be multiplied by the direct-light shad
 - [ ] Half / Full buffers work; repeated scene / camera / visibility changes do not cause ongoing memory growth.
 - [ ] Supported Screenshot Manager promotes area integration only and restores live state after normal / repeated / cancelled captures.
 - [ ] Saved ME area quality stays unchanged; film / POM / Tess do not auto-promote. API absence retains ordinary selected quality.
-- [ ] Optional Tom Probe / SH 0.2.1 refresh, bounds and native fallback work if installed; otherwise record not tested.
+- [ ] Base-supplied Tom Probe / SH 0.2.2 refresh, bounds and native fallback work if installed; otherwise record not tested.
 
 ## Persistence, Fallback And Performance
 

@@ -1,16 +1,15 @@
 # TomBSDF User Manual
 
-For **0.2.0 RC1**, KKS, Unity 2019.4.9f1 runtime, Built-in Forward / D3D11. Companion **0.6.0 + matching Runtime** is optional for core shading. Property names follow ME without a leading underscore.
-
-The maintainer reported KKS / ME acceptance passed on 2026-10-25. Showcase illustrations are separate Editor renders, not player frame-time measurements.
+For **0.2.0 RC1 / Infra1**, KKS / Built-in Forward / D3D11. Install [TomRenderInfrastructure 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0) first; shader releases no longer bundle helper DLLs.
 
 ## Installation
 
-**[Download the complete KKS release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)**.
-The Complete zip contains both zipmods and matching optional providers; copy its
-`mods` and `BepInEx` directories into the game root. The standalone zipmod is
-also available for existing matched installations. Do not use GitHub's automatic
-source-code archives as a game installer.
+**Install [TomRenderInfrastructure KKS 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0)
+first**, then the [TomBSDF Infra1 shader pack](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+The shader release no longer embeds companion/Probe DLLs. Its `mods` folder
+contains the unchanged accepted BSDF zipmod; shared DLLs and Probe resources
+come from the base, installed once even when using both BSDF and TomX.
+GitHub's automatic source-code archives are not game installers.
 
 ### Supported Host
 
@@ -35,10 +34,11 @@ Paths below are relative to the game root, for example `D:/Program Files/Koikatu
 | `KKS_TomBSDF.dll` 0.6.0 | `BepInEx/plugins/TomBSDF/` | Optional scene companion |
 | Matching `TomBSDF.Runtime.dll` | `BepInEx/plugins/TomBSDF/` | Matching scene services and resource types |
 
-Install both DLLs together. A source build produces the pair in
-`Tools/TomBSDFRuntime/KKS_TomBSDF/bin/Release`. Do not copy game, UnityEngine
-or BepInEx reference DLLs. Windows FileVersion is not the feature version;
-check startup plugin version and release hashes.
+The two DLL rows above are supplied by TomRenderInfrastructure, not this shader
+archive. Install its matching `TomRender.Core.dll` and complete DLL pairs; remove
+old standalone duplicates. Runtime source/build ownership is in that repository's
+`src/BSDF`, not the retired standalone Tools build. Do not copy SDK references.
+Windows FileVersion alone cannot distinguish cohorts; check release hashes.
 
 The published zipmod is byte-identical to the accepted authoring output named
 `[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod`. Its filename does not change
@@ -82,10 +82,11 @@ third-party exporter combination.
 
 ### Optional Probe And Capture Tools
 
-Tom Lighting Probes **0.2.1** uses its own zipmod in `mods/` and both
+Tom Lighting Probes **0.2.2** is supplied by the base, with its zipmod in `mods/` and both
 `KKS_TomProbe.dll` / `TomProbe.Runtime.dll` in `BepInEx/plugins/TomProbe/`.
 Items appear under **Tom Lighting / Probes**. It is an independent Studio-only
-tool; installing the full TomShadersX pack is unnecessary. Native environment
+tool; installing the full TomShadersX pack is unnecessary. Replace old 0.2.1
+resources and DLLs together; do not mix cohorts. Native environment
 lighting remains available without it. Reflection capture requires the game's
 Realtime Reflection Probes quality setting and a completed capture.
 
@@ -96,7 +97,7 @@ tessellation do not automatically promote. No replacement capture plugin is bund
 
 ### First Launch
 
-1. Check `BepInEx/LogOutput.log` for Companion 0.6.0 and missing / duplicate assembly errors.
+1. Install the base first and check `BepInEx/LogOutput.log` for Companion 0.6.0 and missing / duplicate assembly errors.
 2. Select all seven modern `tom/BSDF*` entries on independent test materials.
 3. For area lighting, add **Tom BSDF / Lighting / Tom Rectangle Area Light Prototype**. It is intentionally invisible and emits along local +Z.
 4. Complete [Manual Acceptance](https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/KKS-ME-Acceptance.md), including scene save / reload / import.
@@ -141,9 +142,13 @@ DataTextureRestore and separate normal restoration switches correct a specific
 sRGB sampling mismatch; they are not general quality boosts or artistic grading.
 
 NormalEncoding / DetailNormalEncoding are **0 UnityPacked, 1 RGB, 2 AG**.
-Choose RGB for known ordinary blue-purple maps, AG for known A/G packed data.
-A red-looking preview alone does not establish packing. FlipY changes tangent
-convention, not light direction. Base, detail and coat have independent encoding.
+Choose by the actual sampled representation after import: RGB for unchanged RGB
+vectors, AG for known A/G data, UnityPacked for Unity-packed resources. A blue
+source PNG can be converted to packed data by ME's NormalMap/NormalMapDetail
+import route, so its original color is not enough to select RGB. Independent
+coat slots can use a different import path and need separate verification.
+FlipY changes tangent convention, not light direction. Base, detail and coat
+have independent encoding. See [input diagnostics](https://github.com/tomTom1010-IEE/TomBSDF/blob/main/Assets/Mods/TomShadersBSDF/Documents/RenderDocs/MaterialContracts.md).
 
 ### Layers And Units
 
@@ -268,7 +273,7 @@ Use Companion **0.6.0 + matching Runtime** for the complete extension set.
 | Core color, GGX, anisotropy, coat, film, normals / AA | Shader-owned matching LUTs | No Companion / V+ / X dependency. Missing core energy data is an error |
 | Native lights / opaque shadows | Unity lights, maps, quality | No generated map means no corresponding shadow |
 | Probe / SH / AO | Actual Unity environment | No data means no corresponding indirect light; AO cannot create it |
-| Tom Probe / SH | Independent 0.2.1 tool / DLL pair, Studio only | Native environment remains usable |
+| Tom Probe / SH | Base-supplied 0.2.2 resource / DLL pair, Studio only | Native environment remains usable |
 | Rectangles | Companion, protocol resources, LTC and control items | Zero rectangle contribution; maximum four, unshadowed |
 | Capture Reference | Supported lifecycle API and camera target | Keep material quality; no film / POM / Tess changes |
 | Transparent native shadows | Companion, maps / matrices / cascades, budget | Previous transparent path; no extra map generation or coverage changes |
@@ -360,7 +365,7 @@ Coverage, emission, Probe and SH must not be multiplied by the direct-light shad
 - [ ] Half / Full buffers work; repeated scene / camera / visibility changes do not cause ongoing memory growth.
 - [ ] Supported Screenshot Manager promotes area integration only and restores live state after normal / repeated / cancelled captures.
 - [ ] Saved ME area quality stays unchanged; film / POM / Tess do not auto-promote. API absence retains ordinary selected quality.
-- [ ] Optional Tom Probe / SH 0.2.1 refresh, bounds and native fallback work if installed; otherwise record not tested.
+- [ ] Base-supplied Tom Probe / SH 0.2.2 refresh, bounds and native fallback work if installed; otherwise record not tested.
 
 ### Persistence, Fallback And Performance
 
@@ -488,7 +493,7 @@ ItemComponent. RC1 targets the original 2019.4.9f1 runtime / Built-in / D3D11.
 
 1. Install Git LFS, clone the repository and run `git lfs pull`.
 2. Confirm the two large ResourcesData LUTs are full native assets, not small files beginning with `version https://git-lfs.github.com/spec/v1`.
-3. Import `Assets/Mods/TomShadersBSDF` into the host template with its `.meta` files, native resources, materials, prefabs and Runtime DLL intact.
+3. Import `Assets/Mods/TomShadersBSDF` and `Assets/TomRenderInfrastructure` into the host template with their `.meta` files, native resources, materials, prefabs and matching authoring Runtime/Core DLLs intact.
 4. Preserve Gamma authoring settings. KKSLinear-v1 adapts input / output for the Linear KKS host; do not switch to an obsolete separate Linear build.
 5. In Unity run **Tools / TomBSDF / Validate Source Overlay**. Resolve missing scripts / shader-owned LUTs before building. This command does not render or build automatically.
 
@@ -498,14 +503,18 @@ Preserve GUIDs and non-modifiable shader texture bindings, not only filenames.
 
 ### Companion
 
-Build with a .NET SDK, .NET Framework 4.6.2 targeting support and the game SDK:
+Build runtime helpers only in the separate
+[TomRenderInfrastructure](https://github.com/tomTom1010-IEE/TomRenderInfrastructure)
+repository with its .NET Framework 4.6.2 / local KKS SDK workflow:
 
 ```powershell
-dotnet build Tools/TomBSDFRuntime/KKS_TomBSDF/KKS_TomBSDF.csproj -c Release -p:GameRoot="D:/Your/KKS"
+pwsh -File build/Build.ps1 -GameRoot "D:/Your/KKS"
 ```
 
-The project resolves BepInEx and Unity assemblies from GameRoot. Its output
-contains the plugin and matching runtime. Do not redistribute SDK reference DLLs.
+Run that command from the infrastructure repository, not this overlay. The
+shader repository no longer maintains a second copy of helper runtime sources.
+Its source overlay still includes the required Unity authoring Runtime/Core and
+metadata; these are not game-release DLL bundles. Do not redistribute SDK references.
 The authoring copy at `Assets/Mods/TomShadersBSDF/Runtime/TomBSDF.Runtime.dll`
 must match the player copy. If rebuilt runtime bytes change, update the authoring
 DLL through Unity, validate serialized resources and rebuild dependent bundles.
@@ -581,6 +590,17 @@ Developer Bridge tests cited by historical summaries are intentionally not shipp
 
 
 ## TomBSDF 0.2.0 RC1 Status
+
+### Infra1 Distribution - 2026-10-28
+
+Current split release: [v0.2.0-rc1-infra.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+Install TomRenderInfrastructure KKS 0.1.0 first. Shader archives no longer embed
+runtime DLLs or Probe resources. The existing RC1 Bundle and all shader/native
+program hashes are preserved; this is not a shader-feature update or a non-RC
+promotion. The base's controlled KKS regression adds native Studio DOF/glass,
+Probe/SH, synthetic Feather and saved-scene checks, not GPU timing certification.
+
+### Original RC1 Distribution
 
 The accepted artifact is distributed as the
 [complete KKS RC1 pre-release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)

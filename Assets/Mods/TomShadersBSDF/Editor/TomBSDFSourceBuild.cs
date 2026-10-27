@@ -17,6 +17,8 @@ public static class TomBSDFSourceBuild
     [MenuItem("Tools/TomBSDF/Validate Source Overlay")]
     public static void Validate()
     {
+        if(!File.Exists("Assets/TomRenderInfrastructure/Runtime/TomRender.Core.dll"))
+            throw new BuildFailedException("Import the matching TomRenderInfrastructure authoring Core dependency before validation.");
         var manifest=XDocument.Load(Root+"/manifest.xml").Root;
         if(manifest.Element("game").Value!="Koikatsu Sunshine") throw new BuildFailedException("KKS overlay expected.");
         foreach(var entry in manifest.Element("MaterialEditor").Elements("Shader"))

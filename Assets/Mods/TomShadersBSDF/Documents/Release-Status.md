@@ -1,5 +1,16 @@
 # TomBSDF 0.2.0 RC1 Status
 
+## Infra1 Distribution - 2026-10-28
+
+Current split release: [v0.2.0-rc1-infra.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+Install TomRenderInfrastructure KKS 0.1.0 first. Shader archives no longer embed
+runtime DLLs or Probe resources. The existing RC1 Bundle and all shader/native
+program hashes are preserved; this is not a shader-feature update or a non-RC
+promotion. The base's controlled KKS regression adds native Studio DOF/glass,
+Probe/SH, synthetic Feather and saved-scene checks, not GPU timing certification.
+
+## Original RC1 Distribution
+
 The accepted artifact is distributed as the
 [complete KKS RC1 pre-release](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1)
 on 2026-10-26. Packaging does not recompile or alter the accepted shader payload.

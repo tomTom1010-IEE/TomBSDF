@@ -1,5 +1,16 @@
 # Changelog
 
+## Infra1 Dependency Split - 2026-10-28
+
+- Install TomRenderInfrastructure KKS 0.1.0 before this shader pack. Shared DLLs,
+  Probe 0.2.2 resources and optional native-DOF compatibility are distributed there.
+- Shader ZIPs no longer embed companion/Probe DLLs. The accepted shader zipmod,
+  Bundle, native programs, material semantics and RC1 status are unchanged.
+- Runtime source/build ownership moved to the base; required authoring Runtime,
+  Core and Unity metadata remain in this rebuildable source overlay.
+- Controlled native DOF/glass/Probe/SH/synthetic-Feather save/reload integration
+  passed; no new shader compilation or GPU performance certification.
+
 ## KKS Binary Distribution - 2026-10-26
 
 - Published the accepted 0.2.0 RC1 as a complete KKS pre-release, with the main
