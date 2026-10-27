@@ -1,0 +1,559 @@
+{
+  "schemaVersion": 2,
+  "hashContract": "sha256-utf8-lf-no-bom",
+  "excludedSourcePaths": [],
+  "reviewDate": "2026-10-27",
+  "scope": "Static source/manifest/carrier inventory; not compilation, runtime acceptance or delivered-bytecode audit.",
+  "packageGuid": "tom.Shaders.BSDF",
+  "packageVersion": "0.2.0",
+  "game": "Koikatsu Sunshine",
+  "registeredShaderCount": 11,
+  "registeredPropertyCount": 690,
+  "entries": [
+    {
+      "name": "tom/RectAreaLight",
+      "source": "Shaders/RectAreaLight.shader",
+      "sourceSha256": "ece426de5daecfdf55cc2e2f1a7773d0ed7d4843c7988e770042902b4766cfc3",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_RectAreaLight",
+      "carrier": "Prefab/a_RectAreaLight.prefab",
+      "propertyCount": 8,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Emitter",
+        "Shape",
+        "Selection",
+        "Input Contract"
+      ],
+      "declaredPassNames": [],
+      "usePass": []
+    },
+    {
+      "name": "xukmi/TomBSDFBase",
+      "source": "Shaders/TomBSDFBase.shader",
+      "sourceSha256": "60bf798914b2edcfd77df89bf2e0d2c68396c8be7cd442d0f22845d008b6b23e",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_TomBSDFBase",
+      "carrier": "Prefab/a_TomBSDFBase.prefab",
+      "propertyCount": 28,
+      "hiddenPropertyCount": 0,
+      "categories": [],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "xukmi/TomBSDF",
+      "source": "Shaders/TomBSDF.shader",
+      "sourceSha256": "e128e4b8a197ad92176a0761be4a2cb4cb5749d48043abab738f4720f203a9f8",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_TomBSDF",
+      "carrier": "Prefab/a_TomBSDF.prefab",
+      "propertyCount": 34,
+      "hiddenPropertyCount": 0,
+      "categories": [],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "xukmi/TomBSDFAlpha",
+      "source": "Shaders/TomBSDFAlpha.shader",
+      "sourceSha256": "4430b370adb346392971bdec42e11f1b229235f8dd519ca3ee3af327e4916901",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_TomBSDFAlpha",
+      "carrier": "Prefab/a_TomBSDFAlpha.prefab",
+      "propertyCount": 36,
+      "hiddenPropertyCount": 0,
+      "categories": [],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDF",
+      "source": "Shaders/BSDF.shader",
+      "sourceSha256": "d5d0874c1138dad5b29ed868ef3dbbff15f0572b177aca4572c1d29afbdf47ee",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDF",
+      "carrier": "Prefab/a_BSDF.prefab",
+      "propertyCount": 91,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Height / POM",
+        "Anisotropy",
+        "Specular Filtering",
+        "Glints",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ForwardAdd",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFCutout",
+      "source": "Shaders/BSDFCutout.shader",
+      "sourceSha256": "70b0f363d8439dd7089b05254ae3e57cefefa266851413175229501c152571fd",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFCutout",
+      "carrier": "Prefab/a_BSDFCutout.prefab",
+      "propertyCount": 94,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Height / POM",
+        "Anisotropy",
+        "Specular Filtering",
+        "Glints",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Coverage",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ForwardAdd",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFAlpha",
+      "source": "Shaders/BSDFAlpha.shader",
+      "sourceSha256": "fc489a00ebc05397af329d07bc8c133991ad02097f993f9b1d6ce79a3fec497d",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFAlpha",
+      "carrier": "Prefab/a_BSDFAlpha.prefab",
+      "propertyCount": 82,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Anisotropy",
+        "Specular Filtering",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Coverage",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "AlphaDepth",
+        "ForwardBase",
+        "ForwardAdd",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFAlphaBackFront",
+      "source": "Shaders/BSDFAlphaBackFront.shader",
+      "sourceSha256": "8cdd8023eb2af6c1652a5d4fce25a0ccb79d3f8c50fec950c7bc433c4ec6f97b",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFAlphaBackFront",
+      "carrier": "Prefab/a_BSDFAlphaBackFront.prefab",
+      "propertyCount": 81,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Anisotropy",
+        "Specular Filtering",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Coverage",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "AlphaDepth",
+        "ForwardBaseBack",
+        "ForwardAddBack",
+        "ForwardBaseFront",
+        "ForwardAddFront",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFGlass",
+      "source": "Shaders/BSDFGlass.shader",
+      "sourceSha256": "c902e94519f6f94f718c24d7121ae13c151c7b4c2d0fa8be2af6248022768de2",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFGlass",
+      "carrier": "Prefab/a_BSDFGlass.prefab",
+      "propertyCount": 55,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Anisotropy",
+        "Specular Filtering",
+        "Glass",
+        "Refraction",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Coverage",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "GlassTransmission",
+        "ForwardBase",
+        "ForwardAdd"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFTess",
+      "source": "Shaders/BSDFTess.shader",
+      "sourceSha256": "254da2b1db8dd76253d01aa1850eb3ccfb21cc12f4bc335db013f0bb0074e298",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFTess",
+      "carrier": "Prefab/a_BSDFTess.prefab",
+      "propertyCount": 89,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Height / Tessellation",
+        "Anisotropy",
+        "Specular Filtering",
+        "Glints",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ForwardAdd",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    },
+    {
+      "name": "tom/BSDFCutoutTess",
+      "source": "Shaders/BSDFCutoutTess.shader",
+      "sourceSha256": "5d01d69474f4af149b56ce39770cb16a58847ea87f2e3f9de0ac32ceb3d6d7b3",
+      "assetBundle": "chara/tom/shaders/tombsdf.unity3d",
+      "asset": "a_BSDFCutoutTess",
+      "carrier": "Prefab/a_BSDFCutoutTess.prefab",
+      "propertyCount": 92,
+      "hiddenPropertyCount": 0,
+      "categories": [
+        "Textures",
+        "Base Material",
+        "Normal",
+        "Height / Tessellation",
+        "Anisotropy",
+        "Specular Filtering",
+        "Glints",
+        "Coat",
+        "Coat Normal",
+        "Coat Absorption",
+        "Thin Film",
+        "Environment",
+        "Scene Lighting",
+        "Emission",
+        "Coverage",
+        "Render Options",
+        "Input Contract",
+        "Diagnostics"
+      ],
+      "declaredPassNames": [
+        "ForwardBase",
+        "ForwardAdd",
+        "ShadowCaster"
+      ],
+      "usePass": []
+    }
+  ],
+  "inputs": [
+    {
+      "path": "manifest.xml",
+      "sha256": "21a877ea1a66701739dc04ccc489a3154e9762190fc6bfad5d42b12af8fdc72c"
+    },
+    {
+      "path": "Shaders/BSDF.shader",
+      "sha256": "d5d0874c1138dad5b29ed868ef3dbbff15f0572b177aca4572c1d29afbdf47ee"
+    },
+    {
+      "path": "Shaders/BSDFAlpha.shader",
+      "sha256": "fc489a00ebc05397af329d07bc8c133991ad02097f993f9b1d6ce79a3fec497d"
+    },
+    {
+      "path": "Shaders/BSDFAlphaBackFront.shader",
+      "sha256": "8cdd8023eb2af6c1652a5d4fce25a0ccb79d3f8c50fec950c7bc433c4ec6f97b"
+    },
+    {
+      "path": "Shaders/BSDFCutout.shader",
+      "sha256": "70b0f363d8439dd7089b05254ae3e57cefefa266851413175229501c152571fd"
+    },
+    {
+      "path": "Shaders/BSDFCutoutTess.shader",
+      "sha256": "5d01d69474f4af149b56ce39770cb16a58847ea87f2e3f9de0ac32ceb3d6d7b3"
+    },
+    {
+      "path": "Shaders/BSDFGlass.shader",
+      "sha256": "c902e94519f6f94f718c24d7121ae13c151c7b4c2d0fa8be2af6248022768de2"
+    },
+    {
+      "path": "Shaders/BSDFTess.shader",
+      "sha256": "254da2b1db8dd76253d01aa1850eb3ccfb21cc12f4bc335db013f0bb0074e298"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFAnisotropy.cginc",
+      "sha256": "c7dce429c67bc886c106cc68a7190e0c1b00cd056f1639afe8ecf6f968d54951"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFBRDF.cginc",
+      "sha256": "d504061d8130ccdf5b66cad2b7abafd14118b76f1f4886f2f5b4363951267610"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFGlassTransport.cginc",
+      "sha256": "987b761fbc7f7d676b0feac6fd8a7e7ab390d8080ec3a416e8085723b6f40885"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFGlints.cginc",
+      "sha256": "71951fd8c6fe48fe65711fd63264d8862ad4e56ef69c7939c3b95f76bb85d200"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFLayerTransport.cginc",
+      "sha256": "116d19a0e9a9fd4ed6286147a9f47a7530e63c957b74799ab0fdfe4eaf5395fd"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFMetalOptics.cginc",
+      "sha256": "ee91bf8fbc2acd7c74326b830636bbae5c99cc648677e6adb15c1aff1dbcb5eb"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFNormalFiltering.cginc",
+      "sha256": "007e94f38e866ac94237ec11332e315e848b66f4423909d5c8ad8e7e098772db"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFParallax.cginc",
+      "sha256": "56d1222a341f6133fb0d00b119657171fa0af98ca461fc5e0ce97c6a3b2a1c0b"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFThinFilm.cginc",
+      "sha256": "45b73a5c0cba99a1787529099718cfa2391c64fb801927bf2fe1872dcc685c7b"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFThinFilmRGB.cginc",
+      "sha256": "7f8df80a4e346f41f958c1fcccdaf615d4d784ab39331e02e9fc429cd8cbf50e"
+    },
+    {
+      "path": "Shaders/Core/TomBSDFTypes.cginc",
+      "sha256": "4b22ec72d605ca42ffabfbf888702d65b4fbfa991931431e13cdce9af156254b"
+    },
+    {
+      "path": "Shaders/KKPPBRAlpha.cginc",
+      "sha256": "314acf79cdcfe02466f69185012c5135b2fdbad9b51193c3b4cddf39edfec22a"
+    },
+    {
+      "path": "Shaders/KKPPBRBRDF.cginc",
+      "sha256": "601be019fd67ef14f245dd52b3d4717e2a44b584e49d6cf68f47e42a624c17b1"
+    },
+    {
+      "path": "Shaders/KKPPBRInput.cginc",
+      "sha256": "a00d48eeba216ddbedd427226495cea8c1d610de88df6cceeb7a761e290d2ee2"
+    },
+    {
+      "path": "Shaders/KKPVertexLights.cginc",
+      "sha256": "51a5a8de46045313f52648b5472d7d52e8657a9821f3e5c2e81058d757b20f60"
+    },
+    {
+      "path": "Shaders/Lighting/TomBSDFGlintsLighting.cginc",
+      "sha256": "15fc258552bd98c6564f553b2b2e914e42539661973698f07c3cbe4e979256fe"
+    },
+    {
+      "path": "Shaders/Lighting/TomBSDFLayerLighting.cginc",
+      "sha256": "7c21e657be06f6f882d7d53702ff26b0fd17f1c76129f12a4d56ba138303598a"
+    },
+    {
+      "path": "Shaders/Lighting/TomBSDFLighting.cginc",
+      "sha256": "d281c124cfd3beab8a0134e2b243ee2b65231fc3c2efd273d09a3fc990399307"
+    },
+    {
+      "path": "Shaders/Lighting/TomBSDFOcclusion.cginc",
+      "sha256": "264c304e06f667ba92393a1266be40f1d0302bfafb7778b6979c8469181be8b6"
+    },
+    {
+      "path": "Shaders/Lighting/TomBSDFRectArea.cginc",
+      "sha256": "0b7fcd7274836c86add50e995d74887dbc32f5980b6069bcd857e144322a6a50"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFAnisotropicEnergy.cginc",
+      "sha256": "a25a3e571bb739399a190e9d5f73d1dd4427b6a4e529132d342fc72750d0ce7c"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFCoverage.cginc",
+      "sha256": "da1c613e9a09ea42c45fafce867e35a6eaafd3ecffb02d872b1984a00035113d"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFFilmEnergy.cginc",
+      "sha256": "a5178c8e35bccd24e34c45bd550185b5b5ff4db03129c3bedff95441c131fd40"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFGlassSurface.cginc",
+      "sha256": "ebc36606cf32f82aa253b8f7994fcd3deb9fb68d2bb448115df92e16f50f1c9b"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFGlints.cginc",
+      "sha256": "7bae7f18b0531a995c0655138cd4e127e456ec7e37effa7dafc7e9571d7d8d3f"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFHeight.cginc",
+      "sha256": "b8f50562be69dc7db31546c038e05df51b5b70ad6613e098918f043e851fc959"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFInputs.cginc",
+      "sha256": "b47728f1711608884bf400a671f6874a9923d7cae0211900666207443f30e616"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFLayers.cginc",
+      "sha256": "370df3cca2c3d12ac3ba39edfaad8149725c4e70b9bfb667b9db9d9e9c630e09"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFSurface.cginc",
+      "sha256": "b1cfb598bdaa24c98d8c473a005270c39b516be5194ab780335fa68763f1122b"
+    },
+    {
+      "path": "Shaders/Material/TomBSDFSurfaceCoordinates.cginc",
+      "sha256": "850d7b61c5d6e5d6dccb1cd1cb88b624068baf983aebb73826f1d0cfe2cf5c7b"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFAlphaDepth.cginc",
+      "sha256": "60e34fabc8aa5e8c106a75e6e72e2639b7f9be5ed2c327ea290052e23fa35320"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFForward.cginc",
+      "sha256": "78c0168392b97e6217f8c305b52400654b6c24cd8d0eafea5a225965c7d823dc"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFGlass.cginc",
+      "sha256": "bc9445c171650d94a0f1245576fceb52cb5ff909c70b1c18231fc36e44f0923e"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFShadow.cginc",
+      "sha256": "d745ee9cbcb084ef1e028b64ddc62abeae14f0f7da0a2c5e955b14d916f89c5c"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFTessForward.cginc",
+      "sha256": "be01fdd40d04a3e8ae312ca0be7636f489afb23c8960742a73076a2964bf8062"
+    },
+    {
+      "path": "Shaders/Passes/TomBSDFTessShadow.cginc",
+      "sha256": "94e957abf23543fd9dab5b23e5b4a99f0e622be26b41ca54e76d3b817a7b43ec"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFColor.cginc",
+      "sha256": "ea9b894d16010dbf6876a2d9ae578a24f75c1e0d603a7e9b6187668e215f9ddc"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFCopyNativeShadow.shader",
+      "sha256": "c72ff05a885113501b57fdccb29820d2ad89b077ba90d5167e383fc6052d8035"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFCopySceneDepth.shader",
+      "sha256": "1883b624e0c4c3f8f1673c0e2349217ded756bf7471e9f29d4084894ab4d6ea9"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFGlassRefraction.cginc",
+      "sha256": "11419a1461988cdb6100889342ebad630749e5fea774bc0e2f10a0f630ba7483"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFLightingAdapter.cginc",
+      "sha256": "723562393b88bc218614a89d75e64f08dc6ac2ba5ea3458ba1730a379b025c59"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFProbeAdapter.cginc",
+      "sha256": "a79ad9a85dee45b863d34b85ab9d41f5d0c2817920a501e6b7a9346656ad6ba5"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFSceneBuffers.cginc",
+      "sha256": "121449f7da8f6a2f278ec22871febf84725d285122ef563b2ec695e8c29ec7db"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFShadowReceiverAdapter.cginc",
+      "sha256": "2c1d527f2a4b36f82325dbee3f9b538791a68069de2bfe3568f87024cd3196b7"
+    },
+    {
+      "path": "Shaders/Platform/Unity2019/TomBSDFTessellation.cginc",
+      "sha256": "5cc82dba6d3409d8ba05366ffd72d949f1a59172763bafe5a20f3b61541107b7"
+    },
+    {
+      "path": "Shaders/RectAreaLight.shader",
+      "sha256": "ece426de5daecfdf55cc2e2f1a7773d0ed7d4843c7988e770042902b4766cfc3"
+    },
+    {
+      "path": "Shaders/TomBSDF.shader",
+      "sha256": "e128e4b8a197ad92176a0761be4a2cb4cb5749d48043abab738f4720f203a9f8"
+    },
+    {
+      "path": "Shaders/TomBSDFAlpha.shader",
+      "sha256": "4430b370adb346392971bdec42e11f1b229235f8dd519ca3ee3af327e4916901"
+    },
+    {
+      "path": "Shaders/TomBSDFBase.shader",
+      "sha256": "60bf798914b2edcfd77df89bf2e0d2c68396c8be7cd442d0f22845d008b6b23e"
+    },
+    {
+      "path": "Tooltips/tom_bsdf_tooltips.xml",
+      "sha256": "c542219e3a8fea9008aef8caadc2df850bc1c04e081f4b5206bcc218e35f0bb8"
+    }
+  ]
+}

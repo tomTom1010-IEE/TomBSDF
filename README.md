@@ -4,6 +4,13 @@ Physically based hard-surface shaders for Koikatsu Sunshine and Unity 2019.4 Bui
 
 **[Interactive showcase](https://tomtom1010-iee.github.io/TomBSDF/)** · [User manual](https://tomtom1010-iee.github.io/TomBSDF/UserManual.html) · [Parameter reference](https://tomtom1010-iee.github.io/TomBSDF/Reference.html) · [Source and build guide](Assets/Mods/TomShadersBSDF/Documents/Build-Guide.md)
 
+**For agents and source readers:** start with the self-contained
+[RenderDocs](Assets/Mods/TomShadersBSDF/Documents/RenderDocs/README.md) for pipeline ownership,
+material contracts, compatibility limits and a read-only source/manifest audit.
+New environment: [Blender-to-Unity-to-Studio setup](Assets/Mods/TomShadersBSDF/Documents/RenderDocs/EnvironmentSetup.md).
+The [standalone setup skill](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/scene-pipeline-setup-20261027)
+is a separate documentation download, not a shader update.
+
 52 actual Unity GPU renders in 13 comparisons. Every subject uses the same standard UV sphere and fixed exposure. No per-image brightening or generated illustrations. Full-size images and recorded material settings are available in the showcase.
 
 Seven modern entries cover opaque / cutout surfaces, premultiplied Alpha, Back/Front transparency, independent finite glass and two separate Tess displacement variants. Shared features include compensated GGX / Smith, EON diffuse, anisotropy, Probe / SH, AO, detail normals, specular AA, layered coat / absorption, thin film, POM local shadows and statistical Glints on supported entries.

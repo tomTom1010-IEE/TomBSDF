@@ -39,5 +39,21 @@ Assets/Mods/TomShadersBSDF/Shaders 2.meta
 # Local planning translations are not part of this English publication.
 Assets/Mods/TomShadersBSDF/Documents/*.zh-CN.md
 Assets/Mods/TomShadersBSDF/Documents/*.zh-CN.md.meta
+# Machine-local knowledge, connections and agent configuration are never publication inputs.
+**/AGENTS.md
+**/AGENTS.md.meta
+**/Agent-Knowledge/
+**/Agent-Knowledge.meta
+**/Evidence/
+**/Evidence.meta
+**/Benchmarks/
+**/Benchmarks.meta
+**/connection.json
+**/connection.json.meta
+*.result.json
+*.receipt.json
+*.raw
+/.codex/
+/.agents/
 # Do not add *.csproj, *.dll, *.asset, *.prefab, *.mat or *.meta blanket rules.
 # The authoring Runtime DLL, matching native resources and GUIDs are required.
