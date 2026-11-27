@@ -212,8 +212,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Documents/Installation.md",
-            "sha256": "a5c5f468122c66fbde490b681c33ad707d637100a0726ba36938b80b24407965",
-            "bytes": 4995
+            "sha256": "9ba1ca72e76921da6b03e9f522f5199e2259ce988e4795d44dfaac7e7a71c398",
+            "bytes": 5006
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Documents/Installation.md.meta",
@@ -332,8 +332,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Documents/Release-Status.md",
-            "sha256": "3346e036a4266692c83e3d649a3e2f7faf01a5184435b2e8e226a1f9e9d7d09e",
-            "bytes": 4639
+            "sha256": "efdd4812b8efa6f760cfa2d1179618bf57025babebdd4fb8e970441ee8e548d0",
+            "bytes": 4895
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Documents/Release-Status.md.meta",
@@ -426,16 +426,6 @@
             "bytes": 172
         },
         {
-            "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/SKILL.md",
-            "sha256": "254ec63df274d2008a2da6cf557f148118646573c84e69df47c6958ee8fdf1e5",
-            "bytes": 4817
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/SKILL.md.meta",
-            "sha256": "e20535f90cba5e5a375f42b3dea78651de49f29ce136646ffac995e5d03d1af2",
-            "bytes": 158
-        },
-        {
             "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/agents.meta",
             "sha256": "8e847ef7d10e9a942d7d06f8e871332fd2d896d5223c46c9745409896be32f3b",
             "bytes": 172
@@ -524,6 +514,16 @@
             "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/scripts/Test-ScenePipeline.ps1.meta",
             "sha256": "73184981bedc6f9498ea6e722873adafa1522c3352e3ec6abe335e3a007af4e6",
             "bytes": 155
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/SKILL.md",
+            "sha256": "254ec63df274d2008a2da6cf557f148118646573c84e69df47c6958ee8fdf1e5",
+            "bytes": 4817
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Documents/RenderDocs/skills/kk-scene-pipeline-setup/SKILL.md.meta",
+            "sha256": "e20535f90cba5e5a375f42b3dea78651de49f29ce136646ffac995e5d03d1af2",
+            "bytes": 158
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Documents/SceneBuffers-Contract.md",
@@ -696,9 +696,129 @@
             "bytes": 158
         },
         {
+            "path": "Assets/Mods/TomShadersBSDF/manifest.xml",
+            "sha256": "30fef9918dff8d4f20dc5454db43538056edbb39b402b5c3b9cca5fd6a9f9229",
+            "bytes": 74031
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/manifest.xml.meta",
+            "sha256": "8e0c938cbc0d5e8acf7e88065f4fd2a259f187d38eac079dbbfde0b6caad5086",
+            "bytes": 158
+        },
+        {
             "path": "Assets/Mods/TomShadersBSDF/Material.meta",
             "sha256": "354a2774ed23e9544fe440f31654ea3433d5f8b632fbf68708e36cb905f60a2a",
             "bytes": 172
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDF.mat",
+            "sha256": "f3c4c41c889664a22ead0d6044ec5a77e0d4b08129026b53e809388f85426807",
+            "bytes": 5353
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDF.mat.meta",
+            "sha256": "f985a2f591d30d3b82de405eaa0b0cfdd2894469962271056dfd13f14c0e8b09",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlpha.mat",
+            "sha256": "3cf08bbe8f65eaf2b719219ab2b90ee7a7f802aad8beafe24ecf581ae5efee8b",
+            "bytes": 5010
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlpha.mat.meta",
+            "sha256": "6446d8702e8329e1c38082b192bf82a3bca797dc9f2afe7f8aa8547a785bc61a",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlphaBackFront.mat",
+            "sha256": "df701a163d5d8b8db8cab0c00116e8ea0fa769fd027efd419522a5e16e22c225",
+            "bytes": 4998
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlphaBackFront.mat.meta",
+            "sha256": "7f57bab59e28ea6c24d95779cb3711d3608de14846c5a888ae85eeb3b356715c",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutout.mat",
+            "sha256": "177894cf62f25e7572b32fab34c6883b61dfcd770d45fb86df29291f42813951",
+            "bytes": 5306
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutout.mat.meta",
+            "sha256": "1617bbed39633fad71eb23d49f40e2eb34ae7f2ad809b563371abb426f704a45",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutoutTess.mat",
+            "sha256": "08df724ab36a111c9ee2fd5ce9452b85e845a09bceb81dc67de0c684364b8ada",
+            "bytes": 5518
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutoutTess.mat.meta",
+            "sha256": "ac9f5564e6c0ec8f0f5f8acc72171f329a5a57efd46b33924ec7b2aa57ea6055",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFGlass.mat",
+            "sha256": "b8103016a564ddfd5e442f3047931964e519fbb2222d206e8f720f1826da2b34",
+            "bytes": 3509
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFGlass.mat.meta",
+            "sha256": "06382ac9a1c787c47ce7a49100205f8223888e44a1b8a413ba85d477594852c3",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFTess.mat",
+            "sha256": "1459db72caf5d15ab0c5a932c96e074a7ba0d9816e335b4e63dfd1831974f653",
+            "bytes": 5364
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFTess.mat.meta",
+            "sha256": "6c991f94c62350c9ee958276cad6dde7ef66337cb3f1ba76b430ffe0b8f73830",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_RectAreaLight.mat",
+            "sha256": "2766d45c29bfdc6e27e24af809b462267b78b0b5997603c20ac80db76d772eee",
+            "bytes": 858
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_RectAreaLight.mat.meta",
+            "sha256": "6a5b6c46f131453f040cb92f45cdb3ce90e7479864ce03cdc5779c6a04411518",
+            "bytes": 182
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDF.mat",
+            "sha256": "2ff161b58dd77138449a047cdf652dad6d1174b8fb5236802b5aeb2b4c2b2f23",
+            "bytes": 3799
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDF.mat.meta",
+            "sha256": "b1164f3af32e5b7d3df4e181216fb4f13456d2380f68723ed90899f21d9f7570",
+            "bytes": 190
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFAlpha.mat",
+            "sha256": "692fc8ab74387007108daf4c2ed15d74f62fa4d6121b64030679fdb31117a429",
+            "bytes": 3850
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFAlpha.mat.meta",
+            "sha256": "715d287d4bdbd01a373dd8d3395c16ad22d4327886bec338218850339bf46571",
+            "bytes": 190
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFBase.mat",
+            "sha256": "c287a1a992bb7bb58bc6c8750ae6cb2d083cf0a9f7a5e756d8dec6e559076b62",
+            "bytes": 4435
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFBase.mat.meta",
+            "sha256": "864034abf8e31eaeb57e8eeefcd47ec516ad32f8505c53414d4c2f9ca49ef70b",
+            "bytes": 190
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Material/Presets.meta",
@@ -826,116 +946,6 @@
             "bytes": 215
         },
         {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDF.mat",
-            "sha256": "f3c4c41c889664a22ead0d6044ec5a77e0d4b08129026b53e809388f85426807",
-            "bytes": 5353
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDF.mat.meta",
-            "sha256": "f985a2f591d30d3b82de405eaa0b0cfdd2894469962271056dfd13f14c0e8b09",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlpha.mat",
-            "sha256": "3cf08bbe8f65eaf2b719219ab2b90ee7a7f802aad8beafe24ecf581ae5efee8b",
-            "bytes": 5010
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlpha.mat.meta",
-            "sha256": "6446d8702e8329e1c38082b192bf82a3bca797dc9f2afe7f8aa8547a785bc61a",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlphaBackFront.mat",
-            "sha256": "df701a163d5d8b8db8cab0c00116e8ea0fa769fd027efd419522a5e16e22c225",
-            "bytes": 4998
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFAlphaBackFront.mat.meta",
-            "sha256": "7f57bab59e28ea6c24d95779cb3711d3608de14846c5a888ae85eeb3b356715c",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutout.mat",
-            "sha256": "177894cf62f25e7572b32fab34c6883b61dfcd770d45fb86df29291f42813951",
-            "bytes": 5306
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutout.mat.meta",
-            "sha256": "1617bbed39633fad71eb23d49f40e2eb34ae7f2ad809b563371abb426f704a45",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutoutTess.mat",
-            "sha256": "08df724ab36a111c9ee2fd5ce9452b85e845a09bceb81dc67de0c684364b8ada",
-            "bytes": 5518
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFCutoutTess.mat.meta",
-            "sha256": "ac9f5564e6c0ec8f0f5f8acc72171f329a5a57efd46b33924ec7b2aa57ea6055",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFGlass.mat",
-            "sha256": "b8103016a564ddfd5e442f3047931964e519fbb2222d206e8f720f1826da2b34",
-            "bytes": 3509
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFGlass.mat.meta",
-            "sha256": "06382ac9a1c787c47ce7a49100205f8223888e44a1b8a413ba85d477594852c3",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFTess.mat",
-            "sha256": "1459db72caf5d15ab0c5a932c96e074a7ba0d9816e335b4e63dfd1831974f653",
-            "bytes": 5364
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_BSDFTess.mat.meta",
-            "sha256": "6c991f94c62350c9ee958276cad6dde7ef66337cb3f1ba76b430ffe0b8f73830",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_RectAreaLight.mat",
-            "sha256": "2766d45c29bfdc6e27e24af809b462267b78b0b5997603c20ac80db76d772eee",
-            "bytes": 858
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_RectAreaLight.mat.meta",
-            "sha256": "6a5b6c46f131453f040cb92f45cdb3ce90e7479864ce03cdc5779c6a04411518",
-            "bytes": 182
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDF.mat",
-            "sha256": "2ff161b58dd77138449a047cdf652dad6d1174b8fb5236802b5aeb2b4c2b2f23",
-            "bytes": 3799
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDF.mat.meta",
-            "sha256": "b1164f3af32e5b7d3df4e181216fb4f13456d2380f68723ed90899f21d9f7570",
-            "bytes": 190
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFAlpha.mat",
-            "sha256": "692fc8ab74387007108daf4c2ed15d74f62fa4d6121b64030679fdb31117a429",
-            "bytes": 3850
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFAlpha.mat.meta",
-            "sha256": "715d287d4bdbd01a373dd8d3395c16ad22d4327886bec338218850339bf46571",
-            "bytes": 190
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFBase.mat",
-            "sha256": "c287a1a992bb7bb58bc6c8750ae6cb2d083cf0a9f7a5e756d8dec6e559076b62",
-            "bytes": 4435
-        },
-        {
-            "path": "Assets/Mods/TomShadersBSDF/Material/m_TomBSDFBase.mat.meta",
-            "sha256": "864034abf8e31eaeb57e8eeefcd47ec516ad32f8505c53414d4c2f9ca49ef70b",
-            "bytes": 190
-        },
-        {
             "path": "Assets/Mods/TomShadersBSDF/Prefab.meta",
             "sha256": "d83f97629d00e32b78eb13058f6ff5c5373d5729e43442699b063dba1f2869ff",
             "bytes": 172
@@ -1012,8 +1022,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Prefab/a_RectAreaLight.prefab",
-            "sha256": "32d95ed30397447096e37b1fbc78bdb563b678026d937dc42c3a80f298273c8c",
-            "bytes": 4027
+            "sha256": "f476baefd0006e347626c146a34144bfe6752ecc297a075e29ed1c51f359f3d7",
+            "bytes": 4028
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Prefab/a_RectAreaLight.prefab.meta",
@@ -1147,8 +1157,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDF.shader",
-            "sha256": "d5d0874c1138dad5b29ed868ef3dbbff15f0572b177aca4572c1d29afbdf47ee",
-            "bytes": 9014
+            "sha256": "821abc223cd776f3a8b93fa5403157c28bb5da6a7d381867c623884b60784628",
+            "bytes": 11978
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDF.shader.meta",
@@ -1157,8 +1167,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFAlpha.shader",
-            "sha256": "fc489a00ebc05397af329d07bc8c133991ad02097f993f9b1d6ce79a3fec497d",
-            "bytes": 8964
+            "sha256": "3dbb44ac6a637bd9f5fae82f97fbd6f0d619995118469384c0599322365a03c1",
+            "bytes": 9421
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFAlpha.shader.meta",
@@ -1167,8 +1177,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFAlphaBackFront.shader",
-            "sha256": "8cdd8023eb2af6c1652a5d4fce25a0ccb79d3f8c50fec950c7bc433c4ec6f97b",
-            "bytes": 10544
+            "sha256": "f0d1f378b6db643e70bd81a1acf8ec60d5d6b4dbed22c3aec65d35f85408d06d",
+            "bytes": 11114
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFAlphaBackFront.shader.meta",
@@ -1177,8 +1187,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFCutout.shader",
-            "sha256": "70b0f363d8439dd7089b05254ae3e57cefefa266851413175229501c152571fd",
-            "bytes": 9303
+            "sha256": "66a3808347537b61a2d0d33f3821c6df103c37b767646dbaa77baf774df90c86",
+            "bytes": 12351
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFCutout.shader.meta",
@@ -1187,8 +1197,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFCutoutTess.shader",
-            "sha256": "5d01d69474f4af149b56ce39770cb16a58847ea87f2e3f9de0ac32ceb3d6d7b3",
-            "bytes": 9463
+            "sha256": "03d4674690631de6590229155993480a3d75253e6289e9d196d25220cd07903d",
+            "bytes": 12716
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFCutoutTess.shader.meta",
@@ -1197,8 +1207,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFGlass.shader",
-            "sha256": "c902e94519f6f94f718c24d7121ae13c151c7b4c2d0fa8be2af6248022768de2",
-            "bytes": 6490
+            "sha256": "6213cc94163eb560257e95e4fb21b6e620324d22707747fc91fecc371c40ed15",
+            "bytes": 6900
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFGlass.shader.meta",
@@ -1207,8 +1217,8 @@
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFTess.shader",
-            "sha256": "254da2b1db8dd76253d01aa1850eb3ccfb21cc12f4bc335db013f0bb0074e298",
-            "bytes": 9174
+            "sha256": "2cd1b8b3292d0d0689e03a488848527d9538a3fe764a5d165d0329c1f622eef4",
+            "bytes": 12343
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/BSDFTess.shader.meta",
@@ -1606,6 +1616,16 @@
             "bytes": 172
         },
         {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/PlanarPyramid.shader",
+            "sha256": "af7a99fc22c5a834d756336c798bdee54153bab3faa2d54b51f35f448c3acffd",
+            "bytes": 5300
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/PlanarPyramid.shader.meta",
+            "sha256": "8df84a27de8d002d2fa6fbfa875c3e771aed641218756ecb73d34ca93c664f93",
+            "bytes": 204
+        },
+        {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFColor.cginc",
             "sha256": "ea9b894d16010dbf6876a2d9ae578a24f75c1e0d603a7e9b6187668e215f9ddc",
             "bytes": 1740
@@ -1656,9 +1676,19 @@
             "bytes": 204
         },
         {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFPlanarPrototype.cginc",
+            "sha256": "48a38860cf6c140499b4293759a99d2de8ce30e448ac71de5398f2afb3535840",
+            "bytes": 5333
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFPlanarPrototype.cginc.meta",
+            "sha256": "edb29095a6b05f574541226ac358dd6af42fdf10c424cd294a1ef94c68cff84c",
+            "bytes": 204
+        },
+        {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFProbeAdapter.cginc",
-            "sha256": "a79ad9a85dee45b863d34b85ab9d41f5d0c2817920a501e6b7a9346656ad6ba5",
-            "bytes": 4768
+            "sha256": "99b26fbbed300baca6d42648d15d898efbea3f8a21efe28ea89c3220cba4d0aa",
+            "bytes": 5073
         },
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFProbeAdapter.cginc.meta",
@@ -1693,6 +1723,96 @@
         {
             "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomBSDFTessellation.cginc.meta",
             "sha256": "dcf2b9b5dd3fde9a35351b86ad0ae966c0182802057b4083cf04b8cacf6b91f5",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomNativeReflectionAcceptance.cginc",
+            "sha256": "b4cee4e1949602a042d4f5c17f1ce60c67c2da62c89bf78292c7f433c5af37a2",
+            "bytes": 788
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomNativeReflectionAcceptance.cginc.meta",
+            "sha256": "05614089b05c0a09a5a106f57cc781fbbfe466177093de5ecc0f63450daf0fde",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomNativeReflectionControl.cginc",
+            "sha256": "4a0801c24009143ee25a8bf0dbb2eaf9ad31903b44faa83e5004b67a1880d3e0",
+            "bytes": 501
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomNativeReflectionControl.cginc.meta",
+            "sha256": "616dd5be7568a31f1a1d051970852346360bac67aaaa8fd63056a8cf566c99db",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarFilter.cginc",
+            "sha256": "694a2442767cff5a421a7843255e3c240f3c22fb897ab516953f562da546e37d",
+            "bytes": 4359
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarFilter.cginc.meta",
+            "sha256": "ebfb6b11b7c7a579eb7a1428125db5318db8b66bfbfb2e3a0d9107e8859fa40a",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarLayer.cginc",
+            "sha256": "6e05aad05e9daf754a5bdac36b022e83acb472eb3349966a2efd69acf4ba2219",
+            "bytes": 3289
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarLayer.cginc.meta",
+            "sha256": "b0667f9142748c0bf61d4189cf68627ef80a88b3eb7a46a57a12d2561addd318",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarRange.cginc",
+            "sha256": "2c8619a6a4ad0404ebfe297e263a7a147dea2ff366ba22a04ab73e5cc0fcf2a1",
+            "bytes": 367
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomPlanarRange.cginc.meta",
+            "sha256": "0669ea68749b7c2fecdb362156312fbf81b92a1e427e8f4f73e93c872829cb02",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomReflectionTiers.cginc",
+            "sha256": "4b46f1f3b2df8f446169f231cc1681c3563dcd249b4d8b0c793cb9be445cdbf8",
+            "bytes": 698
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomReflectionTiers.cginc.meta",
+            "sha256": "982a2755b1fc5dba8621dadd08ae3c4b10aed49c19a2cec35526c0f15e924d70",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenPlanarOver.cginc",
+            "sha256": "baaeca23ed2d110d63fab1d150e30c4f59bc12def0e0081416420e09bc55e55c",
+            "bytes": 3411
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenPlanarOver.cginc.meta",
+            "sha256": "457b8e95886fd9094fa74f275d1699119e43fd65823443286765cd6f071ba59b",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenReceiver.cginc",
+            "sha256": "ae0321da898dabada4dd1f6b38c4b973abe38d078d9f476b98c5c4c803f6c679",
+            "bytes": 3251
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenReceiver.cginc.meta",
+            "sha256": "54239fed91eb72d3bcafadab25c1d0b9e97efcef748d040d04c06b5473622bb5",
+            "bytes": 204
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenResolve.cginc",
+            "sha256": "3188c24ac6ef53e901440870ad1e398a1eeaefaa5248328e13b8fa2a8d0bf038",
+            "bytes": 6194
+        },
+        {
+            "path": "Assets/Mods/TomShadersBSDF/Shaders/Platform/Unity2019/TomScreenResolve.cginc.meta",
+            "sha256": "a77c5957a4627bde3b768d2552b46a978aea0156e87f43d20f36d9b40cf25196",
             "bytes": 204
         },
         {
@@ -1766,14 +1886,29 @@
             "bytes": 191
         },
         {
-            "path": "Assets/Mods/TomShadersBSDF/manifest.xml",
-            "sha256": "8a41f6bd01812745d0f24c3cd795a47051cd2e1bf0c3b8d354d443df2314997b",
-            "bytes": 68494
+            "path": "Assets/TomMEControlSources.meta",
+            "sha256": "f0db1134ed0c1519f8313236eaa4a56d26321d5cf0843000180efbcfc9f0d9d4",
+            "bytes": 172
         },
         {
-            "path": "Assets/Mods/TomShadersBSDF/manifest.xml.meta",
-            "sha256": "8e0c938cbc0d5e8acf7e88065f4fd2a259f187d38eac079dbbfde0b6caad5086",
-            "bytes": 158
+            "path": "Assets/TomMEControlSources/a_RectAreaLightME.prefab",
+            "sha256": "3382c082b1c55c74283b9f758bd8028511fa7702e6199900e73fb5aaceb09b03",
+            "bytes": 1957
+        },
+        {
+            "path": "Assets/TomMEControlSources/a_RectAreaLightME.prefab.meta",
+            "sha256": "c141476d29c038ceb802d981ef1bc2d8308096394db5ac98bdb5d67c3312dc0e",
+            "bytes": 154
+        },
+        {
+            "path": "Assets/TomMEControlSources/m_a_RectAreaLightME.mat",
+            "sha256": "136dc3f7bdc19ada95650e61d5cb1dd8741a50fe3c1e98d344f3a648a3160a11",
+            "bytes": 862
+        },
+        {
+            "path": "Assets/TomMEControlSources/m_a_RectAreaLightME.mat.meta",
+            "sha256": "51d03441c0e6f93def0a143b9135a2b0b6f1ce2f23a9a89cf1180c3017c62b66",
+            "bytes": 182
         },
         {
             "path": "Assets/TomRenderInfrastructure.meta",

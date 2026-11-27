@@ -1,15 +1,15 @@
 # Installation
 
-**Install [TomRenderInfrastructure KKS 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0)
-first**, then the [TomBSDF Infra1 shader pack](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+**Install [TomRenderInfrastructure KKS 0.1.1](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.1)
+first**, then the [TomBSDF 0.2.1 shader pack](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.1).
 The shader release no longer embeds companion/Probe DLLs. Its `mods` folder
-contains the unchanged accepted BSDF zipmod; shared DLLs and Probe resources
+contains the BSDF zipmod; shared DLLs and Probe resources
 come from the base, installed once even when using both BSDF and TomX.
 GitHub's automatic source-code archives are not game installers.
 
 ## Supported Host
 
-TomBSDF 0.2.0 RC1 targets **KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
+TomBSDF 0.2.1 targets **KKS / Unity 2019.4.9f1 runtime / Built-in Forward /
 D3D11**. The player is Linear; the authoring template may remain Gamma.
 KKSLinear-v1 handles that boundary without a color-grading cube or the companion.
 Do not change the game's color space. KK / Unity 5.6 is not supported by this release.
@@ -26,7 +26,7 @@ Paths below are relative to the game root, for example `D:/Program Files/Koikatu
 
 | File | Install location | Required for |
 | --- | --- | --- |
-| `TomBSDF-KKS-0.2.0-RC1.zipmod` | `mods/` | Shaders, carriers, LUTs, tooltip catalog and rectangle item lists |
+| `TomBSDF-KKS-0.2.1.zipmod` | `mods/` | Shaders, carriers, LUTs, tooltip catalog and rectangle item lists |
 | `KKS_TomBSDF.dll` 0.6.0 | `BepInEx/plugins/TomBSDF/` | Optional scene companion |
 | Matching `TomBSDF.Runtime.dll` | `BepInEx/plugins/TomBSDF/` | Matching scene services and resource types |
 
@@ -36,9 +36,8 @@ old standalone duplicates. Runtime source/build ownership is in that repository'
 `src/BSDF`, not the retired standalone Tools build. Do not copy SDK references.
 Windows FileVersion alone cannot distinguish cohorts; check release hashes.
 
-The published zipmod is byte-identical to the accepted authoring output named
-`[tomTom][KKS] Tom Shaders BSDF v0.2.0.zipmod`. Its filename does not change
-the internal mod GUID or version. Keep only one of these same-GUID copies.
+Move previous TomBSDF zipmods outside the active mods tree, including RC and
+ME-fix validation packages. Keep the installed MaterialEditor unchanged.
 
 Do not unpack zipmods over game `abdata` or install LUT / prefab / material /
 `.meta` files separately. A repository clone is source, not an installable
@@ -78,7 +77,7 @@ third-party exporter combination.
 
 ## Optional Probe And Capture Tools
 
-Tom Lighting Probes **0.2.2** is supplied by the base, with its zipmod in `mods/` and both
+Use the [Lighting Probes 0.2.6 resource update](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/lighting-probes-v0.2.6) in place of the base's older probe zipmod, with its zipmod in `mods/` and both
 `KKS_TomProbe.dll` / `TomProbe.Runtime.dll` in `BepInEx/plugins/TomProbe/`.
 Items appear under **Tom Lighting / Probes**. It is an independent Studio-only
 tool; installing the full TomShadersX pack is unnecessary. Replace old 0.2.1

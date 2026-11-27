@@ -72,6 +72,21 @@ Shader "tom/BSDFTess"
         _Occlusion ("Occlusion", Range(0, 1)) = 1
         _OcclusionStrength ("Occlusion Strength", Range(0, 1)) = 1
         _IndirectDiffuseIntensity ("Indirect Diffuse Intensity", Range(0, 4)) = 1
+        _PlanarReflectionMask ("Planar Reflection Mask", 2D) = "white" {}
+        _PlanarReflectionWeight ("Planar Reflection Weight", Range(0,1)) = 0
+        _PlanarBaseWeight ("Planar Base Weight", Range(0,1)) = 1
+        _PlanarCoatWeight ("Planar Coat Weight", Range(0,1)) = 1
+        _PlanarNormalDistortion ("Planar Normal Distortion", Range(0,2)) = 1
+        _PlanarStretch ("Planar Stretch", Range(0,2)) = 1
+        _PlanarReflectionGroup ("Planar Reflection Group", Float) = 0
+
+        [ToggleUI] _ReflectionsEnabled ("Accept Environment Reflections", Range(0,1)) = 1
+        _SSRWeight ("Screen Space Acceptance", Range(0,1)) = 1
+        _SSRBaseWeight ("Screen Space Base Weight", Range(0,1)) = 1
+        _SSRCoatWeight ("Screen Space Coat Weight", Range(0,1)) = 1
+        _ProbeWeight ("Local Probe Acceptance", Range(0,1)) = 1
+        _SkyWeight ("Sky Acceptance", Range(0,1)) = 1
+
         _ReflectionIntensity ("Probe Reflection Intensity", Range(0, 4)) = 1
         [ToggleUI] _ProbeBoxProjection ("Probe Box Projection", Range(0, 1)) = 1
         [ToggleUI] _ProbeBlending ("Blend Reflection Probes", Range(0, 1)) = 1
@@ -118,8 +133,13 @@ Shader "tom/BSDFTess"
             #pragma multi_compile __ UNITY_SPECCUBE_BLENDING
             #pragma multi_compile_fog
             #pragma multi_compile_local __ TOM_BSDF_AREA_REALTIME TOM_BSDF_AREA_REFERENCE
+            #pragma multi_compile_local_fragment _ _TOM_ENV_CONTROLS
+            #pragma multi_compile_local_fragment _ TOM_BSDF_PLANAR_REFLECTION
             #define TOM_BSDF_TESSELLATION 1
             #define TOM_BSDF_GLINTS 1
+            #if defined(TOM_BSDF_PLANAR_REFLECTION)
+                #include "Platform/Unity2019/TomBSDFPlanarPrototype.cginc"
+            #endif
             #include "Passes/TomBSDFTessForward.cginc"
             ENDCG
         }
@@ -162,6 +182,52 @@ Shader "tom/BSDFTess"
             #include "Passes/TomBSDFTessShadow.cginc"
             ENDCG
         }
+
+        Pass {
+            Name "TomScreenReceiver"
+            Tags { "LightMode"="TomScreenReceiver" }
+            ZWrite Off ZTest Always 
+            CGPROGRAM
+            #pragma target 5.0
+            #pragma only_renderers d3d11
+            #pragma vertex TomBSDFTessVertex
+            #pragma hull TomBSDFTessHull
+            #pragma domain TomBSDFTessDomain
+            #define TOM_BSDF_TESSELLATION 1
+            #define TOM_BSDF_GLINTS 1
+            #pragma fragment TomSSRReceiver
+            
+            #include "Passes/TomBSDFTessForward.cginc"
+            
+            #include "Platform/Unity2019/TomScreenReceiver.cginc"
+            
+            ENDCG
+        }
+
+        Pass {
+            Name "TomScreenResolve"
+            Tags { "LightMode"="TomScreenResolve" }
+            ZWrite Off ZTest Always Blend One One ColorMask RGB
+            CGPROGRAM
+            #pragma target 5.0
+            #pragma only_renderers d3d11
+            #pragma vertex TomBSDFTessVertex
+            #pragma hull TomBSDFTessHull
+            #pragma domain TomBSDFTessDomain
+            #define TOM_BSDF_TESSELLATION 1
+            #define TOM_BSDF_GLINTS 1
+            #pragma fragment TomSSRResolve
+            #pragma multi_compile_fog
+            #pragma multi_compile __ UNITY_SPECCUBE_BOX_PROJECTION
+            #pragma multi_compile __ UNITY_SPECCUBE_BLENDING
+            #define TOM_SCREEN_RESOLVE 1
+            #include "Passes/TomBSDFTessForward.cginc"
+            #include "Platform/Unity2019/TomScreenPlanarOver.cginc"
+            #include "Platform/Unity2019/TomScreenReceiver.cginc"
+            #include "Platform/Unity2019/TomScreenResolve.cginc"
+            ENDCG
+        }
     }
+    Dependency "TomPlanarMip" = "Hidden/TomPlanar/Pyramid"
     Fallback Off
 }
