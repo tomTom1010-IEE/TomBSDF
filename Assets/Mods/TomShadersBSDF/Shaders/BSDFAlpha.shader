@@ -58,6 +58,11 @@ Shader "tom/BSDFAlpha"
         _Occlusion ("Occlusion", Range(0, 1)) = 1
         _OcclusionStrength ("Occlusion Strength", Range(0, 1)) = 1
         _IndirectDiffuseIntensity ("Indirect Diffuse Intensity", Range(0, 4)) = 1
+
+        [ToggleUI] _ReflectionsEnabled ("Accept Environment Reflections", Range(0,1)) = 1
+        _ProbeWeight ("Local Probe Acceptance", Range(0,1)) = 1
+        _SkyWeight ("Sky Acceptance", Range(0,1)) = 1
+
         _ReflectionIntensity ("Probe Reflection Intensity", Range(0, 4)) = 1
         [ToggleUI] _ProbeBoxProjection ("Probe Box Projection", Range(0, 1)) = 1
         [ToggleUI] _ProbeBlending ("Blend Reflection Probes", Range(0, 1)) = 1
@@ -128,6 +133,7 @@ Shader "tom/BSDFAlpha"
             #pragma multi_compile __ UNITY_SPECCUBE_BLENDING
             #pragma multi_compile_fog
             #pragma multi_compile_local __ TOM_BSDF_AREA_REALTIME TOM_BSDF_AREA_REFERENCE
+            #pragma multi_compile_local_fragment _ _TOM_ENV_CONTROLS
             #define TOM_BSDF_ALPHA 1
             #include "Passes/TomBSDFForward.cginc"
             ENDCG

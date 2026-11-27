@@ -24,14 +24,19 @@ foreach ($file in $tracked) {
 }
 $mod = 'Assets/Mods/TomShadersBSDF'
 [xml]$manifest = Get-Content -LiteralPath (Join-Path $Root "$mod/manifest.xml") -Raw
-if ($manifest.manifest.game -ne 'Koikatsu Sunshine' -or $manifest.manifest.version -ne '0.2.0') {
+if ($manifest.manifest.game -ne 'Koikatsu Sunshine' -or $manifest.manifest.version -ne '0.2.1') {
     throw 'Unexpected package host/version.'
 }
 $entries = @($manifest.manifest.MaterialEditor.Shader)
 $modern = @($entries | Where-Object { $_.Name -like 'tom/BSDF*' })
 if ($entries.Count -ne 11 -or $modern.Count -ne 7) { throw 'Expected seven modern, three legacy and one rectangle entry.' }
+$items = @(Get-ChildItem "$Root/$mod/List/Studio" -Filter 'ItemList_*.csv' -Recurse | ForEach-Object { Import-Csv -LiteralPath $_.FullName })
 foreach ($entry in $entries) {
-    foreach ($relative in @("$mod/Prefab/$($entry.Asset).prefab", "$mod/Prefab/$($entry.Asset).prefab.meta")) {
+    if ($items | Where-Object { $_.'Bundle Path' -eq $entry.AssetBundle -and $_.'File Name' -eq $entry.Asset }) {
+        throw "Studio and ME share a prefab: $($entry.Asset)"
+    }
+    $dir = if ($entry.AssetBundle -eq 'chara/tom/me/rect_control_source.unity3d') { 'Assets/TomMEControlSources' } else { "$mod/Prefab" }
+    foreach ($relative in @("$dir/$($entry.Asset).prefab", "$dir/$($entry.Asset).prefab.meta")) {
         if ($relative -notin $tracked) { throw "Required carrier absent: $relative" }
     }
 }

@@ -56,6 +56,9 @@ float3 TomUnityDiffuseEnvironment(TomBSDFGeometry g)
     return lerp(native, custom.rgb, custom.a);
 }
 
+#if defined(_TOM_ENV_CONTROLS)
+#define TomUnityProbeEnvironment TomUnityUnmodifiedProbe
+#endif
 float3 TomUnityProbeEnvironment(TomBSDFMaterial m, TomBSDFGeometry g)
 {
     float3 reflection = TomSpecularReflection(m, g);
@@ -86,4 +89,8 @@ float3 TomUnityProbeEnvironment(TomBSDFMaterial m, TomBSDFGeometry g)
     #endif
     return radiance0;
 }
+#if defined(_TOM_ENV_CONTROLS)
+#undef TomUnityProbeEnvironment
+#include "TomNativeReflectionControl.cginc"
+#endif
 #endif

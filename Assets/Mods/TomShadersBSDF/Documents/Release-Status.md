@@ -1,8 +1,10 @@
-# TomBSDF 0.2.0 RC1 Status
+# TomBSDF Release Status
+
+The current stable resource package is [TomBSDF 0.2.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.1). It separates the MaterialEditor shader source from the Studio rectangle-light prefab. The RC1 records below describe earlier packages.
 
 ## Infra1 Distribution - 2026-10-28
 
-Current split release: [v0.2.0-rc1-infra.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
+Historical split release: [v0.2.0-rc1-infra.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1).
 Install TomRenderInfrastructure KKS 0.1.0 first. Shader archives no longer embed
 runtime DLLs or Probe resources. The existing RC1 Bundle and all shader/native
 program hashes are preserved; this is not a shader-feature update or a non-RC

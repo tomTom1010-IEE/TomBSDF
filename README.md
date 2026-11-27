@@ -17,12 +17,12 @@ Seven modern entries cover opaque / cutout surfaces, premultiplied Alpha, Back/F
 
 ## Use and Scope
 
-- **Install [TomRenderInfrastructure KKS 0.1.0](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.0) first**, then [download the BSDF Infra1 shader pack](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.0-rc1-infra.1). Shader archives no longer embed helper DLLs or Probe resources; the shared base supplies those once for BSDF and TomX. [Upgrade instructions](Assets/Mods/TomShadersBSDF/Documents/Installation.md).
-- Current package: **0.2.0 RC1**. Packaged Editor auditing passed; the maintainer reported KKS / ME acceptance passed. [Release status](Assets/Mods/TomShadersBSDF/Documents/Release-Status.md).
+- Install [TomRenderInfrastructure KKS 0.1.1](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/v0.1.1) first, then [TomBSDF 0.2.1](https://github.com/tomTom1010-IEE/TomBSDF/releases/tag/v0.2.1). For probe and SH items, replace the base's older resource zipmod with [Lighting Probes 0.2.6](https://github.com/tomTom1010-IEE/TomRenderInfrastructure/releases/tag/lighting-probes-v0.2.6).
+- **0.2.1 is a stable KKS shader-resource release.** MaterialEditor now discovers the rectangle shader from a dedicated prefab, not the placeable light. No ME update or cache reset is required. [Changes and upgrade](RELEASE-NOTES-0.2.1.md).
 - This repository is a rebuildable KKS source overlay, not a complete Unity project or an installable zipmod. [Installation and DLL paths](Assets/Mods/TomShadersBSDF/Documents/Installation.md). Compiled game packages are separate artifacts, not Git source.
 - Core colors / physical shading retain their no-service fallback. The supported integrated installation uses the base's Companion **0.6.0 + matching Runtime/Core** for rectangles, screen refraction, transparent native-map reuse and automatic displacement bounds.
 - Coverage is not optical transmission. Glass is a finite screen / parallel-slab approximation, not full GGX BTDF, nested media or a solid lens. Rectangles are unshadowed.
-- Native Probe / SH needs scene data. The base supplies Studio Probe **0.2.2** and matching resources; no V+ / TomShadersX pack is required. No modern KK / Unity 5.6 port is included.
+- Native Probe / SH needs scene data and the shared Probe runtime. No V+ / TomShadersX pack is required. No modern KK / Unity 5.6 port is included.
 - Screenshot promotion affects area integration only, not film / POM / Tess. The showcase is a visual reference, not forced character presets or an in-game performance claim.
 
 Coverage uses an opaque checker, glass uses the matching scene-buffer service, and shadow tests use a shadow-only blocker. The grazing-light POM group is identified explicitly. [Capture notes](https://tomtom1010-iee.github.io/TomBSDF/CaptureNotes.html) explain the common display transform and image provenance.

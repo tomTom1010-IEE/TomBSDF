@@ -1,0 +1,11 @@
+{
+  "version": "0.2.1",
+  "guid": "tom.Shaders.BSDF",
+  "file": "TomBSDF-KKS-0.2.1.zipmod",
+  "bytes": 110497630,
+  "sha256": "bde68759700cd20d084fac69cc2317d8622f545f63c4b5faf47639e53ec73564",
+  "bundles": {
+    "abdata/chara/tom/shaders/tombsdf.unity3d": "10ff53a4ffb36a4abf1ade5278408dd80a37da6cd3e1b41bff1d3ea05cf12bfd",
+    "abdata/chara/tom/me/rect_control_source.unity3d": "8a8618c7ceba00d7e57a56d604d440d17f9a446b1c249c35e9ea91e540d9394e"
+  }
+}

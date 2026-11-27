@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version='1.0' encoding='utf-8'?>
 <manifest schema-ver="1">
   <guid>tom.Shaders.BSDF</guid>
   <name>Tom Shaders BSDF</name>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <author>tomTom</author>
-  <description>KKS modern Built-in Forward PBR: opaque, cutout, premultiplied Alpha, Back/Front, finite glass and Tess displacement. Anisotropy, coat, thin film, POM and Glints; optional scene companion. RC1 candidate, pending user KKS acceptance. Legacy xukmi identities retained.</description>
+  <description>KKS modern Built-in Forward PBR: opaque, cutout, premultiplied Alpha, Back/Front, finite glass and Tess displacement. Anisotropy, coat, thin film, POM and Glints; optional scene companion. Dedicated MaterialEditor shader sources preserve Studio items. Legacy xukmi identities retained.</description>
   <MaterialEditor>
-    <Shader Name="tom/RectAreaLight" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_RectAreaLight">
+    <Shader Name="tom/RectAreaLight" AssetBundle="chara/tom/me/rect_control_source.unity3d" Asset="a_RectAreaLightME">
       <Property Name="AreaLightEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Emitter" />
       <Property Name="AreaLightColor" Type="Color" Category="Emitter" />
       <Property Name="AreaLightRadiance" Type="Float" Range="0, 100" DefaultValue="1" Category="Emitter" />
@@ -194,12 +194,19 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarReflectionMask" Type="Texture" Category="Reflections" />
+      <Property Name="PlanarReflectionWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="0" />
+      <Property Name="PlanarBaseWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarCoatWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarNormalDistortion" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarStretch" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarReflectionGroup" Type="Float" Category="Reflections" Range="0, 65535" DefaultValue="0" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -210,10 +217,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRBaseWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRCoatWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFCutout" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFCutout">
       <Property Name="GlintMask" Type="Texture" Category="Textures" />
       <Property Name="MainTex" Type="Texture" Category="Textures" />
@@ -288,12 +295,19 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarReflectionMask" Type="Texture" Category="Reflections" />
+      <Property Name="PlanarReflectionWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="0" />
+      <Property Name="PlanarBaseWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarCoatWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarNormalDistortion" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarStretch" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarReflectionGroup" Type="Float" Category="Reflections" Range="0, 65535" DefaultValue="0" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -306,10 +320,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRBaseWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRCoatWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFAlpha" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFAlpha">
       <Property Name="MainTex" Type="Texture" Category="Textures" />
       <Property Name="NormalMap" Type="Texture" Category="Textures" />
@@ -367,12 +381,12 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -390,10 +404,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFAlphaBackFront" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFAlphaBackFront">
       <Property Name="MainTex" Type="Texture" Category="Textures" />
       <Property Name="NormalMap" Type="Texture" Category="Textures" />
@@ -451,12 +465,12 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -473,10 +487,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFGlass" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFGlass">
       <Property Name="MainTex" Type="Texture" Category="Textures" />
       <Property Name="NormalMap" Type="Texture" Category="Textures" />
@@ -513,11 +527,11 @@
       <Property Name="GlassEdgeFade" Type="Float" Category="Refraction" Range="0, 0.2" DefaultValue="0.02" />
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -531,9 +545,9 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 5" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFTess" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFTess">
       <Property Name="GlintMask" Type="Texture" Category="Textures" />
       <Property Name="MainTex" Type="Texture" Category="Textures" />
@@ -605,12 +619,19 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarReflectionMask" Type="Texture" Category="Reflections" />
+      <Property Name="PlanarReflectionWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="0" />
+      <Property Name="PlanarBaseWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarCoatWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarNormalDistortion" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarStretch" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarReflectionGroup" Type="Float" Category="Reflections" Range="0, 65535" DefaultValue="0" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -621,10 +642,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRBaseWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRCoatWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
     <Shader Name="tom/BSDFCutoutTess" AssetBundle="chara/tom/shaders/tombsdf.unity3d" Asset="a_BSDFCutoutTess">
       <Property Name="GlintMask" Type="Texture" Category="Textures" />
       <Property Name="MainTex" Type="Texture" Category="Textures" />
@@ -697,12 +718,19 @@
       <Property Name="Occlusion" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="OcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
       <Property Name="IndirectDiffuseIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ReflectionIntensity" Type="Float" Category="Environment" Range="0, 4" DefaultValue="1" />
-      <Property Name="ProbeBoxProjection" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="ProbeBlending" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarReflectionMask" Type="Texture" Category="Reflections" />
+      <Property Name="PlanarReflectionWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="0" />
+      <Property Name="PlanarBaseWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarCoatWeight" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="PlanarNormalDistortion" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarStretch" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="1" />
+      <Property Name="PlanarReflectionGroup" Type="Float" Category="Reflections" Range="0, 65535" DefaultValue="0" />
+      <Property Name="ReflectionIntensity" Type="Float" Category="Reflections" Range="0, 4" DefaultValue="1" />
+      <Property Name="ProbeBoxProjection" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="ProbeBlending" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="CustomSHVolumeBlend" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
-      <Property Name="SpecularHorizonStrength" Type="Float" Category="Environment" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularOcclusionStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
+      <Property Name="SpecularHorizonStrength" Type="Float" Category="Reflections" Range="0, 1" DefaultValue="1" />
       <Property Name="SceneLighting" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="1" />
       <Property Name="AreaLightIntensity" Type="Float" Category="Scene Lighting" Range="0, 4" DefaultValue="1" />
       <Property Name="AreaLightQuality" Type="Float" Category="Scene Lighting" Range="0, 1" DefaultValue="0" />
@@ -715,10 +743,10 @@
       <Property Name="ColorValueMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DataTextureRestore" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
       <Property Name="LightColorInput" Type="Float" Category="Input Contract" Range="0, 1" DefaultValue="0" />
-      <Property Name="ReflectionColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
+      <Property Name="ReflectionColorMode" Type="Float" Category="Reflections" Range="0, 2" DefaultValue="0" />
       <Property Name="CustomSHColorMode" Type="Float" Category="Input Contract" Range="0, 2" DefaultValue="0" />
       <Property Name="DebugView" Type="Float" Category="Diagnostics" Range="0, 14" DefaultValue="0" />
-    </Shader>
+    <Property Name="ReflectionsEnabled" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="ProbeWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SkyWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRBaseWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /><Property Name="SSRCoatWeight" Type="Float" Range="0, 1" DefaultValue="1" Category="Reflections" /></Shader>
   </MaterialEditor>
   <game>Koikatsu Sunshine</game>
 </manifest>
